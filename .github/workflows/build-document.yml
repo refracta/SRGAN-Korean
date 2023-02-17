@@ -9,7 +9,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install prerequisite
-        run: apt-get update && apt-get install texlive-full -y
+        run: sudo apt-get update && sudo apt-get install texlive-full -y
 
       - name: Build SRGAN-Korean
         run: pdflatex -jobname=SRGAN-Korean SRGANpaper_CVPR_Arxiv.tex
