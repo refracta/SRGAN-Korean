@@ -12,10 +12,10 @@ jobs:
         run: sudo apt-get update && sudo apt-get install texlive-full -y
 
       - name: Build SRGAN-Korean
-        run: pdflatex -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -jobname=SRGANpaper_CVPR_Arxiv -aux-directory=./auxil/ SRGANpaper_CVPR_Arxiv.tex && mv SRGANpaper_CVPR_Arxiv.pdf SRGAN-Korean.pdf
+        run: pdflatex -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -jobname=SRGANpaper_CVPR_Arxiv -aux-directory=./auxil/ SRGANpaper_CVPR_Arxiv.tex && pdflatex -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -jobname=SRGANpaper_CVPR_Arxiv -aux-directory=./auxil/ SRGANpaper_CVPR_Arxiv.tex && mv SRGANpaper_CVPR_Arxiv.pdf SRGAN-Korean.pdf
 
       - name: Build SRGAN-EngKor
-        run: sed -i 's/\\newcommand{\\eng}\[1\]{}/\\newcommand{\\eng}\[1\]{#1}/g' SRGANpaper_CVPR_Arxiv.tex && pdflatex -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -jobname=SRGANpaper_CVPR_Arxiv -aux-directory=./auxil/ SRGANpaper_CVPR_Arxiv.tex && mv SRGANpaper_CVPR_Arxiv.pdf SRGAN-KorEng.pdf
+        run: sed -i 's/\\newcommand{\\eng}\[1\]{}/\\newcommand{\\eng}\[1\]{#1}/g' SRGANpaper_CVPR_Arxiv.tex && pdflatex -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -jobname=SRGANpaper_CVPR_Arxiv -aux-directory=./auxil/ SRGANpaper_CVPR_Arxiv.tex && pdflatex -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -jobname=SRGANpaper_CVPR_Arxiv -aux-directory=./auxil/ SRGANpaper_CVPR_Arxiv.tex && mv SRGANpaper_CVPR_Arxiv.pdf SRGAN-EngKor.pdf
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
