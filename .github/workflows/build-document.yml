@@ -1,0 +1,26 @@
+name: Build papers
+on: [push, pull_request]
+jobs:
+  launch_test:
+    name: Build papers
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Get latest code
+        uses: actions/checkout@v2
+
+      - name: Install prerequisite
+        run: apt-get install texlive-full -y
+
+      - name: Build SRGAN-Korean
+        run: pdflatex -jobname=SRGAN-Korean SRGANpaper_CVPR_Arxiv.tex
+
+      - name: Build SRGAN-EngKor
+        run: sed -i 's/\\newcommand{\\eng}\[1\]{}/\\newcommand{\\eng}\[1\]{#1}/g' SRGANpaper_CVPR_Arxiv.tex && pdflatex -jobname=SRGAN-EngKor SRGANpaper_CVPR_Arxiv.tex
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: papers
+          path: |
+            SRGAN-EngKor.pdf
+            SRGAN-Korean.pdf
