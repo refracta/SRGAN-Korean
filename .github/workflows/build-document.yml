@@ -12,10 +12,10 @@ jobs:
         run: sudo apt-get update && sudo apt-get install texlive-full -y
 
       - name: Build SRGAN-Korean
-        run: pdflatex -jobname=SRGAN-Korean SRGANpaper_CVPR_Arxiv.tex
+        run: pdflatex -jobname=SRGAN-Korean -aux-directory=auxil SRGANpaper_CVPR_Arxiv.tex
 
       - name: Build SRGAN-EngKor
-        run: sed -i 's/\\newcommand{\\eng}\[1\]{}/\\newcommand{\\eng}\[1\]{#1}/g' SRGANpaper_CVPR_Arxiv.tex && pdflatex -jobname=SRGAN-EngKor SRGANpaper_CVPR_Arxiv.tex
+        run: sed -i 's/\\newcommand{\\eng}\[1\]{}/\\newcommand{\\eng}\[1\]{#1}/g' SRGANpaper_CVPR_Arxiv.tex && pdflatex -jobname=SRGAN-EngKor -aux-directory=auxil SRGANpaper_CVPR_Arxiv.tex
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
