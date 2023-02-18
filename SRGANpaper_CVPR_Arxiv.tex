@@ -243,6 +243,7 @@ y=\imageheight
 \makeglossaries
 
 \newacronym{SISR}{SISR}{single image super-resolution}
+\newacronym{단일 이미지 초해상도화}{단일 이미지 초해상도화}{SISR}
 \newacronym{PSNR}{PSNR}{peak signal-to-noise ratio}
 \newacronym{MSE}{MSE}{mean squared error}
 \newacronym{CNN}{CNN}{convolutional neural network}
@@ -251,8 +252,11 @@ y=\imageheight
 \newacronym{ResNet}{ResNet}{residual network}
 \newacronym{GAN}{GAN}{generative adversarial network}
 \newacronym{LR}{LR}{low-resolution}
+\newacronym{저해상도}{저해상도}{low-resolution}
 \newacronym{HR}{HR}{high-resolution}
+\newacronym{고해상도}{고해상도}{high-resolution}
 \newacronym{SR}{SR}{super-resolution}
+\newacronym{초해상도화}{초해상도화}{super-resolution}
 \newacronym{MOS}{MOS}{mean opinion score}
 \newacronym{SSIM}{SSIM}{structural similarity}
 \newacronym{PSNR-HVS}{PSNR-HVS}{peak signal-to-noise ratio - human visual system}
@@ -279,7 +283,7 @@ y=\imageheight
 %\title{Photo-Realistic Single Image Super-Resolution Using a Generative Adversarial Network}
 \title{
 \eng{Photo-Realistic Single Image Super-Resolution Using a Generative Adversarial Network}
-\kor{생성적 적대 신경망을 이용한 실사 단일 이미지 초해상도 생성}}
+\kor{생성적 적대 신경망을 이용한 실사 단일 이미지 초해상도화}}
 
 \onehalfspacing
 \author{Christian Ledig, Lucas Theis, Ferenc Husz\'{a}r, Jose Caballero, Andrew Cunningham, \\Alejandro Acosta, Andrew Aitken, Alykhan Tejani, Johannes Totz, Zehan Wang, Wenzhe Shi\\
@@ -296,7 +300,7 @@ Twitter\\
 \eng{
 Despite the breakthroughs in accuracy and speed of single image super-resolution using faster and deeper convolutional neural networks, one central problem remains largely unsolved: how do we recover the finer texture details when we super-resolve at large upscaling factors?
 }\kor{
-더 빠르고 깊은 합성곱 신경망을 이용한 단일 이미지 초해상도 생성 (기술에 대한) 정확도와 속도의 획기적인 약진에도 불구하고, "큰 해상도 향상 인자를 사용해서 초해상도 (이미지)를 생성할 때, 어떻게 해야 고품질 질감의 세부 사항을 복구할 수 있는가?"라는 한가지 중요한 큰 문제는 해결되지 않았다.
+더 빠르고 깊은 합성곱 신경망을 사용하는 단일 이미지 초해상도화 기술에 대한 정확도와 속도의 획기적인 약진에도 불구하고, "큰 해상도 향상 인자를 사용해서 초해상도 이미지를 생성할 때, 어떻게 해야 고품질 질감의 세부 사항을 복구할 수 있는가?"라는 중요한 문제는 해결되지 않았다.
 }\eng{
 The behavior of optimization-based super-resolution methods is principally driven by the choice of the objective function. Recent work has largely focused on minimizing the mean squared reconstruction error.
 }\kor{
@@ -312,7 +316,7 @@ In this paper, we present SRGAN, a generative adversarial network (GAN) for imag
 }\eng{
  To our knowledge, it is the first framework capable of inferring photo-realistic natural images for $4\times$ upscaling factors.
 }\kor{
- 우리가 아는 한, SRGAN은 $4\times$ 해상도 향상(인자)로 자연스러운 실사 이미지 추론을 할 수 있는 첫번째 프레임워크이다.
+ 우리가 아는 한, SRGAN은 $4\times$ 해상도 향상 인자로 자연스러운 실사 이미지 추론을 할 수 있는 첫번째 프레임워크이다.
 }\eng{
  To achieve this, we propose a perceptual loss function which consists of an adversarial loss and a content loss.
 }\kor{
@@ -320,15 +324,15 @@ In this paper, we present SRGAN, a generative adversarial network (GAN) for imag
 }\eng{
  The adversarial loss pushes our solution to the natural image manifold using a discriminator network that is trained to differentiate between the super-resolved images and original photo-realistic images.
 }\kor{
-초해상도 (생성) 이미지와 원본 실사 이미지를 구별하도록 훈련된 판별기(discriminator) 네트워크를 이용해서 적대적 손실은 해(solution)를 자연 이미지 데이터 공간(manifold)로 밀어넣는다.
+초해상도화 이미지와 원본 실사 이미지를 구별하도록 훈련된 판별기(discriminator) 네트워크를 이용해서 적대적 손실은 해(solution)를 자연 이미지 데이터 공간(manifold)로 밀어넣는다.
 }\eng{
  In addition, we use a content loss motivated by perceptual similarity instead of similarity in pixel space.
 }\kor{
- 추가적으로, 픽셀 공간의 유사성 대신 지각적 유사성으로부터 영감를 받은 내용 손실을 사용한다.
+ 추가적으로, 픽셀 공간의 유사성 대신 지각적 유사성으로부터 영감를 받은 내용 손실(content loss)이 사용된다.
 }\eng{
  Our deep residual network is able to recover photo-realistic textures from heavily downsampled images on public benchmarks.
 }\kor{
-(본 논문에서) 제시하는 심층 잔류 신경망은 공개 벤치마크에서 심하게 다운샘플링된 이미지로부터 실사와 같은 질감을 복구해낼 수 있다.
+본 논문에서 제시하는 심층 잔류 신경망은 공개 벤치마크에서 심하게 다운샘플링된 이미지로부터 실사와 같은 질감을 복구해낼 수 있다.
 }\eng{
 An extensive mean-opinion-score (MOS) test shows hugely significant gains in perceptual quality using SRGAN.
 }\kor{
@@ -345,11 +349,11 @@ An extensive mean-opinion-score (MOS) test shows hugely significant gains in per
 \eng{
 The highly challenging task of estimating a \ac{HR} image from its \ac{LR} counterpart is referred to as \ac{SR}.
 }\kor{
-고해상도 \ac{HR} 이미지에 대응하는 저해상도 \ac{LR} 이미지로부터 고해상도 \ac{HR} 이미지를 추정하는 매우 도전적인 작업을 초해상도 (생성) \ac{SR}이라고 한다.
+\ac{고해상도} 이미지에 대응하는 \ac{저해상도} 이미지로부터 \ac{고해상도} 이미지를 추정하는 상당히 도전적인 작업을 \ac{초해상도화}라고 한다.
 }\eng{
 \ac{SR} received substantial attention from within the computer vision research community and has a wide range of applications \cite{yang2007spatial,Zou12,Nasrollahi2014}.
 }\kor{
-초해상도 (생성) \ac{SR}은 컴퓨터 비전 연구 공동체 내에서 상당한 관심을 받았으며, 광범위하게 응용되고 있다 \cite{yang2007spatial,Zou12,Nasrollahi2014}.
+\ac{초해상도화}는 컴퓨터 비전 연구 공동체 내에서 상당한 관심을 받았으며, 광범위하게 응용되고 있다 \cite{yang2007spatial,Zou12,Nasrollahi2014}.
 }
 % includes face recognition in surveillance videos \cite{Zou12}, super-resolution of depth maps \cite{yang2007spatial}, video streaming and medical applications.
 
@@ -364,7 +368,7 @@ The highly challenging task of estimating a \ac{HR} image from its \ac{LR} count
 \eng{
 Super-resolved image (left) is almost indistinguishable from original (right). [$4\times$ upscaling]
 }\kor{
-초해상도 (생성된) 이미지(좌측)는 원본(우측)과 거의 구분이 불가능하다. [$4\times$ 해상도 향상]
+초해상도화된 이미지(좌측)는 원본(우측)과 거의 구분이 불가능하다. [$4\times$ 해상도 향상]
 }}
 \label{fig:exampleIntroFirst}
 \end{figure}
@@ -373,7 +377,7 @@ Super-resolved image (left) is almost indistinguishable from original (right). [
 \eng{
 The ill-posed nature of the underdetermined \ac{SR} problem is particularly pronounced for high upscaling factors, for which texture detail in the reconstructed \ac{SR} images is typically absent.
 }\kor{
-불량 조건인(LR을 HR로 복원하는 경우 정답이 1개가 아닌 여러개가 존재하는 것을 불량 조건을 가진다고 함) 미결정 초해상도 (생성) 문제의 본질은 특히 일반적으로 재구성된 SR 이미지의 질감 세부 사항이 없는 높은 해상도 향상 인자에서 두드러진다.
+불량 조건인(\ac{저해상도}를 \{ac}고해상도로 복원하는 경우 정답이 1개가 아닌 여러개가 존재하는 것을 불량 조건을 가진다고 함) 미결정 \ac{초해상도화} 문제의 본질은 특히 일반적으로 재구성된 \ac{초해상도화} 이미지의 질감 세부 사항이 없는 높은 해상도 향상 인자에서 두드러진다.
 }
 %Assumptions about the data have to be made to approximate the \ac{HR} image, such as exploiting image redundancies. % or employing specifically trained feature models.
 %
@@ -384,7 +388,7 @@ The ill-posed nature of the underdetermined \ac{SR} problem is particularly pron
 %
 \begin{figure*}[ht]
 \begin{tabular}{cccc}
-bicubic &  SRResNet  & SRGAN & original\\
+쌍삼차 보간(bicubic) &  SRResNet  & SRGAN & 원본\\
 (21.59dB/0.6423) &   (23.53dB/0.7832) & (21.15dB/0.6868) & \\
 \includegraphics[trim=0pt 0pt 0pt 0pt, clip, width=1.55in]{images/used/jpg/comic_SRF_4_bicubic} &
 \includegraphics[trim=0pt 0pt 0pt 0pt, clip, width=1.55in]{images/used/jpg/comic_SRResNet-MSE} &
@@ -395,7 +399,7 @@ bicubic &  SRResNet  & SRGAN & original\\
 \eng{
 From left to right: bicubic interpolation, deep residual network optimized for MSE, deep residual generative adversarial network optimized for a loss more sensitive to human perception, original HR image. Corresponding PSNR and SSIM are shown in brackets. [$4\times$ upscaling]
 }\kor{
-왼쪽에서 오른쪽 순으로: 쌍삼차(bicubic) 보간, MSE로 최적화된 심층 잔류 신경망, 원본 고해상도(HR) 이미지에 대해서 조금 더 사람의 지각에 민감한 손실로 최적화된 심층 잔류 생성적 적대 신경망. 해당 PSNR과 SSIM은 괄호 안에 표시됨. [$4\times$ 해상도 향상]
+왼쪽에서 오른쪽 순으로: 쌍삼차 보간(bicubic), MSE로 최적화된 심층 잔류 신경망, 원본 고해상도 이미지에 대해서 조금 더 사람의 지각에 민감한 손실로 최적화된 심층 잔류 생성적 적대 신경망. PSNR과 SSIM은 괄호 안에 표시된다. [$4\times$ 해상도 향상]
 }
 }
 \label{fig:exampleIntro}
@@ -404,24 +408,24 @@ From left to right: bicubic interpolation, deep residual network optimized for M
 \eng{
 The optimization target of supervised \ac{SR} algorithms is commonly the minimization of the \ac{MSE} between the recovered \ac{HR} image and the ground truth.
 }\kor{
-지도 \ac{SR} 알고리즘의 최적화 목표는 보통 고해상도(HR) 이미지와 정답 사이의 \ac{MSE}를 최소화하는 것이다.
+지도 \ac{초해상도화} 알고리듬의 최적화 목표는 보통 \ac{고해상도} 이미지와 정답 사이의 \ac{MSE}를 최소화하는 것이다.
 }\eng{
  This is convenient as minimizing \ac{MSE} also maximizes the \ac{PSNR}, which is a common measure used to evaluate and compare \ac{SR} algorithms \cite{Yang14benchmark}.
 }\kor{
-\ac{MSE}를 최적화하는 것은 \ac{SR} 알고리즘을 평가하고 비교하는데 일반적으로 사용되는 \ac{PSNR}을 최대화하기 때문에 편리하다.\cite{Yang14benchmark}
+\ac{MSE}를 최적화하는 것은 \ac{초해상도화} 알고리듬을 평가하고 비교하는데 일반적으로 사용되는 \ac{PSNR}을 최대화하기 때문에 편리하다.\cite{Yang14benchmark}
 }
 \eng{
 However, the ability of MSE (and PSNR) to capture perceptually relevant differences, such as high texture detail, is very limited as they are defined based on pixel-wise image differences \cite{Wang2003,Wang2004,Gupta2011}.
 }\kor{
-하지만, MSE(그리고 PSNR)의 높은 질감 세부 정보와 같은 지각적으로 관련된 차이를 포착하는 능력은 픽셀 단위의 이미지 차이를 기반으로 정의되었기 때문에 매우 제한적이다.
+하지만, MSE(그리고 PSNR)의 높은 질감 세부 정보와 같은 지각적으로 관련된 차이를 포착하는 능력은 픽셀 단위의 이미지 차이\cite{Wang2003,Wang2004,Gupta2011}를 기반으로 정의되었기 때문에 매우 제한적이다.
 }\eng{
  This is illustrated in \figurename~\ref{fig:exampleIntro}, where highest PSNR does not necessarily reflect the perceptually better \ac{SR} result.
 }\kor{
- 이것은 높은 PSNR이 필연적으로 지각적으로 더 높은 \ac{SR} 결과를 반영하지 않는 (경우인) \figurename~\ref{fig:exampleIntro}에서 보여진다.
+ 이것은 높은 PSNR이 필연적으로 지각적으로 더 높은 \ac{초해상도화} 결과를 반영하지 않는 경우인 \figurename~\ref{fig:exampleIntro}에서 보여진다.
 }\eng{
  The perceptual difference between the super-resolved and original image means that the recovered image is not photo-realistic as defined by Ferwerda \cite{Ferwerda2003}.
 }\kor{
-초해상도 (생성물)과 원본 이미지 사이의 지각적 차이는 복원된 이미지는 (Ferwerda \cite{Ferwerda2003}에서 정의된 것처럼) 실사적이지 않다는 것이다.
+초해상도 (생성물)과 원본 이미지 사이의 지각적 차이는 복원된 이미지는 Ferwerda \cite{Ferwerda2003}에서 정의된 것처럼 실사적이지 않다는 것이다.
 }
 
 
@@ -432,36 +436,36 @@ In this work we propose a \ac{SRGAN} for which we employ a deep \ac{ResNet} with
 }\eng{
  Different from previous works, we define a novel perceptual loss using high-level feature maps of the VGG network \cite{simonyan2014very,Johnson16PercepLoss,bruna2016super} combined with a discriminator that encourages solutions perceptually hard to distinguish from the \ac{HR} reference images.
 }\kor{
- 이전 연구와 달리, 고해상도 \ac{HR} 참조 이미지와 지각적으로 구분하기 어려운 해들(solutions)을 부추기는 판별기(discriminator)와 결합한 VGG 네트워크 \cite{simonyan2014very,Johnson16PercepLoss,bruna2016super}의 고수준 특징 맵을 사용해서 새로운 지각 손실을 정의한다.
+ 이전 연구와 달리, \ac{고해상도} 참조 이미지와 지각적으로 구분하기 어려운 해들(solutions)을 부추기는 판별기(discriminator)와 결합한 VGG 네트워크 \cite{simonyan2014very,Johnson16PercepLoss,bruna2016super}의 고수준 특징 맵을 사용해서 새로운 지각 손실을 정의한다.
 }
 \eng{
 An example photo-realistic image that was super-resolved with a $4\times$ upscaling factor is shown in \figurename~\ref{fig:exampleIntroFirst}.
 }\kor{
-$4\times$ 해상도 향상 인자로 초해상도 (생성한) 예제 실사 이미지는 \figurename~\ref{fig:exampleIntroFirst}에서 보여진다.
+$4\times$ 해상도 향상 인자로 초해상도화한 예제 실사 이미지는 \figurename~\ref{fig:exampleIntroFirst}에서 보여진다.
 }
 
 \subsection{관련 연구}
-\subsubsection{이미지 초해상도 (생성)}
+\subsubsection{이미지 초해상도화}
 %There is a vast amount of literature and research that focuses on image \ac{SR}.
 \eng{
 Recent overview articles on image \ac{SR} include Nasrollahi and Moeslund \cite{Nasrollahi2014} or Yang et al. \cite{Yang14benchmark}.
 }\kor{
-이미지 \ac{SR} (분야의) 최근 개요적 기사에는 Nasrollahi와 Moeslund \cite{Nasrollahi2014} or Yang 외가 있다.
+이미지 \ac{초해상도화} 분야의 최근 개요적 기사에는 Nasrollahi와 Moeslund \cite{Nasrollahi2014} 또는 Yang 외.가 있다.
 }\eng{
 Here we will focus on \ac{SISR} and will not further discuss approaches that recover \ac{HR} images from multiple images \cite{Borman1998aSurvey,Farsiu2004}.
 }\kor{
-본 논문에서는 \ac{SISR}에 초점을 맞추고, 고해상도 \ac{HR} 이미지들을 여러 이미지로부터 복원하는 \cite{Borman1998aSurvey,Farsiu2004} 접근에 대해서는 더 논의하지 않을 것이다.
+본 논문에서는 \ac{단일 이미지 초해상도화}에 초점을 맞추고, 고해상도 \ac{고해상도} 이미지들을 여러 이미지로부터 복원하는 \cite{Borman1998aSurvey,Farsiu2004} 접근에 대해서는 더 논의하지 않을 것이다.
 }
 
 
 \eng{
 Prediction-based methods were among the first methods to tackle \ac{SISR}.
 }\kor{
-예측 기반 방법은 \ac{SISR}을 해결하려고 한 첫번째 방법 중 하나였다.
+예측 기반 방법은 \ac{단일 이미지 초해상도화} 문제를 해결하려고 한 첫번째 방법 중 하나였다.
 } \eng{
 While these filtering approaches, \eg linear, bicubic or Lanczos \cite{Duchon1979} filtering, can be very fast, they oversimplify the \ac{SISR} problem and usually yield solutions with overly smooth textures.
 }\kor{
-선형, 쌍삼차(bicubic), Lanczos \cite{Duchon1979} 필터링과 같은 필터링 접근법들은 매우 빠를수 있지만, \ac{SISR} 문제를 지나치게 단순화하고, 일반적으로 과하게 부드러운 질감을 가지는 해(solution)을 산출한다.
+\eg 선형, 쌍삼차(bicubic), Lanczos \cite{Duchon1979} 필터링과 같은 필터링 접근법들은 매우 빠를수 있지만, \ac{SISR} 문제를 지나치게 단순화하고, 일반적으로 과하게 부드러운 질감을 가지는 해(solution)을 산출한다.
 }
 \eng{
 Methods that put particularly focus on edge-preservation have been proposed \cite{Allebach96, Li2001}.
@@ -469,15 +473,50 @@ Methods that put particularly focus on edge-preservation have been proposed \cit
 모서리 보존 방법에 특히 초점을 맞추는 방법은 \cite{Allebach96, Li2001}에 의해 제안되었다.
 }
 
+\eng{
 More powerful approaches aim to establish a complex mapping between low- and high-resolution image information and usually rely on training data.
+}\kor{
+더 강력한 접근 방식은 저해상도와 고해상도의 이미지 정보 간의 복잡한 매핑을 만드는 것에 목표를 두며, 보통 훈련 데이터에 의존한다.
+}\eng{
 Many methods that are based on example-pairs rely on \ac{LR} training patches for which the corresponding \ac{HR} counterparts are known. Early work was presented by Freeman et al. \cite{Freeman2000,Freeman2002}.
+}\kor{
+예제 쌍을 기반으로 하는 많은 방법들은 상응하는 \ac{고해상도} 대응물이 알려진 \ac{저해상도} 훈련 패치에 의존한다. 초창기 연구는 Freeman 외. \cite{Freeman2000,Freeman2002}에 의해 제시되었다.
+}\eng{
 Related approaches to the \ac{SR} problem originate in compressed sensing \cite{Yang08, Dong2011, zeyde2012single}.
+}\kor{
+\ac{초해상도화} 문제의 관련된 접근법은 압축 감지(compressed sensing) \cite{Yang08, Dong2011, zeyde2012single}로부터 유래되었다.
+}
 % and aim to estimate a sparse patch representation with respect to an over-complete dictionary
-In Glasner et al. \cite{glasner2009super} the authors exploit patch redundancies across scales within the image to drive the \ac{SR}. This paradigm of self-similarity is also employed in Huang et al. \cite{Huang15selfexemplars}, where self dictionaries are extended by further allowing for small transformations and shape variations.
+    \eng{
+    In Glasner et al. \cite{glasner2009super} the authors exploit patch redundancies across scales within the image to drive the \ac{SR}.
+    }\kor{
+    Glasner 외. \cite{glasner2009super}에서 저자는 이미지 안의 여러 크기에 걸친 패치 중복성을 활용하여 \ac{초해상도화}를 이끌어 낸다.
+    } \eng{
+    This paradigm of self-similarity is also employed in Huang et al. \cite{Huang15selfexemplars}, where self dictionaries are extended by further allowing for small transformations and shape variations.
+    }\kor{
+    이러한 자기 유사성 패러다임은 작은 변환과 모양 변형을 더 많이 허용하여 자체적인 사전을 확장하는 Hung 외. \cite{Huang15selfexemplars}에서도 사용된다.
+    }
+\eng{
 Gu et al. \cite{gu2015convolutional} proposed a convolutional sparse coding approach that improves consistency by processing the whole image rather than overlapping patches.
+}\kor{
+Gu 외. \cite{gu2015convolutional}는 패치를 겹치는 방법을 사용하기보다는 전체 이미지를 처리하여 일관성을 향상시키는 합성곱 희소 표현(convolutional sparese coding)을 제안했다.
+}
 
-To reconstruct realistic texture detail while avoiding edge artifacts, Tai et al. \cite{Tai2010} combine an edge-directed \ac{SR} algorithm based on a gradient profile prior \cite{Sun2008} with the benefits of learning-based detail synthesis. Zhang et al. \cite{zhang2012multi} propose a multi-scale dictionary to capture redundancies of similar image patches at different scales. % with the goal to enhance visual details.
+\eng{
+To reconstruct realistic texture detail while avoiding edge artifacts, Tai et al. \cite{Tai2010} combine an edge-directed \ac{SR} algorithm based on a gradient profile prior \cite{Sun2008} with the benefits of learning-based detail synthesis. Zhang et al.
+}\kor{
+가장자리의 인공물(artifacts)을 피하면서 사실적인 질감 세부 사항을 재구성하기 위해서, Tai 외. \cite{Tai2010}는 경사 프로필 우선(gradient profile prior) \cite{Sun2008} 방법에 기반한 모서리 방향(edge-directed) \ac{초해상도화} 알고리듬을 학습 기반 세부 사항 합성의 이점과 함께 (Zhang 외.) 결합한다.
+} \eng{
+\cite{zhang2012multi} propose a multi-scale dictionary to capture redundancies of similar image patches at different scales.
+}\kor{
+\cite{zhang2012multi} propose a multi-scale dictionary to capture redundancies of similar image patches at different scales.
+\cite{zhang2012multi}은 서로 다른 크기에서 비슷한 이미지 패치의 중복성을 포착하기 위한 다중-크기(multi-scale) 사전을 제안한다.
+} % with the goal to enhance visual details.
+\eng{
 To super-resolve landmark images, Yue et al. \cite{Yue2013} retrieve correlating \ac{HR} images with similar content from the web and propose a structure-aware matching criterion for alignment.
+}\kor{
+랜드마크 이미지들을 초해상도화하기 위해, Yue 외. \cite{Yue2013}은
+}
 
 Neighborhood embedding approaches upsample a \ac{LR} image patch by finding similar \ac{LR} training patches in a low dimensional manifold and combining their corresponding \ac{HR} patches for reconstruction \cite{timofte2013anchored,timofte2014a+}.
 In Kim and Kwon \cite{Kim10kernelregression} the authors emphasize the tendency of neighborhood approaches to overfit and formulate a more general map of example pairs using kernel ridge regression.
