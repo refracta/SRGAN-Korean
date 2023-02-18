@@ -14,13 +14,13 @@ jobs:
 
       - name: Test
         shell: pwsh
-        run: tree
+        run: tree C:\
 
       - name: Build SRGAN-Korean
-        run: miktex/bin/x64/pdflatex -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -jobname=SRGANpaper_CVPR_Arxiv -aux-directory=./auxil/ SRGANpaper_CVPR_Arxiv.tex
+        run: C:\miktex/bin/x64/pdflatex -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -jobname=SRGANpaper_CVPR_Arxiv -aux-directory=./auxil/ SRGANpaper_CVPR_Arxiv.tex
 
-      - name: Build SRGAN-EngKor
-        run: sed -i 's/\\newcommand{\\eng}\[1\]{}/\\newcommand{\\eng}\[1\]{#1}/g' SRGANpaper_CVPR_Arxiv.tex && miktex/bin/x64/ -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -jobname=SRGANpaper_CVPR_Arxiv -aux-directory=./auxil/ SRGANpaper_CVPR_Arxiv.tex
+#      - name: Build SRGAN-EngKor
+#        run: sed -i 's/\\newcommand{\\eng}\[1\]{}/\\newcommand{\\eng}\[1\]{#1}/g' SRGANpaper_CVPR_Arxiv.tex && miktex/bin/x64/ -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -jobname=SRGANpaper_CVPR_Arxiv -aux-directory=./auxil/ SRGANpaper_CVPR_Arxiv.tex
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
