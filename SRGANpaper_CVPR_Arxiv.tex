@@ -243,7 +243,7 @@ y=\imageheight
 \makeglossaries
 
 \newacronym{SISR}{SISR}{single image super-resolution}
-\newacronym{단일 이미지 초해상도화}{단일 이미지 초해상도화}{SISR}
+\newacronym{단일 이미지 초해상도화}{단일 이미지 초해상도화}{single image super-resolution}
 \newacronym{PSNR}{PSNR}{peak signal-to-noise ratio}
 \newacronym{MSE}{MSE}{mean squared error}
 \newacronym{CNN}{CNN}{convolutional neural network}
@@ -515,10 +515,14 @@ To reconstruct realistic texture detail while avoiding edge artifacts, Tai et al
 \eng{
 To super-resolve landmark images, Yue et al. \cite{Yue2013} retrieve correlating \ac{HR} images with similar content from the web and propose a structure-aware matching criterion for alignment.
 }\kor{
-랜드마크 이미지들을 초해상도화하기 위해, Yue 외. \cite{Yue2013}은
+랜드마크 이미지들을 초해상도화하기 위해, Yue 외. \cite{Yue2013}은 웹에 있는 유사한 이미지와 관련이 있는 \ac{고해상도} 이미지를 검색하고, 정렬을 위한 구조 인식(structure-aware) 일치 기준을 제안한다.
 }
 
+\eng{
 Neighborhood embedding approaches upsample a \ac{LR} image patch by finding similar \ac{LR} training patches in a low dimensional manifold and combining their corresponding \ac{HR} patches for reconstruction \cite{timofte2013anchored,timofte2014a+}.
+}\kor{
+이웃 임베딩(Neighborhood embedding) 접근법은
+}
 In Kim and Kwon \cite{Kim10kernelregression} the authors emphasize the tendency of neighborhood approaches to overfit and formulate a more general map of example pairs using kernel ridge regression.
 The regression problem can also be solved with Gaussian process regression \cite{he2011single}, trees \cite{salvador2015naive} or Random Forests \cite{schulter2015fast}.
 In Dai et al. \cite{dai2015jointly} a multitude of patch-specific regressors is learned and the most appropriate regressors selected during testing. %. During testing the most appropriate regressors for a given \ac{LR} patch are then selected using kNN.
