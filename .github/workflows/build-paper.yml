@@ -17,7 +17,7 @@ jobs:
         run: "& \"C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\pdflatex.exe\" -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -output-directory=korean -aux-directory=auxil SRGANpaper_CVPR_Arxiv.tex"
 
       - name: Fix tex file for SRGAN-EngKor
-        run: (Get-Content -Path SRGANpaper_CVPR_Arxiv.tex -Raw) -Replace "\\newcommand\{\\eng\}\[1\]\{\}", "\newcommand{\eng}[1]{\\n#1\\n}" > SRGANpaper_CVPR_Arxiv-EngKor.tex && mv SRGANpaper_CVPR_Arxiv-EngKor.tex SRGANpaper_CVPR_Arxiv.tex -Force
+        run: (Get-Content -Path SRGANpaper_CVPR_Arxiv.tex -Raw) -Replace "\\newcommand\{\\eng\}\[1\]\{\}", "\newcommand{\eng}[1]{`n#1`n}" > SRGANpaper_CVPR_Arxiv-EngKor.tex && mv SRGANpaper_CVPR_Arxiv-EngKor.tex SRGANpaper_CVPR_Arxiv.tex -Force
 
       - name: Build SRGAN-EngKor
         shell: pwsh
