@@ -554,12 +554,12 @@ In Wang et al. \cite{Wang2015} the authors encode a sparse representation prior 
 \eng{
 Dong et al. \cite{dong2014learning,dong2016image} used bicubic interpolation to upscale an input image and trained a three layer deep fully convolutional network end-to-end to achieve state-of-the-art \ac{SR} performance.
 }\kor{
-Dong 외. \cite{dong2014learning,dong2016image}는 입력 이미지를 업스케일하기 위해 쌍삼차 보간(bicubic interpolation)을 사용하고, 최첨단 \ac{초해상도화} 성능을 달성하기 위해 세 개의 훈련된 레이어를 가지는 완전한 심층 합성곱 신경망을 종단 간(end-to-end) 훈련시켰다.
+Dong 외. \cite{dong2014learning,dong2016image}는 입력 이미지의 해상도를 향상시키기 위해 쌍삼차 보간(bicubic interpolation)을 사용하고, 최첨단 \ac{초해상도화} 성능을 달성하기 위해 세 개의 훈련된 레이어를 가지는 완전한 심층 합성곱 신경망을 종단 간(end-to-end) 훈련시켰다.
 }
 \eng{
 Subsequently, it was shown that enabling the network to learn the upscaling filters directly can further increase performance both in terms of accuracy and speed \cite{dong2016accelerating,Shi2016ESPCN,Wang2016}.
 }\kor{
-그 결과로, 네트워크가 업스케일링 필터를 직접 학습할 수 있게 하면 정확도와 속도 측면에서 성능을 더욱 향상시킬 수 있다는 것을 보여주었다.
+그 결과로, 네트워크가 해상도 향상 필터를 직접 학습할 수 있게 하면 정확도와 속도 측면에서 성능을 더욱 향상시킬 수 있다는 것을 보여주었다.
 }
 %	In Shi et al. \cite{Shi2016ESPCN} the upscaling is only performed in the last layer of the network avoiding expensive computations in the high-resolution space of the \ac{SR} image.
 \eng{
@@ -609,12 +609,12 @@ Skip-connections relieve the network architecture of modeling the identity mappi
 \eng{
 In the context of \ac{SISR} it was also shown that learning upscaling filters is beneficial in terms of accuracy and speed \cite{dong2016accelerating,Shi2016ESPCN,Wang2016}.
 }\kor{
-또한 \ac{단일 이미지 초해상도화}의 맥락에서, 업스케일링 필터를 학습하는 것은 정확도와 속도면에서 유익하다는 것을 보여주었다\cite{dong2016accelerating,Shi2016ESPCN,Wang2016}.
+또한 \ac{단일 이미지 초해상도화}의 맥락에서, 해상도 향상 필터를 학습하는 것은 정확도와 속도면에서 유익하다는 것을 보여주었다\cite{dong2016accelerating,Shi2016ESPCN,Wang2016}.
 }
 \eng{
 This is an improvement over Dong et al. \cite{dong2016image} where bicubic interpolation is employed to upscale the LR observation before feeding the image to the \ac{CNN}.
 }\kor{
-이는 이미지를 \ac{합성곱 신경망}에 투입하기 전에, \ac{저해상도} 관측(observation)을 업스케일링하기 위해 쌍삼차 보간(bicubic interpolation)을 사용하는 Dong 외. \cite{dong2016image}에 비해 개선된 것이다.
+이는 이미지를 \ac{합성곱 신경망}에 투입하기 전에, \ac{저해상도} 관측(observation)을 해상도 향상하기 위해 쌍삼차 보간(bicubic interpolation)을 사용하는 Dong 외. \cite{dong2016image}에 비해 개선된 것이다.
 } %In addition, by extracting the feature maps in \ac{LR} space as in \cite{Shi2016ESPCN, Johnson16PercepLoss, dong2016accelerating}, the gain in speed can be used to employ a deep \ac{ResNet} to increase accuracy.
 
 \begin{figure}[ht]
@@ -644,8 +644,7 @@ Reconstructions of varying perceptual quality are exemplified with corresponding
 } \eng{
 We illustrate the problem of minimizing \ac{MSE} in \figurename~\ref{fig:manifold} where multiple potential solutions with high texture details are averaged to create a smooth reconstruction.
 }\kor{
--텍스처 세부 정보가 높은 여러 잠재적 솔루션이 평균화되어 원활한 재구성을 만드는 fig:manifold에서 MSE을 최소화하는 문제를 설명한다.
-
+높은 질감 세부 사항의 여러 잠재적 해가 평균화되어 매끄러운 복원물을 만드는 \figurename~\ref{fig:manifold}에서는 \ac{MSE}를 최소화하는 문제를 설명한다.
 }
 
 \eng{
@@ -653,9 +652,13 @@ In Mathieu et al. \cite{Mathieu2015} and Denton et al. \cite{Denton2015} the aut
 }\kor{
 Mathieu 외. \cite{Mathieu2015}와 Denton 외. \cite{Denton2015}에서 저자들은 이미지 생성의 응용을 위해 \acp{GAN} \cite{Goodfellow14GAN}을 사용함으로써 이 문제를 해결했다.
 } \eng{
-Yu and Porikli \cite{yu2016ultra} augment pixel-wise \ac{MSE} loss with a discriminator loss to train a network that super-resolves face images with large upscaling factors ($8\times$). \acp{GAN} were also used for unsupervised representation learning in Radford et al. \cite{Radford2015}.
+Yu and Porikli \cite{yu2016ultra} augment pixel-wise \ac{MSE} loss with a discriminator loss to train a network that super-resolves face images with large upscaling factors ($8\times$).
 }\kor{
--Yu와 Porikli yu2016ultra는 얼굴 이미지를 큰 업스케일링 요소($8\times$)로 초정밀화하는 네트워크를 훈련시키기 위해 판별기 손실로 픽셀 단위 MSE 손실을 증가시킨다. GAN는 Radford 등에서 감독되지 않은 표현 학습에도 사용되었다. Radford2015.
+Yu와 Porikli \cite{yu2016ultra}는 큰 해상도 향상 인자($8\times$)로 얼굴 이미지를 초해상도화하는 네트워크를 훈련시키기 위해 판별기(discriminator) 손실과 함께 픽셀 단위의 \ac{MSE} 손실을 증가시켰다.
+} \eng{
+\acp{GAN} were also used for unsupervised representation learning in Radford et al. \cite{Radford2015}.
+}\kor{
+
 }
 \eng{
 The idea of using \acp{GAN} to learn a mapping from one manifold to another is described by Li and Wand \cite{Li2016} for style transfer and Yeh et al. \cite{Yeh2016} for inpainting.
