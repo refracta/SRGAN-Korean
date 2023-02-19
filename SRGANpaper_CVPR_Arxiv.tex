@@ -390,7 +390,7 @@ The ill-posed nature of the underdetermined \ac{SR} problem is particularly pron
 %
 \begin{figure*}[ht]
 \begin{tabular}{cccc}
-쌍삼차 보간(bicubic) &  SRResNet  & SRGAN & 원본\\
+\eng{bicubic &  SRResNet  & SRGAN & original}\kor{쌍삼차 보간(bicubic) &  SRResNet  & SRGAN & 원본}\\
 (21.59dB/0.6423) &   (23.53dB/0.7832) & (21.15dB/0.6868) & \\
 \includegraphics[trim=0pt 0pt 0pt 0pt, clip, width=1.55in]{images/used/jpg/comic_SRF_4_bicubic} &
 \includegraphics[trim=0pt 0pt 0pt 0pt, clip, width=1.55in]{images/used/jpg/comic_SRResNet-MSE} &
@@ -631,7 +631,7 @@ MSE 기반 방법은 픽셀 공간에서 가능한 해의 픽셀 단위(pixel-wi
 \label{fig:manifold}
 \end{figure}
 
-\subsubsection{손실 함수}
+\subsubsection{\eng{Loss functions}\kor{손실 함수}}
 \eng{
 Pixel-wise loss functions such as \ac{MSE} struggle to handle the uncertainty inherent in recovering lost high-frequency details such as texture: minimizing \ac{MSE} encourages finding pixel-wise averages of plausible solutions which are typically overly-smooth and thus have poor perceptual quality \cite{Mathieu2015, Johnson16PercepLoss, dosovitskiy2016generating, bruna2016super}.
 }\kor{
