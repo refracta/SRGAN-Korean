@@ -302,7 +302,7 @@ Twitter\\
 \eng{
 Despite the breakthroughs in accuracy and speed of single image super-resolution using faster and deeper convolutional neural networks, one central problem remains largely unsolved: how do we recover the finer texture details when we super-resolve at large upscaling factors?
 }\kor{
-더 빠르고 깊은 합성곱 신경망을 사용하는 단일 이미지 초해상도화 기술에 대한 정확도와 속도의 획기적인 약진에도 불구하고, "큰 해상도 향상 인자를 사용해서 초해상도 이미지를 생성할 때, 어떻게 해야 고품질 질감의 세부 사항을 복구할 수 있는가?"라는 중요한 문제는 해결되지 않았다.
+더 빠르고 깊은 합성곱 신경망을 사용하는 단일 이미지 초해상도화 기술에 대한 정확도와 속도의 획기적인 약진에도 불구하고, ``큰 해상도 향상 인자를 사용해서 초해상도 이미지를 생성할 때, 어떻게 해야 고품질 질감의 세부 사항을 복구할 수 있는가?''라는 중요한 문제는 해결되지 않았다.
 }\eng{
 The behavior of optimization-based super-resolution methods is principally driven by the choice of the objective function. Recent work has largely focused on minimizing the mean squared reconstruction error.
 }\kor{
@@ -390,7 +390,7 @@ The ill-posed nature of the underdetermined \ac{SR} problem is particularly pron
 %
 \begin{figure*}[ht]
 \begin{tabular}{cccc}
-\eng{bicubic &  SRResNet  & SRGAN & original}\kor{쌍삼차 보간(bicubic) &  SRResNet  & SRGAN & 원본}\\
+\eng{bicubic &  SRResNet  & SRGAN & original \\}\kor{쌍삼차 보간(bicubic) &  SRResNet  & SRGAN & 원본 \\}
 (21.59dB/0.6423) &   (23.53dB/0.7832) & (21.15dB/0.6868) & \\
 \includegraphics[trim=0pt 0pt 0pt 0pt, clip, width=1.55in]{images/used/jpg/comic_SRF_4_bicubic} &
 \includegraphics[trim=0pt 0pt 0pt 0pt, clip, width=1.55in]{images/used/jpg/comic_SRResNet-MSE} &
@@ -410,7 +410,7 @@ From left to right: bicubic interpolation, deep residual network optimized for M
 \eng{
 The optimization target of supervised \ac{SR} algorithms is commonly the minimization of the \ac{MSE} between the recovered \ac{HR} image and the ground truth.
 }\kor{
-지도 \ac{초해상도화} 알고리듬의 최적화 목표는 보통 \ac{고해상도} 이미지와 정답 사이의 \ac{MSE}를 최소화하는 것이다.
+지도(supervised) \ac{초해상도화} 알고리듬의 최적화 목표는 보통 \ac{고해상도} 이미지와 정답 사이의 \ac{MSE}를 최소화하는 것이다.
 }\eng{
  This is convenient as minimizing \ac{MSE} also maximizes the \ac{PSNR}, which is a common measure used to evaluate and compare \ac{SR} algorithms \cite{Yang14benchmark}.
 }\kor{
@@ -658,7 +658,7 @@ Yu와 Porikli \cite{yu2016ultra}는 큰 해상도 향상 인자($8\times$)로 �
 } \eng{
 \acp{GAN} were also used for unsupervised representation learning in Radford et al. \cite{Radford2015}.
 }\kor{
-\acp{GAN}은 Radford 외. \cite{Radford2015}의 비지도 표현 학습에도 사용되었다.
+\acp{GAN}는 Radford 외. \cite{Radford2015}의 비지도 표현 학습에도 사용되었다.
 }
 \eng{
 The idea of using \acp{GAN} to learn a mapping from one manifold to another is described by Li and Wand \cite{Li2016} for style transfer and Yeh et al. \cite{Yeh2016} for inpainting.
@@ -671,15 +671,48 @@ Bruna et al. \cite{bruna2016super} minimize the squared error in the feature spa
 Bruna 외. \cite{bruna2016super}는 VGG19의 특징 공간과 산란 네트워크에서 제곱 오차를 최소화한다.
 }
 
-Dosovitskiy and Brox \cite{dosovitskiy2016generating} use loss functions based on Euclidean distances computed in the feature space of neural networks in combination with adversarial training. It is shown that the proposed loss allows visually superior image generation and can be used to solve the ill-posed inverse problem of decoding nonlinear feature representations.
-Similar to this work, Johnson et al. \cite{Johnson16PercepLoss} and Bruna et al. \cite{bruna2016super} propose the use of features extracted from a pre-trained VGG network instead of low-level pixel-wise error measures. Specifically the authors formulate a loss function based on the euclidean distance between feature maps extracted from the VGG19 \cite{simonyan2014very} network. Perceptually more convincing results were obtained for both super-resolution and artistic style-transfer \cite{Gatys2015nips,Gatys2016cvpr}. Recently, Li and Wand \cite{Li2016} also investigated the effect of comparing and blending patches in pixel or VGG feature space.
+\eng{
+Dosovitskiy and Brox \cite{dosovitskiy2016generating} use loss functions based on Euclidean distances computed in the feature space of neural networks in combination with adversarial training.
+}\kor{
+Dosovitskiy와 Brox \cite{dosovitskiy2016generating}는 신경망의 특징 공간에서 계산된 유클리드 거리에 기반한 손실 함수를 적대적 훈련과 함께 사용한다.
+} \eng{
+It is shown that the proposed loss allows visually superior image generation and can be used to solve the ill-posed inverse problem of decoding nonlinear feature representations.
+}\kor{
+제안된 손실은 시각적으로 우수한 이미지의 생성을 가능하게 하며, 비선형 특징 표현을 복호화하는 역 불량 조건 문제를 해결하는데 사용될 수 있음을 보여준다.
+}
+\eng{
+Similar to this work, Johnson et al. \cite{Johnson16PercepLoss} and Bruna et al. \cite{bruna2016super} propose the use of features extracted from a pre-trained VGG network instead of low-level pixel-wise error measures.
+}\kor{
+이 작업과 유사하게, 존슨 외. Johnson16PercepLoss와 브루나 등 bruna2016super는 낮은 수준의 픽셀 단위 오류 측정 대신 사전 훈련된 VGG 네트워크에서 추출된 기능의 사용을 제안한다.
+} \eng{
+Specifically the authors formulate a loss function based on the euclidean distance between feature maps extracted from the VGG19 \cite{simonyan2014very} network. Perceptually more convincing results were obtained for both super-resolution and artistic style-transfer \cite{Gatys2015nips,Gatys2016cvpr}.
+}\kor{
+특히 저자들은 VGG19 \cite{simonyan2014very} 네트워크로부터 추출된 특징 맵 사이의 유클리드 거리에 기반한 손실 함수를 만들었다. 그리고 초해상도화와 예술적 스타일 전송 \cite{Gatys2015nips,Gatys2016cvpr} 모두에서 지각적으로 더 사실적인 결과를 얻었다.
+} \eng{
+Recently, Li and Wand \cite{Li2016} also investigated the effect of comparing and blending patches in pixel or VGG feature space.
+}\kor{
+최근 Li와 Wand \cite{Li2016}는 픽셀 또는 VGG 특징 공간의 패치를 비교하고 혼합하는 효과에 대해서도 조사했다.
+}
 
-\subsection{Contribution}
+\subsection{기여}
+\eng{
 \acp{GAN} provide a powerful framework for generating plausible-looking natural images with high perceptual quality.
+}\kor{
+\acp{GAN}는 높은 지각 품질과 함께 사실적으로 보이는 자연 이미지를 생성하는 강력한 프레임워크를 제공한다.
+}
 %In the \ac{GAN} framework, two neural networks, a generator and a discriminator, are trained simultaneously with competing goals. The discriminator network is trained to distinguish natural and synthetically generated images, while the generator learns to generate images that are indistinguishable from natural images by the best discriminator.
+\eng{
 The \ac{GAN} procedure encourages the reconstructions to move towards regions of the search space with high probability of containing photo-realistic images and thus closer to the natural image manifold as shown in \figurename~\ref{fig:manifold}.
+}\kor{
+GAN 절차는 복원물이 실사 이미지를 포함할 확률이 높은 검색 공간의 영역 쪽으로 이동하도록 도와서 \figurename~\ref{fig:manifold}에서 보여지는 것처럼 자연 이미지 데이터 공간(manifold)에 가까워지게 한다.
+}
 
+\eng{
 In this paper we describe the first very deep \ac{ResNet} \cite{he2015deep,he2016identity} architecture using the concept of \acp{GAN} to form a perceptual loss function for photo-realistic \ac{SISR}. Our main contributions are:
+}\kor{
+
+본 논문에서는 \ac{단일 이미지 초해상도화}를 위한 지각적 손실 함수를 형성하기 위해 \acp{GAN}의 개념을 사용하는 최초의 \ac{ResNet} \cite{he2015deep,he2016identity} 아키텍처를 설명한다.
+}
 \begin{itemize}
 \item We set a new state of the art for image \ac{SR} with high upscaling factors ($4\times$) as measured by \ac{PSNR} and \ac{SSIM} with our 16 blocks deep \ac{ResNet} (SRResNet) optimized for \ac{MSE}. %Specifically, we employ the fast feature learning in \ac{LR} space \cite{Shi2016ESPCN,Johnson16PercepLoss} and batch-normalization \cite{Ioffe2015} to robustly train a network of 16 residual blocks for better accuracy.
 \item We propose SRGAN which is a \ac{GAN}-based network optimized for a new perceptual loss. Here we replace the \ac{MSE}-based content loss with a loss calculated on feature maps of the VGG network \cite{simonyan2014very}, which are more invariant to changes in pixel space \cite{Li2016}. %as illustrated in Figures 3 and 4 in Li and Wand .
