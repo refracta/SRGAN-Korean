@@ -19,7 +19,7 @@ jobs:
 
       - name: Build PDFs
         shell: pwsh
-        run: ".\build.ps1 \"C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\pdflatex.exe\""
+        run: ".\\build.ps1 \"C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\pdflatex.exe\""
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
