@@ -334,7 +334,7 @@ In this paper, we present SRGAN, a generative adversarial network (GAN) for imag
 }\eng{
  Our deep residual network is able to recover photo-realistic textures from heavily downsampled images on public benchmarks.
 }\kor{
-본 논문에서 제시하는 심층 잔류 신경망은 공개 벤치마크에서 심하게 다운샘플링된 이미지로부터 실사와 같은 질감을 복구해낼 수 있다.
+본 논문에서 제시하는 심층 잔류 신경망은 공개 벤치마크에서 심하게 다운샘플링된 이미지로부터 실사와 같은 질감을 복원해낼 수 있다.
 }\eng{
 An extensive mean-opinion-score (MOS) test shows hugely significant gains in perceptual quality using SRGAN.
 }\kor{
@@ -427,7 +427,7 @@ However, the ability of MSE (and PSNR) to capture perceptually relevant differen
 }\eng{
  The perceptual difference between the super-resolved and original image means that the recovered image is not photo-realistic as defined by Ferwerda \cite{Ferwerda2003}.
 }\kor{
-초해상도 (생성물)과 원본 이미지 사이의 지각적 차이는, 복구한 이미지는 Ferwerda \cite{Ferwerda2003}에서 정의된 것처럼 실사적이지 않다는 것이다.
+초해상도 (생성물)과 원본 이미지 사이의 지각적 차이는, 복원한 이미지는 Ferwerda \cite{Ferwerda2003}에서 정의된 것처럼 실사적이지 않다는 것이다.
 }
 
 
@@ -456,7 +456,7 @@ Recent overview articles on image \ac{SR} include Nasrollahi and Moeslund \cite{
 }\eng{
 Here we will focus on \ac{SISR} and will not further discuss approaches that recover \ac{HR} images from multiple images \cite{Borman1998aSurvey,Farsiu2004}.
 }\kor{
-본 논문에서는 \ac{단일 이미지 초해상도화}에 초점을 맞추고, 고해상도 \ac{고해상도} 이미지들을 여러 이미지로부터 복구하는 \cite{Borman1998aSurvey,Farsiu2004} 접근에 대해서는 더 논의하지 않을 것이다.
+본 논문에서는 \ac{단일 이미지 초해상도화}에 초점을 맞추고, 고해상도 \ac{고해상도} 이미지들을 여러 이미지로부터 복원하는 \cite{Borman1998aSurvey,Farsiu2004} 접근에 대해서는 더 논의하지 않을 것이다.
 }
 
 
@@ -569,7 +569,7 @@ Kim 외. \cite{kim2016deeply}는 \ac{DRCN}과 함께, 적은 수의 모델 매�
 \eng{
 Of particular relevance for our paper are the works by Johnson et al. \cite{Johnson16PercepLoss} and Bruna et al. \cite{bruna2016super}, who rely on a loss function closer to perceptual similarity to recover visually more convincing \ac{HR} images.
 }\kor{
-특히 본 논문과 관련성이 있는 것은 시각적으로 더 실감나는 \ac{고해상도} 이미지를 복구하기 위해, 지각적 유사성에 더 가까운 손실 함수에 의존하는 Johnson 외. \cite{Johnson16PercepLoss}와 Bruna et al. \cite{bruna2016super}의 작업이다.
+특히 본 논문과 관련성이 있는 것은 시각적으로 더 실감나는 \ac{고해상도} 이미지를 복원하기 위해, 지각적 유사성에 더 가까운 손실 함수에 의존하는 Johnson 외. \cite{Johnson16PercepLoss}와 Bruna et al. \cite{bruna2016super}의 작업이다.
 }
 
 
@@ -634,7 +634,7 @@ MSE 기반 방법은 픽셀 공간에서 가능한 해의 픽셀 단위(pixel-wi
 \eng{
 Pixel-wise loss functions such as \ac{MSE} struggle to handle the uncertainty inherent in recovering lost high-frequency details such as texture: minimizing \ac{MSE} encourages finding pixel-wise averages of plausible solutions which are typically overly-smooth and thus have poor perceptual quality \cite{Mathieu2015, Johnson16PercepLoss, dosovitskiy2016generating, bruna2016super}.
 }\kor{
-\ac{MSE}와 같은 픽셀 단위 손실 함수는 질감과 같은 손실된 고주파 세부 정보를 복구할 때, 내재된 불확실성을 처리하기 위해 노력한다: \ac{MSE}를 최소화하는 것은 일반적으로 지나치게 매끄러워서, 나쁜 지각적 품질을 가지는 그럴듯한 해를 찾는 것을 촉진한다\cite{Mathieu2015, Johnson16PercepLoss, dosovitskiy2016generating, bruna2016super}.
+\ac{MSE}와 같은 픽셀 단위 손실 함수는 질감과 같은 손실된 고주파 세부 정보를 복원할 때, 내재된 불확실성을 처리하기 위해 노력한다: \ac{MSE}를 최소화하는 것은 일반적으로 지나치게 매끄러워서, 나쁜 지각적 품질을 가지는 그럴듯한 해를 찾는 것을 촉진한다\cite{Mathieu2015, Johnson16PercepLoss, dosovitskiy2016generating, bruna2016super}.
 }
 \eng{
 Reconstructions of varying perceptual quality are exemplified with corresponding \ac{PSNR} in \figurename~\ref{fig:exampleIntro}.
@@ -682,7 +682,7 @@ It is shown that the proposed loss allows visually superior image generation and
 \eng{
 Similar to this work, Johnson et al. \cite{Johnson16PercepLoss} and Bruna et al. \cite{bruna2016super} propose the use of features extracted from a pre-trained VGG network instead of low-level pixel-wise error measures.
 }\kor{
-이 작업과 유사하게, Johnson 외. \cite{Johnson16PercepLoss}와 Bruna 외. \cite{bruna2016super}는 저수준의 픽셀 단위 에러 측정 대신 사전 훈련된 VGG 네트워크로부터 추출된 특징을 사용하는 것을 제안한다.
+이 작업과 유사하게, Johnson 외. \cite{Johnson16PercepLoss}와 Bruna 외. \cite{bruna2016super}는 저수준의 픽셀 단위 오류 측정 대신 사전 훈련된 VGG 네트워크로부터 추출된 특징을 사용하는 것을 제안한다.
 } \eng{
 Specifically the authors formulate a loss function based on the euclidean distance between feature maps extracted from the VGG19 \cite{simonyan2014very} network. Perceptually more convincing results were obtained for both super-resolution and artistic style-transfer \cite{Gatys2015nips,Gatys2016cvpr}.
 }\kor{
@@ -693,7 +693,7 @@ Recently, Li and Wand \cite{Li2016} also investigated the effect of comparing an
 최근 Li와 Wand \cite{Li2016}는 픽셀 또는 VGG 특징 공간의 패치를 비교하고 혼합하는 효과에 대해서도 조사했다.
 }
 
-\subsection{기여}
+\subsection{\eng{Contribution}\kor{기여}}
 \eng{
 \acp{GAN} provide a powerful framework for generating plausible-looking natural images with high perceptual quality.
 }\kor{
@@ -709,7 +709,7 @@ GAN 절차는 복원물이 실사 이미지를 포함할 확률이 높은 검색
 \eng{
 In this paper we describe the first very deep \ac{ResNet} \cite{he2015deep,he2016identity} architecture using the concept of \acp{GAN} to form a perceptual loss function for photo-realistic \ac{SISR}. Our main contributions are:
 }\kor{
-본 논문에서는 \ac{단일 이미지 초해상도화}를 위한 지각적 손실 함수를 형성하기 위해 \acp{GAN}의 개념을 사용하는 최초의 \ac{ResNet} \cite{he2015deep,he2016identity} 구조를 설명한다.
+본 논문에서는 \ac{단일 이미지 초해상도화}를 위한 지각적 손실 함수를 형성하기 위해 \acp{GAN}의 개념을 사용하는 최초의 고심층(very deep) \ac{ResNet} \cite{he2015deep,he2016identity} 구조를 설명한다. 주요한 기여는 다음과 같다:
 }
 \begin{itemize}
 \item \eng{
@@ -748,7 +748,7 @@ The paper concludes with a discussion in Section \ref{sec:discussion} and conclu
 본 논문은 토론 부분 \ref{sec:discussion}과 결언 부분 \ref{sec:conclusion}으로 끝맺는다.
 }
 
-\section{방법}
+\section{\eng{Method}\kor{방법}}
 \label{sec:method}
 
 \begin{figure*}[ht!]
@@ -811,15 +811,19 @@ For training images $I^{HR}_n$ , $n = 1,\dots,N$ with corresponding $I^{LR}_n$ ,
 \eng{
 In this work we will specifically design a perceptual loss $l^{SR}$ as a weighted combination of several loss components that model distinct desirable characteristics of the recovered \ac{SR} image.
 }\kor{
-본 연구에서는 복구된 \ac{초해상도화} 이미지의 명확하고 바람직한 특성을 만들어내는 여러 손실 구성 요소의 가중 조합(weighted combination)으로 지각 손실 $l^{SR}$을 구체적으로 설계할 것이다.
+본 연구에서는 복원된 \ac{초해상도화} 이미지의 명확하고 바람직한 특성을 만들어내는 여러 손실 구성 요소의 가중 조합(weighted combination)으로 지각 손실 $l^{SR}$을 구체적으로 설계할 것이다.
 } \eng{
 The individual loss functions are described in more detail in Section \ref{sec:losses}.
 }\kor{
 개별 손실 함수의 더 자세한 세부 사항은 \ref{sec:losses}에서 설명된다.
 }
 
-\subsection{Adversarial network architecture}
+\subsection{\eng{Adversarial network architecture}\kor{적대적 네트워크 구조}}
+\eng{
 Following Goodfellow et al. \cite{Goodfellow14GAN} we further define a discriminator network $D_{\theta_D}$ which we optimize in an alternating manner along with $G_{\theta_G}$ to solve the adversarial min-max problem:
+}\kor{
+Goodfellow 외. \cite{Goodfellow14GAN}에 이어, 교대로 최적화하기 위해 적대적 최대-최소 문제를 해결하기 위한 $G_{\theta_G}$와 함께 판별기(discriminator) 네트워크 $D_{\theta_D}$를 추가적으로 정의한다.
+}
 \begin{equation}
 \label{eq:minmax}
 \begin{split}
@@ -827,14 +831,74 @@ Following Goodfellow et al. \cite{Goodfellow14GAN} we further define a discrimin
 & \mathbb{E}_{I^{LR}\sim p_G(I^{LR})} [ \log (1-D_{\theta_D}(G_{\theta_G}(I^{LR})) ]
 \end{split}
 \end{equation}
+\eng{
 The general idea behind this formulation is that it allows one to train a generative model $G$ with the goal of fooling a differentiable discriminator $D$ that is trained to distinguish super-resolved images from real images.
-With this approach our generator can learn to create solutions that are highly similar to real images and thus difficult to classify by $D$. This encourages perceptually superior solutions residing in the subspace, the manifold, of natural images. This is in contrast to \ac{SR} solutions obtained by minimizing pixel-wise error measurements, such as the \ac{MSE}.
+}\kor{
+이 공식 뒤에 있는 일반적인 아이디어는 실제 이미지로부터 초해상화된 이미지를 구별하도록 훈련된 구별 능력을 갖춘 판독기(differentiable discriminator) $D$를 속이는 것을 목표로 생성 모델 $G$를 훈련할 수 있다는 것이다.
+}
+\eng{
+With this approach our generator can learn to create solutions that are highly similar to real images and thus difficult to classify by $D$.
+}\kor{
+이 접근법을 통한 본 논문의 생성기(generator)는 실제 이미지와 매우 유사해서 $D$에 의해 분류되기 어려운 해를 만드는 방법을 배울 수 있다.
+} \eng{
+This encourages perceptually superior solutions residing in the subspace, the manifold, of natural images.
+}\kor{
+이는 자연 이미지의 하위 공간인 데이터 공간(manifold)에 위치한 지각적으로 우수한 해를 장려한다.
+} \eng{
+This is in contrast to \ac{SR} solutions obtained by minimizing pixel-wise error measurements, such as the \ac{MSE}.
+}\kor{
+이것은 \ac{MSE}와 같이, 픽셀 단위 오류 측정을 최소화하는 것으로 얻어진 \ac{초해상도화} 해들과는 대조적이다.
+}
 
-At the core of our very deep generator network $G$, which is illustrated in \figurename~\ref{fig:generator} are $B$ residual blocks with identical layout. Inspired by Johnson et al. \cite{Johnson16PercepLoss} we employ the block layout proposed by Gross and Wilber \cite{gross2016}. Specifically, we use two convolutional layers with small $3\times3$ kernels and 64 feature maps followed by batch-normalization layers \cite{Ioffe2015} and ParametricReLU \cite{He2015relu} as the activation function.
+\eng{
+At the core of our very deep generator network $G$, which is illustrated in \figurename~\ref{fig:generator} are $B$ residual blocks with identical layout. Inspired by Johnson et al.
+}\kor{
+\figurename~\ref{fig:generator}에 설명된 고심층(very deep) 생성기 네트워크 $G$의 핵심에는 동일한 설계(layout)를 가진 잔차 블록(residual blocks)가 있다. 이는 Johnson 외. \cite{Johnson16PercepLoss}에서 영감을 받았다.
+} \eng{
+we employ the block layout proposed by Gross and Wilber \cite{gross2016}.
+}\kor{
+본 논문에서는 Gross와 Wilber \cite{gross2016}가 제안한 블록 설계를 사용했다.
+} \eng{
+Specifically, we use two convolutional layers with small $3\times3$ kernels and 64 feature maps followed by batch-normalization layers \cite{Ioffe2015} and ParametricReLU \cite{He2015relu} as the activation function.
+}\kor{
+구체적으로, 작은 $3\times3$ 커널과 64개의 특징 맵과 함께 두개의 합성곱 레이어를 사용한 후 배치 정규화 레이어 \cite{Ioffe2015}와 ParametricReLU \cite{He2015relu}를 활성화 함수로 사용했다.
+}
+\eng{
 We increase the resolution of the input image with two trained sub-pixel convolution layers as proposed by Shi et al. \cite{Shi2016ESPCN}.
+}\kor{
+Shi 외. \cite{Shi2016ESPCN}가 제안한 것처럼 입력 이미지의 해상도를 두개의 훈련된 하위 픽셀(sub-pixel) 합성곱 레이어를 통해 증가시킨다.
+}
 
-To discriminate real \ac{HR} images from generated \ac{SR} samples we train a discriminator network. The architecture is shown in \figurename~\ref{fig:generator}.
-We follow the architectural guidelines summarized by Radford et al. \cite{Radford2015} and use LeakyReLU activation ($\alpha=0.2$) and avoid max-pooling throughout the network. The discriminator network is trained to solve the maximization problem in Equation \ref{eq:minmax}. It contains eight convolutional layers with an increasing number of $3\times3$ filter kernels, increasing by a factor of 2 from 64 to 512 kernels as in the VGG network \cite{simonyan2014very}. Strided convolutions are used to reduce the image resolution each time the number of features is doubled. The resulting 512 feature maps are followed by two dense layers and a final sigmoid activation function to obtain a probability for sample classification.
+\eng{
+To discriminate real \ac{HR} images from generated \ac{SR} samples we train a discriminator network.
+}\kor{
+실제 \ac{고해상도} 이미지를 생성된 고해상도화 샘플과 구별하기 위해 판별기 네트워크를 훈련시킨다.
+} \eng{
+The architecture is shown in \figurename~\ref{fig:generator}.
+}\kor{
+이 구조는 \figurename~\ref{fig:generator}에서 보여진다.
+}
+\eng{
+We follow the architectural guidelines summarized by Radford et al. \cite{Radford2015} and use LeakyReLU activation ($\alpha=0.2$) and avoid max-pooling throughout the network.
+}\kor{
+본 논문에서는 Radford 외. \cite{Radford2015}가 요약한 구조 지침을 따르며 LeakyReLU 활성화 ($\alpha=0.2$)를 사용하고, 네트워크 전체에서 최대 풀링(max-pooling)을 피한다.
+} \eng{
+The discriminator network is trained to solve the maximization problem in Equation \ref{eq:minmax}.
+}\kor{
+판별기(discriminator) 네트워크는 \ref{eq:minmax} 방정식에서의 최대화 문제를 해결하기 위해 훈련된다.
+} \eng{
+It contains eight convolutional layers with an increasing number of $3\times3$ filter kernels, increasing by a factor of 2 from 64 to 512 kernels as in the VGG network \cite{simonyan2014very}.
+}\kor{
+VGG 네트워크 \cite{simonyan2014very}에서와 같이 64개에서 512개로 2배씩 증가하는 $3\times3$ 필터 커널이 있는 8개의 합성곱 레이어를 포함한다.
+} \eng{
+Strided convolutions are used to reduce the image resolution each time the number of features is doubled.
+}\kor{
+스트라이드 합성곱(strided convolutions)은 특징의 개수가 두배가 될 때 마다 이미지의 해상도를 줄이기 위해 사용되었다.
+} \eng{
+The resulting 512 feature maps are followed by two dense layers and a final sigmoid activation function to obtain a probability for sample classification.
+}\kor{
+512개의 특징 맵의 결과 뒤에는 샘플 분류에 대한 확률을 얻기 위해 두 개의 밀집 레이어(dense layer)와 최종 시그모이드(sigmoid) 활성화 함수가 뒤따른다.
+}
 
 \subsection{Perceptual loss function}
 \label{sec:losses}
