@@ -532,7 +532,7 @@ Kim과 Kwon \cite{Kim10kernelregression}에서는 커널 능선 회귀(kernel ri
 \eng{
 The regression problem can also be solved with Gaussian process regression \cite{he2011single}, trees \cite{salvador2015naive} or Random Forests \cite{schulter2015fast}.
 }\kor{
-회귀 문제는 가우시안 프로세스 회귀(Gaussian process regression) \cite{he2011single}, 트리 \cite{salvador2015naive} 또는 랜덤 포레스트(Random Forests) \cite{schulter2015fast}의 방법들로 해결될 수 있다.
+회귀 문제는 가우시안 프로세스 회귀(Gaussian process regression) \cite{he2011single}, 트리 \cite{salvador2015naive} 또는 랜덤 포레스트(Random forests) \cite{schulter2015fast}의 방법들로 해결될 수 있다.
 }
 \eng{
 In Dai et al. \cite{dai2015jointly} a multitude of patch-specific regressors is learned and the most appropriate regressors selected during testing.
@@ -902,25 +902,63 @@ The resulting 512 feature maps are followed by two dense layers and a final sigm
 
 \subsection{\eng{Perceptual loss function}\kor{지각적 손실 함수}}
 \label{sec:losses}
+\eng{
 The definition of our perceptual loss function $l^{SR}$  is critical for the performance of our generator network.
+}\kor{
+지각 손실 함수 $l^{SR}$의 정의는 생성기(generator) 네트워크의 성능에 중요하다.
+} \eng{
 While $l^{SR}$ is commonly modeled based on the \ac{MSE}  \cite{dong2016image,Shi2016ESPCN}, we improve on Johnson et al. \cite{Johnson16PercepLoss} and Bruna et al. \cite{bruna2016super} and design a loss function that assesses a solution with respect to perceptually relevant characteristics.
+}\kor{
+$l^{SR}$은 일반적으로 \ac{MSE} \cite{dong2016image,Shi2016ESPCN}을 기반으로 모델링되지만, 본 논문은 Johnson 외. \cite{Johnson16PercepLoss}와 Bruna 외. 를 개선시키고 지각적으로 관련된 특성에 관하여 해를 평가하는 손실 함수를 설계한다.
+} \eng{
 We formulate the perceptual loss as the weighted sum of a content loss ($l^{SR}_\textrm{X}$) and an adversarial loss component as:
+}\kor{
+본 논문에서는 지각 손실을 내용 손실($l^{SR}_\textrm{X}$)과 적대적 손실 구성 요소의 가중 합으로 공식화한다:
+}
 
 \begin{equation}
-l^{SR} = \underbrace{\underbrace{l^{SR}_\textrm{X}}_{\text{content loss}} + \underbrace{10^{-3} l^{SR}_{Gen}}_{\text{adversarial loss}}}_{\text{perceptual loss (for VGG based content losses)}}
+l^{SR} = \underbrace{\underbrace{l^{SR}_\textrm{X}}_{\text{\eng{content loss}\kor{내용 손실}}} + \underbrace{10^{-3} l^{SR}_{Gen}}_{\text{\eng{adversarial loss}\kor{적대적 손실}}}}_{\text{\eng{perceptual loss (for VGG based content losses)}\kor{지각적 손실 (VGG 기반 내용 손실에 대한)}}}
 \end{equation}
+\eng{
 In the following we describe possible choices for the content loss $l^{SR}_\textrm{X}$ and the adversarial loss $l^{SR}_\textrm{Gen}$.
+}\kor{
+다음에서는, 내용 손실 $l^{SR}_\textrm{X}$과 적대적 손실 $l^{SR}_\textrm{Gen}$에 대해 가능한 선택을 설명한다.
+}
 
-\subsubsection{Content loss}
+\subsubsection{\eng{Content loss}\kor{내용 손실}}
 
+\eng{
 The pixel-wise \textbf{\ac{MSE} loss} is calculated as:
+}\kor{
+픽셀 단위 \textbf{\ac{MSE} 손실}은 다음과 같이 계산된다:
+}
 \begin{equation}
 l^{SR}_{MSE} = \frac{1}{r^2WH} \sum_{x=1}^{rW} \sum_{y=1}^{rH} (I^{HR}_{x,y} - G_{\theta_G}(I^{LR})_{x,y})^2
 \end{equation}
-This is the most widely used optimization target for image \ac{SR} on which many state-of-the-art approaches rely \cite{dong2016image,Shi2016ESPCN}. However, while achieving particularly high \ac{PSNR}, solutions of \ac{MSE} optimization problems often lack high-frequency content which results in perceptually unsatisfying solutions with overly smooth textures (\cf \figurename~\ref{fig:exampleIntro}).
+\eng{
+This is the most widely used optimization target for image \ac{SR} on which many state-of-the-art approaches rely \cite{dong2016image,Shi2016ESPCN}.
+}\kor{
+이는 \cite{dong2016image,Shi2016ESPCN}에 의존하는 많은 최첨단 접근법들이 이미지 \ac{초해상도화}에 가장 널리 사용하는 최적화 대상이다.
+} \eng{
+However, while achieving particularly high \ac{PSNR}, solutions of \ac{MSE} optimization problems often lack high-frequency content which results in perceptually unsatisfying solutions with overly smooth textures (\cf \figurename~\ref{fig:exampleIntro}).
+}\kor{
+하지만, 특히 높은 \ac{PSNR}을 달성하는 동안, \ac{MSE} 최적화 문제의 해는 종종 고주파 내용이 부족해서 과하게 매끄러운 질감(\cf \figurename~\ref{fig:exampleIntro})으로 지각적으로 만족스럽지 못한 해를 초래한다.
+}
 
-Instead of relying on pixel-wise losses we build on the ideas of Gatys et al. \cite{Gatys2015nips}, Bruna et al. \cite{bruna2016super} and Johnson et al. \cite{Johnson16PercepLoss} and use a loss function that is closer to perceptual similarity. We define the \textbf{VGG loss} based on the ReLU activation layers of the pre-trained 19 layer VGG network described in Simonyan and Zisserman \cite{simonyan2014very}. With $\phi_{i,j}$ we indicate the feature map obtained by the j-th convolution (after activation) before the i-th maxpooling layer within the VGG19 network, which we consider given.
+\eng{
+Instead of relying on pixel-wise losses we build on the ideas of Gatys et al. \cite{Gatys2015nips}, Bruna et al. \cite{bruna2016super} and Johnson et al. \cite{Johnson16PercepLoss} and use a loss function that is closer to perceptual similarity. We define the \textbf{VGG loss} based on the ReLU activation layers of the pre-trained 19 layer VGG network described in Simonyan and Zisserman \cite{simonyan2014very}.
+}\kor{
+
+} \eng{
+With $\phi_{i,j}$ we indicate the feature map obtained by the j-th convolution (after activation) before the i-th maxpooling layer within the VGG19 network, which we consider given.
+}\kor{
+
+}
+\eng{
 We then define the VGG loss as the euclidean distance between the feature representations of a reconstructed image $G_{\theta_G}(I^{LR})$ and the reference image $I^{HR}$:
+}\kor{
+
+}
 \begin{equation}
 \begin{split}
 l^{SR}_{VGG/i.j} =
@@ -930,9 +968,13 @@ l^{SR}_{VGG/i.j} =
 \label{eq:vgg}
 \end{equation}
 
+\eng{
 Here $W_{i,j}$ and $H_{i,j}$ describe the dimensions of the respective feature maps within the VGG network.
+}\kor{
 
-\subsubsection{Adversarial loss}
+}
+
+\subsubsection{\eng{Adversarial loss}\kor{적대적 손실}}
 In addition to the content losses described so far, we also add the generative component of our \ac{GAN} to the perceptual loss. This encourages our network to favor solutions that reside on the manifold of natural images, by trying to fool the discriminator network. The generative loss $l^{SR}_{Gen}$ is defined based on the probabilities of the discriminator $D_{\theta_D}(G_{\theta_G}(I^{LR}))$ over all training samples as:
 \begin{equation}
 l^{SR}_{Gen} = \sum_{n=1}^{N} -\log D_{\theta_D}(G_{\theta_G}(I^{LR}))
