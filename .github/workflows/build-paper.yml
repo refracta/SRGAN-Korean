@@ -3,28 +3,13 @@ on: [push, pull_request]
 jobs:
   launch_test:
     name: Build papers
-    runs-on: windows-2022
+    runs-on: ubuntu-22.04
     steps:
       - name: Get latest code
         uses: actions/checkout@v3
 
-      - uses: actions/cache@v3
-        id: miktex-cache
-        with:
-          path: C:\Program Files\MiKTeX\lpr
-          key: ${{ runner.os }}-230223
-      - if: steps.miktex-cache.outputs.cache-hit != 'true'
-        name: Download MiKTeX
-        run: Invoke-WebRequest -Uri "https://miktex.org/download/win/miktexsetup-x64.zip" -OutFile "miktexsetup-x64.zip" && Expand-Archive miktexsetup-x64.zip && cd miktexsetup-x64 && ./miktexsetup_standalone.exe --verbose --remote-package-repository=https://ctan.math.illinois.edu/systems/win32/miktex/tm/packages/ --local-package-repository="C:\Program Files\MiKTeX\lpr" --package-set=complete download
-#        run: Invoke-WebRequest -Uri "https://miktex.org/download/win/miktexsetup-x64.zip" -OutFile "miktexsetup-x64.zip" && Expand-Archive miktexsetup-x64.zip && cd miktexsetup-x64 && ./miktexsetup_standalone.exe --verbose --remote-package-repository=https://ctan.math.illinois.edu/systems/win32/miktex/tm/packages/ --local-package-repository="C:\Program Files\MiKTeX\lpr" --package-set=complete download && ./miktexsetup_standalone.exe --verbose --local-package-repository="C:\Program Files\MiKTeX\lpr" --use-registry=no --user-data="C:\Program Files\MiKTeX\ud" --user-config="C:\Program Files\MiKTeX\uc" --package-set=complete install && cd ..
-
-      - name: Install MiKTeX
-        shell: pwsh
-        run:  Remove-Item .\miktexsetup-x64\ -Force -Recurse -ErrorAction Ignore && Invoke-WebRequest -Uri "https://miktex.org/download/win/miktexsetup-x64.zip" -OutFile "miktexsetup-x64.zip" && Expand-Archive miktexsetup-x64.zip && cd miktexsetup-x64 && ./miktexsetup_standalone.exe --verbose --local-package-repository="C:\Program Files\MiKTeX\lpr" --package-set=complete install && cd ..
-
       - name: Build PDFs
-        shell: pwsh
-        run: ".\\build.ps1 \"C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\pdflatex.exe\""
+        run: sh build.sh
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
