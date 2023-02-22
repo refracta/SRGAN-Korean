@@ -13,7 +13,7 @@ runBuild(){
     local texFile=${3}
     local finalName=${4}
     local currentPath=$(pwd)
-    docker run -ti \
+    docker run -i \
       -v miktex:/miktex/.miktex \
       -v `pwd`:/miktex/work \
       miktex/miktex \
