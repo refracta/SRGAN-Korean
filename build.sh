@@ -24,6 +24,7 @@ runBuild(){
 }
 
 runBuild out SRGANpaper_CVPR_Arxiv SRGANpaper_CVPR_Arxiv SRGAN-Korean
+runBuild out SRGANpaper_CVPR_Arxiv SRGANpaper_CVPR_Arxiv SRGAN-Korean
 runBuild out SRGANpaper_CVPR_Arxiv SRGANpaper_CVPR_Arxiv-Korean-Summary SRGAN-Korean-Summary
 runBuild out SRGANpaper_CVPR_Arxiv SRGANpaper_CVPR_Arxiv-EngKor SRGAN-EngKor
 runBuild out SRGANpaper_CVPR_Arxiv SRGANpaper_CVPR_Arxiv-EngKor-Summary.tex SRGAN-EngKor-Summary
