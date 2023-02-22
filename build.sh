@@ -3,9 +3,9 @@
 cp SRGANpaper_CVPR_Arxiv.tex SRGANpaper_CVPR_Arxiv-Korean-Summary.tex
 sed -i 's/\\newcommand{\\summary}\[1\]{}/\\newcommand{\\summary}[1]{{\\color{blue}\\textit{요약: #1}}}/g' SRGANpaper_CVPR_Arxiv-Korean-Summary.tex
 cp SRGANpaper_CVPR_Arxiv.tex SRGANpaper_CVPR_Arxiv-EngKor.tex
-sed -i 's/\\newcommand{\\eng\}\[1\]{}/\\newcommand{\eng}[1]{\n\n#1\n\n}/g' SRGANpaper_CVPR_Arxiv-EngKor.tex
+sed -i 's/\\newcommand{\\eng\}\[1\]{}/\\newcommand{\\eng}[1]{\n\n#1\n\n}/g' SRGANpaper_CVPR_Arxiv-EngKor.tex
 cp SRGANpaper_CVPR_Arxiv-Korean-Summary.tex SRGANpaper_CVPR_Arxiv-EngKor-Summary.tex
-sed -i 's/\\newcommand{\\eng\}\[1\]{}/\\newcommand{\eng}[1]{\n\n#1\n\n}/g' SRGANpaper_CVPR_Arxiv-EngKor-Summary.tex
+sed -i 's/\\newcommand{\\eng\}\[1\]{}/\\newcommand{\\eng}[1]{\n\n#1\n\n}/g' SRGANpaper_CVPR_Arxiv-EngKor-Summary.tex
 
 runBuild(){
     local outputDirectory=${1}
