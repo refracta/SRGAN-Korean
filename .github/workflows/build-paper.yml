@@ -13,7 +13,7 @@ jobs:
         with:
           path: C:\Program Files\MiKTeX
           key: ${{ runner.os }}-230222
-      - if: steps.npm-cache.outputs.cache-hit != 'true'
+      - if: steps.miktex-cache.outputs.cache-hit != 'true'
         name: Install MiKTeX
         run: Invoke-WebRequest -Uri "https://miktex.org/download/win/miktexsetup-x64.zip" -OutFile "miktexsetup-x64.zip" && Expand-Archive miktexsetup-x64.zip && cd miktexsetup-x64 && ./miktexsetup_standalone.exe --verbose --remote-package-repository=https://ctan.math.illinois.edu/systems/win32/miktex/tm/packages/ --local-package-repository="C:\Program Files\MiKTeX\lpr" --package-set=complete download && ./miktexsetup_standalone.exe --verbose --local-package-repository="C:\Program Files\MiKTeX\lpr" --package-set=complete install && cd ..
 
