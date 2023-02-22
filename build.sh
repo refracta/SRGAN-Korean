@@ -7,7 +7,7 @@ sed -i 's/\\newcommand{\\eng\}\[1\]{}/\\newcommand{\eng}[1]{\n\n#1\n\n}/g' SRGAN
 cp SRGANpaper_CVPR_Arxiv-Korean-Summary.tex SRGANpaper_CVPR_Arxiv-EngKor-Summary.tex
 sed -i 's/\\newcommand{\\eng\}\[1\]{}/\\newcommand{\eng}[1]{\n\n#1\n\n}/g' SRGANpaper_CVPR_Arxiv-EngKor-Summary.tex
 
-function runBuild(){
+runBuild(){
     local outputDirectory=${1}
     local jobname=${2}
     local texFile=${3}
@@ -17,10 +17,10 @@ function runBuild(){
       -v miktex:/miktex/.miktex \
       -v `pwd`:/miktex/work \
       miktex/miktex \
-      pdflatex -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -output-directory=$outputDirectoryt -aux-directory=auxil -jobname=$jobname texFile
+      pdflatex -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -output-directory=$outputDirectory -aux-directory=auxil -jobname=$jobname $texFile
     cd $outputDirectory
-    mv $jobname.pdf $finalName.pdf -Force
-    cd currentPath
+    mv $jobname.pdf $finalName.pdf
+    cd $currentPath
 }
 
 runBuild out SRGANpaper_CVPR_Arxiv SRGANpaper_CVPR_Arxiv SRGAN-Korean
