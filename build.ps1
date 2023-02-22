@@ -1,4 +1,4 @@
-$pdflatex = If ($args.Length -Eq 0) {"pdflatex"} Else {$args[0]}
+$pdflatex = If ($args.Length -Eq 0) {"pdflatex"} Else {"& `"$args`""}
 $currentPath = pwd
 function Run-Build($OutputDirectory, $JobName, $TeXFile, $FinalName){
     iex $($pdflatex + " -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -output-directory=$OutputDirectory -aux-directory=auxil -jobname=`"$JobName`" $TeXFile")
