@@ -19,8 +19,7 @@ runBuild(){
       miktex/miktex \
       pdflatex -file-line-error -interaction=nonstopmode -synctex=1 -output-format=pdf -output-directory=$outputDirectory -aux-directory=auxil -jobname=$jobname $texFile
     cd $outputDirectory
-    chmod -R 777 ./
-    mv $jobname.pdf $finalName.pdf
+    sudo mv $jobname.pdf $finalName.pdf
     cd $currentPath
 }
 
