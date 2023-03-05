@@ -952,18 +952,22 @@ However, while achieving particularly high \ac{PSNR}, solutions of \ac{MSE} opti
 }
 
 \eng{
-Instead of relying on pixel-wise losses we build on the ideas of Gatys et al. \cite{Gatys2015nips}, Bruna et al. \cite{bruna2016super} and Johnson et al. \cite{Johnson16PercepLoss} and use a loss function that is closer to perceptual similarity. We define the \textbf{VGG loss} based on the ReLU activation layers of the pre-trained 19 layer VGG network described in Simonyan and Zisserman \cite{simonyan2014very}.
+Instead of relying on pixel-wise losses we build on the ideas of Gatys et al. \cite{Gatys2015nips}, Bruna et al. \cite{bruna2016super} and Johnson et al. \cite{Johnson16PercepLoss} and use a loss function that is closer to perceptual similarity.
 }\kor{
-
+픽셀 단위 손실에 의존하는 대신, Gatys 외. \cite{Gatys2015nips}, Bruna 외. \cite{bruna2016super} 그리고 Johnson 외. \cite{Johnson16PercepLoss}의 아이디어를 기반으로, 지각적 유사성에 더 가까운 손실 함수를 사용한다.
 } \eng{
+We define the \textbf{VGG loss} based on the ReLU activation layers of the pre-trained 19 layer VGG network described in Simonyan and Zisserman \cite{simonyan2014very}.
+}\kor{
+본 논문에서는 Simonyan과 Zisserman \cite{simonyan2014very}에서 기술한 사전 훈련된 19 레이어 VGG 네트워크의 ReLU 활성화 레이어에 기반한 \textbf{VGG 손실}을 정의한다.
+}\eng{
 With $\phi_{i,j}$ we indicate the feature map obtained by the j-th convolution (after activation) before the i-th maxpooling layer within the VGG19 network, which we consider given.
 }\kor{
-
+$\phi_{i,j}$는 VGG19 네트워크에서 i번째 최대 풀링 레이어 이전의 j번째 합성곱(활성화 이후)에서 얻어진 특징 맵(feature map)을 나타내며, 이는 본 논문에서 주어진 것으로 간주한다.
 }
 \eng{
 We then define the VGG loss as the euclidean distance between the feature representations of a reconstructed image $G_{\theta_G}(I^{LR})$ and the reference image $I^{HR}$:
 }\kor{
-
+그 다음, VGG 손실을 재구성된 이미지 $G_{\theta_G}(I^{LR})$의 특징 표현과 참조 이미지 $I^{HR}$ 사이의 유클리드 거리로 정의한다:
 }
 \begin{equation}
 \begin{split}
@@ -977,34 +981,121 @@ l^{SR}_{VGG/i.j} =
 \eng{
 Here $W_{i,j}$ and $H_{i,j}$ describe the dimensions of the respective feature maps within the VGG network.
 }\kor{
-
+여기서 $W_{i,j}$와 $H_{i,j}$는 VGG 네트워크 내에서 해당하는 특징 맵의 크기를 나타낸다.
 }
 
 \subsubsection{\eng{Adversarial loss}\kor{적대적 손실}}
-In addition to the content losses described so far, we also add the generative component of our \ac{GAN} to the perceptual loss. This encourages our network to favor solutions that reside on the manifold of natural images, by trying to fool the discriminator network. The generative loss $l^{SR}_{Gen}$ is defined based on the probabilities of the discriminator $D_{\theta_D}(G_{\theta_G}(I^{LR}))$ over all training samples as:
+\eng{
+In addition to the content losses described so far, we also add the generative component of our \ac{GAN} to the perceptual loss.
+}\kor{
+지금까지 설명한 내용 손실 외에도, 지각 손실에 \ac{GAN}의 생성 요소를 추가한다.
+} \eng{
+This encourages our network to favor solutions that reside on the manifold of natural images, by trying to fool the discriminator network.
+}\kor{
+이것은 판별기(discriminator) 네트워크를 속이기 위해 노력함으로써 자연 이미지들의 데이터 공간(manifold)에 있는 해를 선호하도록 부추긴다.
+} \eng{
+The generative loss $l^{SR}_{Gen}$ is defined based on the probabilities of the discriminator $D_{\theta_D}(G_{\theta_G}(I^{LR}))$ over all training samples as:
+}\kor{
+생성 손실 $l^{SR}_{Gen}$은 모든 훈련 샘플에 대한 판별기(discriminator) $D_{\theta_D}(G_{\theta_G}(I^{LR}))$의 확률을 기반으로 다음과 같이 정의된다:
+}
 \begin{equation}
 l^{SR}_{Gen} = \sum_{n=1}^{N} -\log D_{\theta_D}(G_{\theta_G}(I^{LR}))
 \end{equation}
 
-Here, $D_{\theta_D}(G_{\theta_G}(I^{LR}))$ is the probability that the
-reconstructed image $G_{\theta_G}(I^{LR})$ is a natural HR image. For better gradient behavior we minimize $-\log D_{\theta_D}(G_{\theta_G}(I^{LR}))$ instead of $\log [1-D_{\theta_D}(G_{\theta_G}(I^{LR}))]$ \cite{Goodfellow14GAN}.
+\eng{
+Here, $D_{\theta_D}(G_{\theta_G}(I^{LR}))$ is the probability that the reconstructed image $G_{\theta_G}(I^{LR})$ is a natural HR image.
+}\kor{
+여기서 $D_{\theta_D}(G_{\theta_G}(I^{LR}))$는 재구성된 이미지 $G_{\theta_G}(I^{LR})$가 자연스러운 고해상도이미지일 확률이다.
+} \eng{
+For better gradient behavior we minimize $-\log D_{\theta_D}(G_{\theta_G}(I^{LR}))$ instead of $\log [1-D_{\theta_D}(G_{\theta_G}(I^{LR}))]$ \cite{Goodfellow14GAN}.
+}\kor{
+더 나은 경사 동작(gradient behavior)을 위해, 본 논문에서는 $\log [1-D_{\theta_D}(G_{\theta_G}(I^{LR}))]$ \cite{Goodfellow14GAN} 대신 $-\log D_{\theta_D}(G_{\theta_G}(I^{LR}))$를 최소화했다.
+}
 
 %
-\section{Experiments}
+\section{\eng{Experiments}\kor{실험}}
 \label{sec:experiments}
-\subsection{Data and similarity measures}
+\subsection{\eng{Data and similarity measures}\kor{데이터 및 유사성 측정}}
 \label{subsec:data}
-We perform experiments on three widely used benchmark datasets \textbf{Set5} \cite{bevilacqua2012low}, \textbf{Set14} \cite{zeyde2012single} and \textbf{BSD100}, the testing set of BSD300 \cite{MartinFTM01}. All experiments are performed with a scale factor of $4\times$ between low- and high-resolution images. This corresponds to a $16\times$ reduction in image pixels. For fair comparison, all reported \ac{PSNR} [dB] and \ac{SSIM} \cite{Wang2004} measures were calculated on the y-channel of center-cropped, removal of a 4-pixel wide strip from each border, images using the daala package\footnote{\url{https://github.com/xiph/daala} (commit: 8d03668)}. Super-resolved images for the reference methods, including nearest neighbor, bicubic, SRCNN \cite{dong2014learning} and SelfExSR \cite{Huang15selfexemplars}, were obtained from online material supplementary to Huang et al.\footnote{\url{https://github.com/jbhuang0604/SelfExSR}} \cite{Huang15selfexemplars} and for DRCN from Kim et al.\footnote{\url{http://cv.snu.ac.kr/research/DRCN/}} \cite{kim2016deeply}.
+\eng{
+We perform experiments on three widely used benchmark datasets \textbf{Set5} \cite{bevilacqua2012low}, \textbf{Set14} \cite{zeyde2012single} and \textbf{BSD100}, the testing set of BSD300 \cite{MartinFTM01}.
+}\kor{
+본 논문에서는 널리 사용되는 세 가지 벤치마크 데이터 세트인 \textbf{Set5} \cite{bevilacqua2012low}, \textbf{Set14} \cite{zeyde2012single} 그리고 \textbf{BSD100}, BSD300 \cite{MartinFTM01}의 테스트 세트(testing set)에 대한 실험을 수행한다.
+} \eng{
+All experiments are performed with a scale factor of $4\times$ between low- and high-resolution images.
+}\kor{
+모든 실험은 저해상도와 고해상도 이미지 사이에서 $4\times$의 향상 계수로 수행된다.
+} \eng{
+This corresponds to a $16\times$ reduction in image pixels.
+}\kor{
+이는 이미지 픽셀에서의 $16\times$ 감소에 해당한다.
+} \eng{
+For fair comparison, all reported \ac{PSNR} [dB] and \ac{SSIM} \cite{Wang2004} measures were calculated on the y-channel of center-cropped, removal of a 4-pixel wide strip from each border, images using the daala package\footnote{\url{https://github.com/xiph/daala} (commit: 8d03668)}.
+}\kor{
+공정한 비교를 위해, 보고된 모든 \ac{PSNR} [DB]과 \ac{SSIM} \cite{Wang2004} 측정은 중앙 크롭된 y 채널을 통해 계산되었으며, 각 경계에서의 4 픽셀 폭의 선(4-pixel wide strip)을 제거했고, 이미지들에는 daala 패키지\footnote{\url{https://github.com/xiph/daala} (commit: 8d03668)}가 사용되었다.
+} \eng{
+Super-resolved images for the reference methods, including nearest neighbor, bicubic, SRCNN \cite{dong2014learning} and SelfExSR \cite{Huang15selfexemplars}, were obtained from online material supplementary to Huang et al.\footnote{\url{https://github.com/jbhuang0604/SelfExSR}} \cite{Huang15selfexemplars} and for DRCN from Kim et al.\footnote{\url{http://cv.snu.ac.kr/research/DRCN/}} \cite{kim2016deeply}.
+}\kor{
+최근접 이웃(nearest neighbor), 쌍삼차 보간(bicubic), SRCNN \cite{dong2014learning}과 SelfExSR \cite{Huang15selfexemplars} 참조 방법에 대한 초해상도화된 이미지는 Huang 외.\footnote{\url{https://github.com/jbhuang0604/SelfExSR}} \cite{Huang15selfexemplars}와 DRCN을 위한 Kim 외.\footnote{\url{http://cv.snu.ac.kr/research/DRCN/}} \cite{kim2016deeply}에 대한 온라인 보충 자료에서 얻었다.
+}
+\eng{
 Results obtained with SRResNet (for losses: $l^{SR}_{MSE}$ and $l^{SR}_{VGG/2.2}$) and the SRGAN variants are available online\footnote{\url{https://twitter.box.com/s/lcue6vlrd01ljkdtdkhmfvk7vtjhetog}}.
+}\kor{
+SRResNet ($l^{SR}_{MSE}$와 $l^{SR}_{VGG/2.2}$ 손실을 위한)과 SRGAN 변형으로부터 얻어진 결과는 온라인\footnote{\url{https://twitter.box.com/s/lcue6vlrd01ljkdtdkhmfvk7vtjhetog}}에서 사용할 수 있다.
+}
+\eng{
 Statistical tests were performed as paired two-sided Wilcoxon signed-rank tests and significance determined at $p<0.05$.
+}\kor{
+통계적 테스트는 쌍체 양측 월콕슨 부호 순위 검정(paired two-sided Wilcoxon signed-rank tests)으로 수행되었으며, 유의성(significance)은 $p<0.05$으로 결정되었다.
+}
 
+\eng{
 The reader may also be interested in an independently developed GAN-based solution on GitHub\footnote{\url{https://github.com/david-gpu/srez}}. However it only provides experimental results on a limited set of faces, which is a more constrained and easier task.
+}\kor{
+독자는 GitHub\footnote{\url{https://github.com/david-gpu/srez}}에서 독립적으로 개발된 GAN 기반의 방법에 관심이 있을 수도 있다. 하지만 이는 한정된 얼굴 집합에 대한 실험 결과만 제공하므로, 더 제한적이고 쉬운 작업이다.
+}
 
-\subsection{Training details and parameters}
-We trained all networks on a NVIDIA Tesla M40 GPU using a random sample of 350 thousand images from the \textbf{ImageNet} database \cite{russakovsky2014imagenet}. These images are distinct from the testing images. We obtained the \ac{LR} images by downsampling the \ac{HR} images (BGR, $C=3$) using bicubic kernel with downsampling factor $r=4$. For each mini-batch we crop 16 random $96\times96$ \ac{HR} sub images of distinct training images. Note that we can apply the generator model to images of arbitrary size as it is fully convolutional.
-We scaled the range of the \ac{LR} input images to $[0, 1]$ and for the \ac{HR} images to $[-1, 1]$. The \ac{MSE} loss was thus calculated on images of intensity range $[-1, 1]$. VGG feature maps were also rescaled by a factor of $\frac{1}{12.75}$ to obtain VGG losses of a scale that is comparable to the \ac{MSE} loss. This is equivalent to multiplying Equation \ref{eq:vgg} with a rescaling factor of $\approx0.006$.
-For optimization we use Adam \cite{Kingma2014} with $\beta_1=0.9$. The SRResNet networks were trained with a learning rate of $10^{-4}$ and $10^{6}$ update iterations. We employed the trained \ac{MSE}-based SRResNet network as initialization for the generator when training the actual \ac{GAN} to avoid undesired local optima.
+\subsection{\eng{Training details and parameters}\kor{훈련 세부 사항과 매개변수}}
+\eng{
+We trained all networks on a NVIDIA Tesla M40 GPU using a random sample of 350 thousand images from the \textbf{ImageNet} database \cite{russakovsky2014imagenet}.
+}\kor{
+본 논문에서는 \textbf{ImageNet} 데이터베이스 \cite{russakovsky2014imagenet}에서 350,000개 이미지의 무작위 샘플을 사용하여, NVIDIA Tesla M40 GPU에서 모든 네트워크를 훈련시켰다.
+} \eng{
+These images are distinct from the testing images. We obtained the \ac{LR} images by downsampling the \ac{HR} images (BGR, $C=3$) using bicubic kernel with downsampling factor $r=4$.
+}\kor{
+이러한 이미지들은 테스트 이미지들과는 다르다. 본 논문에서는 $r=4$인 다운샘플링 계수를 가지는 쌍삼차 보간(bicubic) 커널을 사용하여 \ac{고해상도} 이미지 (BGR, $C=3$)를 다운샘플링하여 \ac{저해상도} 이미지를 얻었다.
+} \eng{
+For each mini-batch we crop 16 random $96\times96$ \ac{HR} sub images of distinct training images. Note that we can apply the generator model to images of arbitrary size as it is fully convolutional.
+}\kor{
+각 미니 배치에 대해, 우리는 서로 다른 훈련 이미지들 중에서 무작위로 선택하여 $96\times96$ 크기의 \ac{고해상도} 하위 이미지 16개를 잘라낸다. 또한 이 모델은 완전한 합성곱(fully convolutional)으로 구성되어 있기 때문에, 생성기(generator) 모델을 임의 크기의 이미지에 적용할 수 있다.
+}
+\eng{
+We scaled the range of the \ac{LR} input images to $[0, 1]$ and for the \ac{HR} images to $[-1, 1]$. The \ac{MSE} loss was thus calculated on images of intensity range $[-1, 1]$.
+}\kor{
+\ac{저해상도} 입력 이미지의 범위는 $[0, 1]$로, \ac{고해상도} 이미지는 $[-1, 1]$로 조정했다. 따라서 \ac{MSE} 손실은 $[-1, 1]$의 밝기 범위(intensity range)를 가지는 이미지에서 계산되었다.
+} \eng{
+VGG feature maps were also rescaled by a factor of $\frac{1}{12.75}$ to obtain VGG losses of a scale that is comparable to the \ac{MSE} loss. This is equivalent to multiplying Equation \ref{eq:vgg} with a rescaling factor of $\approx0.006$.
+}\kor{
+
+}
+\eng{
+For optimization we use Adam \cite{Kingma2014} with $\beta_1=0.9$.
+}\kor{
+
+} \eng{
+The SRResNet networks were trained with a learning rate of $10^{-4}$ and $10^{6}$ update iterations.
+}\kor{
+
+} \eng{
+We employed the trained \ac{MSE}-based SRResNet network as initialization for the generator when training the actual \ac{GAN} to avoid undesired local optima.
+}\kor{
+
+}
+\eng{
 All SRGAN variants were trained with $10^5$ update iterations at a learning rate of $10^{-4}$ and another $10^5$ iterations at a lower rate of $10^{-5}$.
+}\kor{
+
+}
 We alternate updates to the generator and discriminator network, which is equivalent to $k=1$ as used in Goodfellow et al. \cite{Goodfellow14GAN}. Our generator network has 16 identical ($B=16$) residual blocks. During test time we turn batch-normalization update off to obtain an output that deterministically depends only on the input \cite{Ioffe2015}. Our implementation is based on Theano \cite{theano2016} and Lasagne \cite{lasagne2015}.
 
 \subsection{Mean opinion score (MOS) testing}
