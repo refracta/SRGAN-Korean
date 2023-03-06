@@ -260,6 +260,7 @@ y=\imageheight
 \newacronym{SR}{SR}{super-resolution}
 \newacronym{초해상도화}{초해상도화}{super-resolution}
 \newacronym{MOS}{MOS}{mean opinion score}
+\newacronym{평균 의견 점수}{평균 의견 점수}{mean opinion score}
 \newacronym{SSIM}{SSIM}{structural similarity}
 \newacronym{PSNR-HVS}{PSNR-HVS}{peak signal-to-noise ratio - human visual system}
 \newacronym{MS-SSIM}{MS-SSIM}{multi-scale structural similarity}
@@ -1076,35 +1077,86 @@ We scaled the range of the \ac{LR} input images to $[0, 1]$ and for the \ac{HR} 
 } \eng{
 VGG feature maps were also rescaled by a factor of $\frac{1}{12.75}$ to obtain VGG losses of a scale that is comparable to the \ac{MSE} loss. This is equivalent to multiplying Equation \ref{eq:vgg} with a rescaling factor of $\approx0.006$.
 }\kor{
-
+또한 VGG 특징 맵은 \ac{MSE} 손실과 비교 가능한 크기의 VGG 손실을 획득하기 위해 $\frac{1}{12.75}$의 비율로 재조정되었다. 이는 $\approx0.006$의 재조정 계수(rescaling factor)를 가진 방정식\ref{eq:vgg}에 곱하는 것과 같다.
 }
 \eng{
 For optimization we use Adam \cite{Kingma2014} with $\beta_1=0.9$.
 }\kor{
-
+최적화를 위해, Adam \cite{Kingma2014}과 $\beta_1=0.9$이 사용되었다.
 } \eng{
 The SRResNet networks were trained with a learning rate of $10^{-4}$ and $10^{6}$ update iterations.
 }\kor{
-
+SRResNet 네트워크는 $10^{-4}$의 학습률(learning rate)과 $10^{6}$번의 반복(update iterations)으로 훈련되었다.
 } \eng{
 We employed the trained \ac{MSE}-based SRResNet network as initialization for the generator when training the actual \ac{GAN} to avoid undesired local optima.
 }\kor{
-
+원치않는 지역 최소점(local optima)을 피하기 위해 실제 \ac{GAN}을 훈련할 때 훈련된 \ac{MSE} 기반 SRResNet 네트워크를 생성기(generator)의 초기 설정(initialization)으로 채택했다.
 }
 \eng{
 All SRGAN variants were trained with $10^5$ update iterations at a learning rate of $10^{-4}$ and another $10^5$ iterations at a lower rate of $10^{-5}$.
 }\kor{
-
+모든 SRGAN 변형은 $10^5$번의 반복(update iterations)과 $10^{-4}$의 학습률(learning rate), 그리고 더 낮은 $10^{-5}$의 학습률에서의 $10^5$번의 반복으로 훈련되었다.
 }
-We alternate updates to the generator and discriminator network, which is equivalent to $k=1$ as used in Goodfellow et al. \cite{Goodfellow14GAN}. Our generator network has 16 identical ($B=16$) residual blocks. During test time we turn batch-normalization update off to obtain an output that deterministically depends only on the input \cite{Ioffe2015}. Our implementation is based on Theano \cite{theano2016} and Lasagne \cite{lasagne2015}.
+\eng{
+We alternate updates to the generator and discriminator network, which is equivalent to $k=1$ as used in Goodfellow et al. \cite{Goodfellow14GAN}.
+}\kor{
+Goodfellow 외. \cite{Goodfellow14GAN}에서 사용된 $k=1$과 동일한 생성기(generator)와 판별기(discriminator) 네트워크를 번갈아 갱신한다.
+} \eng{
+Our generator network has 16 identical ($B=16$) residual blocks.
+}\kor{
+생성기(generator) 네트워크는 16개의 동일한 ($B=16$) 잔차 블록을 가진다.
+} \eng{
+During test time we turn batch-normalization update off to obtain an output that deterministically depends only on the input \cite{Ioffe2015}.
+}\kor{
+테스트 시간 동안 결정적으로(deterministically) 입력\cite{Ioffe2015}에 의존하는 출력을 얻기 위해 배치 정규화 갱신을 해제한다.
+} \eng{
+Our implementation is based on Theano \cite{theano2016} and Lasagne \cite{lasagne2015}.
+}\kor{
+본 논문의 구현은 Theano \cite{theano2016}와 Lasagne \cite{lasagne2015}을 기반으로 한다.
+}
 
-\subsection{Mean opinion score (MOS) testing}
-We have performed a \ac{MOS} test to quantify the ability of different approaches to reconstruct perceptually convincing images. Specifically, we asked 26 raters to assign an integral score from 1 (bad quality) to 5 (excellent quality) to the super-resolved images. The raters rated 12 versions of each image on \textbf{Set5}, \textbf{Set14} and \textbf{BSD100}: nearest neighbor (NN), bicubic, SRCNN \cite{dong2014learning}, SelfExSR \cite{Huang15selfexemplars}, DRCN \cite{kim2016deeply}, ESPCN \cite{Shi2016ESPCN}, \textbf{SRResNet}-MSE, SRResNet-VGG22$^\ast$ ($^\ast$not rated on \textbf{BSD100}), SRGAN-MSE$^\ast$, SRGAN-VGG22$^\ast$, \textbf{SRGAN}-VGG54 and the original HR image. Each rater thus rated 1128 instances (12 versions of 19 images plus 9 versions of 100 images) that were presented in a randomized fashion.
+\subsection{\eng{Mean opinion score (MOS) testing}\kor{평균 의견 점수 (MOS) 테스트}}
+\eng{
+We have performed a \ac{MOS} test to quantify the ability of different approaches to reconstruct perceptually convincing images.
+}\kor{
+우리는 지각적으로 실감나는 이미지를 재구성하기 위해 사용되는 다양한 접근법들의 능력을 정량화하기 위해 \ac{평균 의견 점수} 테스트를 수행했다.
+} \eng{
+Specifically, we asked 26 raters to assign an integral score from 1 (bad quality) to 5 (excellent quality) to the super-resolved images.
+}\kor{
+구체적으로, 26명의 평가자들에게 초해상도화된 이미지에 1 (나쁜 품질)부터 5 (우수한 품질)까지의 정수형 점수(integral score)를 매기도록 요청했다.
+} \eng{
+The raters rated 12 versions of each image on \textbf{Set5}, \textbf{Set14} and \textbf{BSD100}: nearest neighbor (NN), bicubic, SRCNN \cite{dong2014learning}, SelfExSR \cite{Huang15selfexemplars}, DRCN \cite{kim2016deeply}, ESPCN \cite{Shi2016ESPCN}, \textbf{SRResNet}-MSE, SRResNet-VGG22$^\ast$ ($^\ast$not rated on \textbf{BSD100}), SRGAN-MSE$^\ast$, SRGAN-VGG22$^\ast$, \textbf{SRGAN}-VGG54 and the original HR image.
+}\kor{
+평가자들은 \textbf{Set5}, \textbf{Set14} 그리고 \textbf{BSD100}에서 12가지 버전: 최근접 이웃 (nearest neighbor, NN), 쌍삼차 보간(bicubic), SRCNN \cite{dong2014learning}, SelfExSR \cite{Huang15selfexemplars}, DRCN \cite{kim2016deeply}, ESPCN \cite{Shi2016ESPCN}, \textbf{SRResNet}-MSE, SRResNet-VGG22$^\ast$ ($^\ast$\textbf{BSD100}에 대해서 평가하지 않음), SRGAN-MSE$^\ast$, SRGAN-VGG22$^\ast$, \textbf{SRGAN}-VGG54, 원본 고해상도 이미지 의 각각의 이미지에 대해 평가했다.
+} \eng{
+Each rater thus rated 1128 instances (12 versions of 19 images plus 9 versions of 100 images) that were presented in a randomized fashion.
+}\kor{
+따라서 각 평가자는 무작위 방식으로 제시된 1128개의 항목 (19개 이미지의 12가지 버전과 100개 이미지의 9가지 버전)을 평가했다.
+}
+\eng{
 The raters were calibrated on the NN (score 1) and HR (5) versions of 20 images from the BSD300 training set.
-In a pilot study we assessed the calibration procedure and the test-retest reliability of 26 raters on a subset of 10 images from BSD100 by adding a method's images twice to a larger test set. We found good reliability and no significant differences between the ratings of the identical images.
+}\kor{
+평가자들은 BSD300 훈련 세트에 있는 20개 이미지의 최근접 이웃 (점수 1)과 고해상도 (점수 5) 버전을 통해 보정되었다.
+} \eng{
+In a pilot study we assessed the calibration procedure and the test-retest reliability of 26 raters on a subset of 10 images from BSD100 by adding a method's images twice to a larger test set.
+}\kor{
+시범 연구에서는 더 큰 테스트 세트에 각 방법의 이미지를 두 번 추가하여, BSD100의 10개 이미지로 구성된 하위 집합에 대한 보정 절차와 26명의 평가자의 검사-재검사 신뢰도를 평가했다.
+} \eng{
+We found good reliability and no significant differences between the ratings of the identical images.
+}\kor{
+그리고, 높은 신뢰도와 함께, 동일한 이미지의 평가에는 큰 차이가 없다는 것을 발견했다.
+}
+\eng{
 Raters very consistently rated NN interpolated test images as 1 and the original HR images as 5 (\cf \figurename~\ref{fig:MOS}).
+}\kor{
+평가자들은 상당히 일관되게 최근접 이웃 방법으로 보간된 테스트 이미지를 1로, 원본 고해상도 이미지를 5(\cf \figurename~\ref{fig:MOS})로 평가했다.
+}
 
+\eng{
 The experimental results of the conducted \ac{MOS} tests are summarized in Table \ref{tab:perceptual}, Table \ref{tab:performance} and \figurename~\ref{fig:MOS}.
+}\kor{
+수행된 \ac{평균 의견 점수} 테스트의 실험 결과는 표 \ref{tab:perceptual}, 표 \ref{tab:performance}와 \figurename~\ref{fig:MOS}에 요약되어 있다.
+}
 
 \begin{table}[]
 \centering
