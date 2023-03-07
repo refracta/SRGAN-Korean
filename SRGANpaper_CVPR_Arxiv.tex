@@ -397,7 +397,7 @@ The ill-posed nature of the underdetermined \ac{SR} problem is particularly pron
 %
 \begin{figure*}[ht]
 \begin{tabular}{cccc}
-\eng{bicubic &  SRResNet  & SRGAN & original \\}\kor{쌍삼차 보간(bicubic) &  SRResNet  & SRGAN & 원본 \\}
+\eng{bicubic &  SRResNet  & SRGAN & original \\}\kor{쌍삼차(bicubic) &  SRResNet  & SRGAN & 원본 \\}
 (21.59dB/0.6423) &   (23.53dB/0.7832) & (21.15dB/0.6868) & \\
 \includegraphics[trim=0pt 0pt 0pt 0pt, clip, width=1.55in]{images/used/jpg/comic_SRF_4_bicubic} &
 \includegraphics[trim=0pt 0pt 0pt 0pt, clip, width=1.55in]{images/used/jpg/comic_SRResNet-MSE} &
@@ -408,7 +408,7 @@ The ill-posed nature of the underdetermined \ac{SR} problem is particularly pron
 \eng{
 From left to right: bicubic interpolation, deep residual network optimized for MSE, deep residual generative adversarial network optimized for a loss more sensitive to human perception, original HR image. Corresponding PSNR and SSIM are shown in brackets. [$4\times$ upscaling]
 }\kor{
-왼쪽에서 오른쪽 순으로: 쌍삼차 보간(bicubic), MSE로 최적화된 심층 잔류 신경망, 원본 고해상도 이미지에 대해서 조금 더 사람의 지각에 민감한 손실로 최적화된 심층 잔류 생성적 적대 신경망. PSNR과 SSIM은 괄호 안에 표시된다. [$4\times$ 해상도 향상]
+왼쪽에서 오른쪽 순으로: 쌍삼차(bicubic), MSE로 최적화된 심층 잔류 신경망, 원본 고해상도 이미지에 대해서 조금 더 사람의 지각에 민감한 손실로 최적화된 심층 잔류 생성적 적대 신경망. PSNR과 SSIM은 괄호 안에 표시된다. [$4\times$ 해상도 향상]
 }
 }
 \label{fig:exampleIntro}
@@ -632,7 +632,7 @@ Illustration of patches from the natural image manifold (red) and super-resolved
 } \eng{
 The MSE-based solution appears overly smooth due to the pixel-wise average of possible solutions in the pixel space, while GAN drives the reconstruction towards the natural image manifold producing perceptually more convincing solutions.
 }\kor{
-MSE 기반 방법은 픽셀 공간에서 가능한 해의 픽셀 단위(pixel-wise) 평균으로 인해 과하게 매끄럽게 보이는 반면, GAN은 자연 이미지 데이터 공간(manifold)쪽으로 재구성을 유도해서, 지각적으로 더욱 실감나는 해를 생성한다.
+MSE 기반 방법은 픽셀 공간에서 가능한 해의 픽셀 단위(pixel-wise) 평균으로 인해 과하게 매끄럽게 보이는 반면, GAN은 자연 이미지 데이터 공간(manifold)쪽으로 재구성을 유도해서, 지각적으로 더 실감나는 해를 생성한다.
 }}
 \label{fig:manifold}
 \end{figure}
@@ -722,7 +722,7 @@ In this paper we describe the first very deep \ac{ResNet} \cite{he2015deep,he201
 \item \eng{
 We set a new state of the art for image \ac{SR} with high upscaling factors ($4\times$) as measured by \ac{PSNR} and \ac{SSIM} with our 16 blocks deep \ac{ResNet} (SRResNet) optimized for \ac{MSE}.
 }\kor{
-\ac{MSE}에 최적화된 16개의 블록을 가진 심층 \ac{ResNet} (SRResNet)을 이용하여, \ac{PSNR}과 \ac{SSIM}으로 측정한 높은 해상도 향상 계수($4\times$)를 가진 이미지 초해상도화에 대한 최첨단 기술을 설정한다.
+\ac{MSE}에 최적화된 16개의 블록을 가진 심층 \ac{ResNet} (SRResNet)을 이용하여, \ac{PSNR}과 \ac{SSIM}으로 측정한 높은 해상도 향상 계수($4\times$)를 가진 이미지 초해상도화에 대한 최첨단 성능을 보였다.
 } %Specifically, we employ the fast feature learning in \ac{LR} space \cite{Shi2016ESPCN,Johnson16PercepLoss} and batch-normalization \cite{Ioffe2015} to robustly train a network of 16 residual blocks for better accuracy.
 \item \eng{
 We propose SRGAN which is a \ac{GAN}-based network optimized for a new perceptual loss. Here we replace the \ac{MSE}-based content loss with a loss calculated on feature maps of the VGG network \cite{simonyan2014very}, which are more invariant to changes in pixel space \cite{Li2016}.
@@ -732,7 +732,7 @@ We propose SRGAN which is a \ac{GAN}-based network optimized for a new perceptua
 \item \eng{
 We confirm with an extensive \ac{MOS} test on images from three public benchmark datasets that SRGAN is the new state of the art, by a large margin, for the estimation of photo-realistic \ac{SR} images with high upscaling factors ($4\times$).
 }\kor{
-세 개의 공개 벤치마크 데이터 세트의 이미지들에 대해 큰 차이로 SRGAN이 큰 해상도 향상 인자를 가지는 ($4\times$) 실사 \ac{초해상도화} 이미지 추정을 위한 새로운 최첨단임을 광범위한 \ac{MOS} 테스트를 통해 확인했다.
+세 개의 공개 벤치마크 데이터 세트의 이미지들에 대해 큰 차이로 SRGAN이 큰 해상도 향상 계수를 가지는 ($4\times$) 실사 \ac{초해상도화} 이미지 추정을 위한 새로운 최첨단임을 광범위한 \ac{MOS} 테스트를 통해 확인했다.
 }
 \end{itemize}
 
@@ -1037,7 +1037,7 @@ For fair comparison, all reported \ac{PSNR} [dB] and \ac{SSIM} \cite{Wang2004} m
 } \eng{
 Super-resolved images for the reference methods, including nearest neighbor, bicubic, SRCNN \cite{dong2014learning} and SelfExSR \cite{Huang15selfexemplars}, were obtained from online material supplementary to Huang et al.\footnote{\url{https://github.com/jbhuang0604/SelfExSR}} \cite{Huang15selfexemplars} and for DRCN from Kim et al.\footnote{\url{http://cv.snu.ac.kr/research/DRCN/}} \cite{kim2016deeply}.
 }\kor{
-최근접 이웃(nearest neighbor), 쌍삼차 보간(bicubic), SRCNN \cite{dong2014learning}과 SelfExSR \cite{Huang15selfexemplars} 참조 방법에 대한 초해상도화된 이미지는 Huang 외.\footnote{\url{https://github.com/jbhuang0604/SelfExSR}} \cite{Huang15selfexemplars}와 DRCN을 위한 Kim 외.\footnote{\url{http://cv.snu.ac.kr/research/DRCN/}} \cite{kim2016deeply}에 대한 온라인 보충 자료에서 얻었다.
+최근접 이웃(nearest neighbor), 쌍삼차(bicubic), SRCNN \cite{dong2014learning}과 SelfExSR \cite{Huang15selfexemplars} 참조 방법에 대한 초해상도화된 이미지는 Huang 외.\footnote{\url{https://github.com/jbhuang0604/SelfExSR}} \cite{Huang15selfexemplars}와 DRCN을 위한 Kim 외.\footnote{\url{http://cv.snu.ac.kr/research/DRCN/}} \cite{kim2016deeply}에 대한 온라인 보충 자료에서 얻었다.
 }
 \eng{
 Results obtained with SRResNet (for losses: $l^{SR}_{MSE}$ and $l^{SR}_{VGG/2.2}$) and the SRGAN variants are available online\footnote{\url{https://twitter.box.com/s/lcue6vlrd01ljkdtdkhmfvk7vtjhetog}}.
@@ -1064,7 +1064,7 @@ We trained all networks on a NVIDIA Tesla M40 GPU using a random sample of 350 t
 } \eng{
 These images are distinct from the testing images. We obtained the \ac{LR} images by downsampling the \ac{HR} images (BGR, $C=3$) using bicubic kernel with downsampling factor $r=4$.
 }\kor{
-이러한 이미지들은 테스트 이미지들과는 다르다. 본 논문에서는 $r=4$인 다운샘플링 계수를 가지는 쌍삼차 보간(bicubic) 커널을 사용하여 \ac{고해상도} 이미지 (BGR, $C=3$)를 다운샘플링하여 \ac{저해상도} 이미지를 얻었다.
+이러한 이미지들은 테스트 이미지들과는 다르다. 본 논문에서는 $r=4$인 다운샘플링 계수를 가지는 쌍삼차(bicubic) 커널을 사용하여 \ac{고해상도} 이미지 (BGR, $C=3$)를 다운샘플링하여 \ac{저해상도} 이미지를 얻었다.
 } \eng{
 For each mini-batch we crop 16 random $96\times96$ \ac{HR} sub images of distinct training images. Note that we can apply the generator model to images of arbitrary size as it is fully convolutional.
 }\kor{
@@ -1127,7 +1127,7 @@ Specifically, we asked 26 raters to assign an integral score from 1 (bad quality
 } \eng{
 The raters rated 12 versions of each image on \textbf{Set5}, \textbf{Set14} and \textbf{BSD100}: nearest neighbor (NN), bicubic, SRCNN \cite{dong2014learning}, SelfExSR \cite{Huang15selfexemplars}, DRCN \cite{kim2016deeply}, ESPCN \cite{Shi2016ESPCN}, \textbf{SRResNet}-MSE, SRResNet-VGG22$^\ast$ ($^\ast$not rated on \textbf{BSD100}), SRGAN-MSE$^\ast$, SRGAN-VGG22$^\ast$, \textbf{SRGAN}-VGG54 and the original HR image.
 }\kor{
-평가자들은 \textbf{Set5}, \textbf{Set14} 그리고 \textbf{BSD100}에서 12가지 버전: 최근접 이웃 (nearest neighbor, NN), 쌍삼차 보간(bicubic), SRCNN \cite{dong2014learning}, SelfExSR \cite{Huang15selfexemplars}, DRCN \cite{kim2016deeply}, ESPCN \cite{Shi2016ESPCN}, \textbf{SRResNet}-MSE, SRResNet-VGG22$^\ast$ ($^\ast$\textbf{BSD100}에 대해서 평가하지 않음), SRGAN-MSE$^\ast$, SRGAN-VGG22$^\ast$, \textbf{SRGAN}-VGG54, 원본 고해상도 이미지 의 각각의 이미지에 대해 평가했다.
+평가자들은 \textbf{Set5}, \textbf{Set14} 그리고 \textbf{BSD100}에서 12가지 버전: 최근접 이웃(nearest neighbor, NN), 쌍삼차(bicubic), SRCNN \cite{dong2014learning}, SelfExSR \cite{Huang15selfexemplars}, DRCN \cite{kim2016deeply}, ESPCN \cite{Shi2016ESPCN}, \textbf{SRResNet}-MSE, SRResNet-VGG22$^\ast$ ($^\ast$\textbf{BSD100}에 대해서 평가하지 않음), SRGAN-MSE$^\ast$, SRGAN-VGG22$^\ast$, \textbf{SRGAN}-VGG54, 원본 고해상도 이미지 의 각각의 이미지에 대해 평가했다.
 } \eng{
 Each rater thus rated 1128 instances (12 versions of 19 images plus 9 versions of 100 images) that were presented in a randomized fashion.
 }\kor{
@@ -1149,18 +1149,21 @@ We found good reliability and no significant differences between the ratings of 
 \eng{
 Raters very consistently rated NN interpolated test images as 1 and the original HR images as 5 (\cf \figurename~\ref{fig:MOS}).
 }\kor{
-평가자들은 상당히 일관되게 최근접 이웃 방법으로 보간된 테스트 이미지를 1로, 원본 고해상도 이미지를 5(\cf \figurename~\ref{fig:MOS})로 평가했다.
+평가자들은 상당히 일관되게 최근접 이웃 방법으로 보간된 테스트 이미지를 1로, 원본 고해상도 이미지를 5 (\cf \figurename~\ref{fig:MOS})로 평가했다.
 }
 
 \eng{
 The experimental results of the conducted \ac{MOS} tests are summarized in Table \ref{tab:perceptual}, Table \ref{tab:performance} and \figurename~\ref{fig:MOS}.
 }\kor{
-수행된 \ac{평균 의견 점수} 테스트의 실험 결과는 표 \ref{tab:perceptual}, 표 \ref{tab:performance}와 \figurename~\ref{fig:MOS}에 요약되어 있다.
+수행된 \ac{평균 의견 점수} 테스트의 실험 결과는 Table \ref{tab:perceptual}, Table \ref{tab:performance}와 \figurename~\ref{fig:MOS}에 요약되어 있다.
 }
 
 \begin{table}[]
 \centering
-\caption{Performance of different loss functions for SRResNet and the adversarial networks on Set5 and Set14 benchmark data. MOS score significantly higher ($p<0.05$) than with other losses in that category$^*$. [$4\times$ upscaling]}
+\caption{\eng{Performance of different loss functions for SRResNet and the adversarial networks on Set5 and Set14 benchmark data. MOS score significantly higher ($p<0.05$) than with other losses in that category$^*$. [$4\times$ upscaling]}\kor{
+\textbf{Set5}와 \textbf{Set14} 벤치마크 데이터에서 SRResNet과 적대적 네트워크의 여러 손실 함수에 대한 성능. 평균 의견 점수는
+해당 범주$^*$의 다른 손실보다 두드러지게 높은 값을 가진다 ($p<0.05$). [$4\times$ 해상도 향상]
+}}
 \label{tab:perceptual}
 \begin{adjustbox}{max width=0.48\textwidth}
 \begin{tabular}{lll | lll}
@@ -1183,28 +1186,92 @@ MOS  &  2.98 & 3.15$^*$ & 3.43 & 3.57 & 3.72$^*$  \\
 \end{tabular}
 \end{adjustbox}
 \end{table}
-\subsection{Investigation of content loss}
-We investigated the effect of different content loss choices in the perceptual loss for the \ac{GAN}-based networks. Specifically we investigate $l^{SR} = l^{SR}_\textrm{X} + 10^{-3}l^{SR}_{Gen}$ for the following content losses $l^{SR}_\textrm{X}$:\\
+\subsection{\eng{Investigation of content loss}\kor{내용 손실 조사}}
+\eng{
+We investigated the effect of different content loss choices in the perceptual loss for the \ac{GAN}-based networks.
+}\kor{
+본 논문에서는 \ac{GAN} 기반 네트워크에 대한 다양한 내용 손실 선택이 지각 손실에 미치는 영향을 조사했다.
+} \eng{
+Specifically we investigate $l^{SR} = l^{SR}_\textrm{X} + 10^{-3}l^{SR}_{Gen}$ for the following content losses $l^{SR}_\textrm{X}$:\\
+}\kor{
+구체적으로는 내용 손실 $l^{SR}_\textrm{X}$에 대한 $l^{SR} = l^{SR}_\textrm{X} + 10^{-3}l^{SR}_{Gen}$을 조사한다:\\
+}
 \begin{itemize}
-\item SRGAN-MSE: $l^{SR}_{MSE}$, to investigate the adversarial network with the standard \ac{MSE} as content loss.
-\item SRGAN-VGG22: $l^{SR}_{VGG/2.2}$ with $\phi_{2,2}$, a loss defined on feature maps representing lower-level features \cite{zeiler2014visualizing}.
-\item \textbf{SRGAN}-VGG54: $l^{SR}_{VGG/5.4}$ with $\phi_{5,4}$, a loss defined on feature maps of higher level features from deeper network layers with more potential to focus on the content of the images \cite{zeiler2014visualizing,Yosinski2015,Mahendran2016}. We refer to this network as \textbf{SRGAN} in the following.
+\item \eng{
+SRGAN-MSE: $l^{SR}_{MSE}$, to investigate the adversarial network with the standard \ac{MSE} as content loss.
+}\kor{
+SRGAN-MSE: $l^{SR}_{MSE}$, 내용 손실로써 표준 \ac{MSE}를 이용하여 적대적 네트워크를 조사
+}
+\item \eng{
+SRGAN-VGG22: $l^{SR}_{VGG/2.2}$ with $\phi_{2,2}$, a loss defined on feature maps representing lower-level features \cite{zeiler2014visualizing}.
+}\kor{
+SRGAN-VGG22: $l^{SR}_{VGG/2.2}$ ($\phi_{2,2}$ 사용), 낮은 수준의 특징 \cite{zeiler2014visualizing}을 대변하는 특징 맵에 정의된 손실
+}
+\item \eng{
+\textbf{SRGAN}-VGG54: $l^{SR}_{VGG/5.4}$ with $\phi_{5,4}$, a loss defined on feature maps of higher level features from deeper network layers with more potential to focus on the content of the images \cite{zeiler2014visualizing,Yosinski2015,Mahendran2016}. We refer to this network as \textbf{SRGAN} in the following.
+}\kor{
+\textbf{SRGAN}-VGG54: $l^{SR}_{VGG/5.4}$ ($\phi_{5,4}$ 사용), 이미지 내용에 집중할 수 있는 더 큰 잠재력이 있는 심층 신경망 레이어의 고수준 특징 맵에 정의된 손실. 본 논문에서는 앞으로 이 네트워크를 \textbf{SRGAN}로 표기한다.
+}
 \end{itemize}
+\eng{
 We also evaluate the performance of the generator network without adversarial component for the two losses $l^{SR}_{MSE}$ (\textbf{SRResNet}-MSE) and $l^{SR}_{VGG/2.2}$ (SRResNet-VGG22). We refer to SRResNet-MSE as \textbf{SRResNet}.
+}\kor{
+또한 두 손실 $l^{SR}_{MSE}$ (\textbf{SRResNet}-MSE)와 $l^{SR}_{VGG/2.2}$ (SRResNet-VGG22)에 대해 적대적 구성요소가 없는 생성기(generator) 네트워크의 성능을 평가한다. \textbf{SRResNet}은 SRResNet-MSE로 표기한다.
+}
+\eng{
 Note, when training SRResNet-VGG22 we added an additional total variation loss with weight $2\times10^{-8}$ to $l^{SR}_{VGG/2.2}$ \cite{Aly2005,Johnson16PercepLoss}.
+}\kor{
+SRResNet-VGG22을 훈련할 때는 추가적인 총 변위 손실(total variation loss)을 $2\times10^{-8}$의 가중치와 함께 $l^{SR}_{VGG/2.2}$ \cite{Aly2005,Johnson16PercepLoss}에 추가했다.
+}
+\eng{
 Quantitative results are summarized in Table \ref{tab:perceptual} and visual examples provided in \figurename~\ref{fig:perceptual}.
-Even combined with the adversarial loss, \ac{MSE} provides solutions with the highest \ac{PSNR} values that are, however, perceptually rather smooth and less convincing than results achieved with a loss component more sensitive to visual perception. This is caused by competition between the \ac{MSE}-based content loss and the adversarial loss. We further attribute minor reconstruction artifacts, which we observed in a minority of SRGAN-MSE-based reconstructions, to those competing objectives. We could not determine a significantly best loss function for SRResNet or SRGAN with respect to \ac{MOS} score on \textbf{Set5}. However, \textbf{SRGAN}-VGG54 significantly outperformed other SRGAN and SRResNet variants on \textbf{Set14} in terms of \ac{MOS}.
+}\kor{
+정량적 결과의 요약은 Table \ref{tab:perceptual}에서, 시각적 예시는 \figurename~\ref{fig:perceptual}에서 제공된다.
+}
+\eng{
+Even combined with the adversarial loss, \ac{MSE} provides solutions with the highest \ac{PSNR} values that are, however, perceptually rather smooth and less convincing than results achieved with a loss component more sensitive to visual perception.
+}\kor{
+적대적 손실과 결합하더라도, 시각적 인식에 더 민감한 손실 구성 요소로 달성된 결과보다 \ac{MSE}는 가장 높은 \ac{PSNR}을 가지지만, 지각적으로 더 매끄럽고, 실감나지 않는 해를 제공한다.
+} \eng{
+This is caused by competition between the \ac{MSE}-based content loss and the adversarial loss.
+}\kor{
+이는 \ac{MSE} 기반 내용 손실과 적대적 손실간의 경쟁으로 인해 발생한다.
+} \eng{
+We further attribute minor reconstruction artifacts, which we observed in a minority of SRGAN-MSE-based reconstructions, to those competing objectives.
+}\kor{
+또한, SRGAN-MSE 기반으로 재구성한 소수 사례에서 관찰된 미미한 재구성 인공물(artifact)들은 이러한 경쟁 목표에 따라 기인된 것이다.
+} \eng{
+We could not determine a significantly best loss function for SRResNet or SRGAN with respect to \ac{MOS} score on \textbf{Set5}.
+}\kor{
+\textbf{Set5}의 \ac{MOS} 점수와 관련하여 SRResNet과 SRGAN에 대해 의미있는 최선의 손실 함수를 결정할 수는 없었다.
+} \eng{
+However, \textbf{SRGAN}-VGG54 significantly outperformed other SRGAN and SRResNet variants on \textbf{Set14} in terms of \ac{MOS}.
+}\kor{
+하지만, \textbf{SRGAN}-VGG54는 \textbf{Set14}의 \ac{MOS} 면에서 다른 SRGAN 및 SRResNet 변형보다 훨씬 뛰어난 성능을 보였다.
+}
+\eng{
 We observed a trend that using the higher level VGG feature maps $\phi_{5,4}$ yields better texture detail when compared to $\phi_{2,2}$ (\cf \figurename~\ref{fig:perceptual}).
+}\kor{
+더 높은 수준의 VGG 기능 맵 $\phi_{5,4}$를 사용하면 $\phi_{2,2}$ (\cf \figurename~\ref{fig:perceptual})와 비교하여 더 나은 질감 세부 정보를 얻을 수 있는 경향를 관찰했다.
+}
+\eng{
 Further examples of perceptual improvements through \textbf{SRGAN} over \textbf{SRResNet} are provided in the supplementary material.
+}\kor{
+\textbf{SRResNet}에 따른 \textbf{SRGAN}을 통한 추가적인 지각적 개선 사례는 보충 자료에 제시된다.
+}
 \begin{figure}[ht!]
 \includegraphics[width=0.48\textwidth]{images/used/jpg/MOS_heatmapcropped}
-\caption{Color-coded distribution of MOS scores on \textbf{BSD100}. For each method 2600 samples (100 images $\times$ 26 raters) were assessed. Mean shown as red marker, where the bins are centered around value $i$. [$4\times$ upscaling]}
+\caption{\eng{Color-coded distribution of MOS scores on \textbf{BSD100}. For each method 2600 samples (100 images $\times$ 26 raters) were assessed. Mean shown as red marker, where the bins are centered around value $i$. [$4\times$ upscaling]}\kor{BSD100에 대한 평균 의견 점수의 색상 코드 분포. 각 방법에 대해 2600개의 샘플(100개의 이미지 $\times$ 26명의 평가자)이 평가되었다. 각 막대는 $i$ 값을 중심으로 배치되고, 빨간색 표식은 평균을 나타낸다. [$4\times$ 해상도 향상]}}
 \label{fig:MOS}
 \end{figure}
 
 \begin{figure*}[ht!]
 \begin{tabular}{ cx{3.7cm}cx{3.7cm}cx{3.7cm}cx{3.7cm}cx{3.7cm}}
+\eng{
 ~~~~~~~~~\textbf{SRResNet} & ~~~~~~~SRGAN-MSE & ~SRGAN-VGG22 & \textbf{SRGAN}-VGG54 & original HR image \\
+} \kor{
+~~~~~\textbf{SRResNet} & ~~~~~~~SRGAN-MSE & ~~SRGAN-VGG22 & ~~\textbf{SRGAN}-VGG54 & 원본 고해상도 이미지~~~ \\
+}
 \end{tabular}
 
 \begin{tikzpicture}[zoomboxarray, zoomboxes below, zoomboxarray inner gap=0.1cm, zoomboxarray columns=2, zoomboxarray rows=2]
@@ -1242,13 +1309,14 @@ Further examples of perceptual improvements through \textbf{SRGAN} over \textbf{
 \zoombox[magnification=2,color code=orange]{0.35,0.3}
 \zoombox[magnification=5,color code=lime]{0.86,0.25}
 \end{tikzpicture}
-\caption{\textbf{SRResNet} (left: a,b), SRGAN-MSE (middle left: c,d), SRGAN-VGG2.2 (middle: e,f) and  \textbf{SRGAN}-VGG54 (middle right: g,h) reconstruction results and corresponding reference HR image (right: i,j). [$4\times$ upscaling]}
+\caption{\eng{\textbf{SRResNet} (left: a,b), SRGAN-MSE (middle left: c,d), SRGAN-VGG2.2 (middle: e,f) and  \textbf{SRGAN}-VGG54 (middle right: g,h) reconstruction results and corresponding reference HR image (right: i,j). [$4\times$ upscaling]} \kor{
+\textbf{SRResNet} (좌측: a,b), SRGAN-MSE (중앙 좌측: c,d), SRGAN-VGG2.2 (중앙: e,f), \textbf{SRGAN}-VGG54 (중앙 우측: g,h) 재구성 결과와 참조 고해상도 이미지 (우측: i,j). [$4\times$ 해상도 향상]}}
 \label{fig:perceptual}
 \end{figure*}
 
 \begin{table*}[htb!]
 \centering
-\caption{Comparison of NN, bicubic, SRCNN \cite{dong2014learning}, SelfExSR \cite{Huang15selfexemplars}, DRCN \cite{kim2016deeply}, ESPCN \cite{Shi2016ESPCN}, \textbf{SRResNet}, \textbf{SRGAN}-VGG54 and the original HR on benchmark data. Highest measures (PSNR [dB], SSIM, MOS) in bold. [$4\times$ upscaling]}
+\caption{\eng{Comparison of NN, bicubic, SRCNN \cite{dong2014learning}, SelfExSR \cite{Huang15selfexemplars}, DRCN \cite{kim2016deeply}, ESPCN \cite{Shi2016ESPCN}, \textbf{SRResNet}, \textbf{SRGAN}-VGG54 and the original HR on benchmark data. Highest measures (PSNR [dB], SSIM, MOS) in bold. [$4\times$ upscaling]}\kor{벤치마크 데이터에서의 최근접 이웃(nearest neighbor, NN), 쌍삼차(bicubic), \cite{dong2014learning}, SelfExSR \cite{Huang15selfexemplars}, DRCN \cite{kim2016deeply}, ESPCN \cite{Shi2016ESPCN}, \textbf{SRResNet}, \textbf{SRGAN}-VGG54 그리고 원본 고해상도 간의 비교. 높은 측정치(PSNR [dB], SSIM, MOS)는 굵게 표시됨. [$4\times$ 해상도 향상]}}
 \label{tab:performance}
 \begin{adjustbox}{max width=0.8\textwidth}
 \begin{tabular}{llllllllll}
@@ -1272,32 +1340,141 @@ MOS  & 1.11 & 1.47 & 1.87 & 1.89 & 2.12 & 2.01 & 2.29 & \textbf{3.56} & 4.46 \\
 \end{adjustbox}
 \end{table*}
 
-\subsection{Performance of the final networks}
+\subsection{\eng{Performance of the final networks}\kor{최종 네트워크의 성능}}
 \label{subsec:msebased}
 %In this paper, we choose a network architecture for the generator (cf. Figure \ref{fig:generator}) which combines the effectiveness of the \ac{ESPCN} \cite{Shi2016ESPCN} and the high performance of the \ac{ResNet} \cite{he2015deep}.
+\eng{
 We compare the performance of \textbf{SRResNet} and \textbf{SRGAN} to NN, bicubic interpolation, and four state-of-the-art methods.
+}\kor{
+본 논문에서는 \textbf{SRResNet}와 \textbf{SRGAN}의 성능을 최근접 이웃(nearest neighbor, NN), 쌍삼차 보간(bicubic interpolation) 및 4개의 최첨단 방법에 대해서 비교한다.
+}
 %: the super-resolution \ac{CNN} (SRCNN) described by Dong et al. \cite{dong2014learning}, a method based on transformed self-exemplars (SelfExSR) \cite{Huang15selfexemplars}, a deeply-recursive convolutional network (DRCN) described by Kim et al. \cite{kim2016deeply} and the efficient sub-pixel \ac{CNN} (ESPCNN) allowing real-time video \ac{SR} \cite{Shi2016ESPCN}.
+\eng{
 Quantitative results are summarized in Table \ref{tab:performance} and confirm that \textbf{SRResNet} (in terms of PSNR/SSIM) sets a new state of the art on three benchmark datasets.
+}\kor{
+정량적 결과는 Table \ref{tab:performance}에 요약되어 있으며, \textbf{SRResNet} (PSNR/SSIM의 측면에서)이 세가지 벤치마크 데이터 세트에서 새로운 최첨단(state of the art)인 것을 확인했다.
+}
+\eng{
 Please note that we used a publicly available framework for evaluation (\cf Section \ref{subsec:data}), reported values might thus slightly deviate from those reported in the original papers.
+}\kor{
+평가를 위해 사용 가능한 공개된 프레임워크(\cf \ref{subsec:data} 부분)를 사용했으며, 따라서 보고된 값은 원래 논문에 보고된 값과 약간 다를 수 있다.
+}
 
-We further obtained \ac{MOS} ratings for \textbf{SRGAN} and all reference methods on \textbf{BSD100}. Examples of images super-resolved with \textbf{SRResNet} and \textbf{SRGAN} are depicted in the supplementary material.
-The results shown in Table \ref{tab:performance} confirm that \textbf{SRGAN} outperforms all reference methods by a large margin and sets a new state of the art for photo-realistic image \ac{SR}. All differences in \ac{MOS} (\cf Table \ref{tab:performance}) are highly significant on \textbf{BSD100}, except SRCNN vs. SelfExSR. The distribution of all collected \ac{MOS} ratings is summarized in \figurename~\ref{fig:MOS}.
+\eng{
+We further obtained \ac{MOS} ratings for \textbf{SRGAN} and all reference methods on \textbf{BSD100}.
+}\kor{
+추가적으로 \textbf{BSD100} 데이터 세트에서 \textbf{SRGAN}과 모든 참조 방법들에 대한 \ac{MOS} 평가를 수행했다.
+} \eng{
+Examples of images super-resolved with \textbf{SRResNet} and \textbf{SRGAN} are depicted in the supplementary material.
+}\kor{
+\textbf{SRResNet}과 \textbf{SRGAN}을 사용하여 초해상화한 이미지들의 예시는 보충 자료에서 제공된다.
+}
+\eng{
+The results shown in Table \ref{tab:performance} confirm that \textbf{SRGAN} outperforms all reference methods by a large margin and sets a new state of the art for photo-realistic image \ac{SR}.
+}\kor{
+Table \ref{tab:performance}에 표시된 결과는 \textbf{SRGAN}이 모든 참조 방법을 큰 폭으로 능가하고 실사 이미지 초해상도화를 위한 새로운 최첨단 방법이라는 것을 보여준다.
+} \eng{
+All differences in \ac{MOS} (\cf Table \ref{tab:performance}) are highly significant on \textbf{BSD100}, except SRCNN vs. SelfExSR.
+}\kor{
+\textbf{BSD100}에서의 모든 \ac{평균 의견 점수} 차이(\cf Table \ref{tab:performance})는 SRCNN 대 SelfExSR을 제외하고 상당히 유의미하다.
+} \eng{
+The distribution of all collected \ac{MOS} ratings is summarized in \figurename~\ref{fig:MOS}.
+}\kor{
+수집된 모든 \ac{평균 의견 점수} 등급의 분포는 \figurename~\ref{fig:MOS}에 요약되어 있다.
+}
 
-\section{Discussion and future work}
+\section{\eng{Discussion and future work}\kor{토론 및 향후 연구}}
 \label{sec:discussion}
-We confirmed the superior perceptual performance of \textbf{SRGAN} using \ac{MOS} testing. We have further shown that standard quantitative measures such as PSNR and SSIM fail to capture and accurately assess image quality with respect to the human visual system \cite{Toderici2016}.
+\eng{
+We confirmed the superior perceptual performance of \textbf{SRGAN} using \ac{MOS} testing.
+}\kor{
+본 논문에서는 \ac{평균 의견 점수} 테스트를 통해 \textbf{SRGAN}의 우수한 지각 성능을 확인했다.
+} \eng{
+We have further shown that standard quantitative measures such as PSNR and SSIM fail to capture and accurately assess image quality with respect to the human visual system \cite{Toderici2016}.
+}\kor{
+또한 PSNR과 SSIM과 같은 정량적인 표준 측정 지표들이 인간 지각 체계 \cite{Toderici2016}와 관련하여 이미지 품질을 포착하고, 정확하게 평가하지 못한다는 것을 것을 확인했다.
+}
 %As \ac{PSNR} is not sufficiently capable of quantifying the perceptual quality of the \ac{SR} result. We thus quantified user experiences by collecting subjective measures as mean opinion scores (MOS), which confirmed the potential of SRGAN to recover photo-realistic images.
-The focus of this work was the perceptual quality of super-resolved images rather than computational efficiency. The presented model is, in contrast to Shi et al. \cite{Shi2016ESPCN}, not optimized for video \ac{SR} in real-time. However, preliminary experiments on the network architecture suggest that shallower networks have the potential to provide very efficient alternatives at a small reduction of qualitative performance. %A deeper investigation of the network architecture as well as the perceptual loss will be part of future work.
-In contrast to Dong et al. \cite{dong2016image}, we found deeper network architectures to be beneficial. We speculate that the \ac{ResNet} design has a substantial impact on the performance of deeper networks. We found that even deeper networks ($B>16$) can further increase the performance of \textbf{SRResNet}, however, come at the cost of longer training and testing times (\cf supplementary material). We further found \ac{SRGAN} variants of deeper networks are increasingly difficult to train due to the appearance of high-frequency artifacts.
+\eng{
+The focus of this work was the perceptual quality of super-resolved images rather than computational efficiency.
+}\kor{
+본 연구의 초점은 계산 효율성보다는 초해상화된 이미지의 지각적 품질에 있다.
+} \eng{
+The presented model is, in contrast to Shi et al. \cite{Shi2016ESPCN}, not optimized for video \ac{SR} in real-time.
+}\kor{
+제시된 모델은, Shi 외. \cite{Shi2016ESPCN}와는 달리, 실시간 비디오 초해상도화에는 최적화되어있지 않다.
+}\eng{
+However, preliminary experiments on the network architecture suggest that shallower networks have the potential to provide very efficient alternatives at a small reduction of qualitative performance.
+}\kor{
+하지만, 네트워크 구조에 대한 예비 실험은, 얕은 네트워크가 질적 성능을 약간 감소시키는 대신 매우 효율적인 대안을 제공할 가능성이 있음을 보여준다.
+} %A deeper investigation of the network architecture as well as the perceptual loss will be part of future work.
+\eng{
+In contrast to Dong et al. \cite{dong2016image}, we found deeper network architectures to be beneficial.
+}\kor{
+Dong 외. \cite{dong2016image}와는 달리, 심층 네트워크 구조가 유익하다는 것을 발견했다.
+} \eng{
+We speculate that the \ac{ResNet} design has a substantial impact on the performance of deeper networks.
+}\kor{
+\ac{ResNet} 설계가 심층 네트워크의 성능에 상당한 영향을 미치는 것으로 추측된다.
+} \eng{
+We found that even deeper networks ($B>16$) can further increase the performance of \textbf{SRResNet}, however, come at the cost of longer training and testing times (\cf supplementary material).
+}\kor{
+또한 심층 네트워크 ($B>16$)가 \textbf{SRResNet}의 성능을 더 향상시킬 수 있지만, 훈련 및 테스트 시간이 더 오래 걸리는 문제가 있음을 발견했다 (\cf 보충 자료).
+} \eng{
+We further found \ac{SRGAN} variants of deeper networks are increasingly difficult to train due to the appearance of high-frequency artifacts.
+}\kor{
+추가적으로, 고주파 인공물(artifacts)의 출현으로 심층 네트워크의 \ac{SRGAN} 변형을 훈련하기가 더 힘들어지는 것을 발견했다.
+}
 % and could potentially explain the different findings.
 
-Of particular importance when aiming for photo-realistic solutions to the \ac{SR} problem is the choice of the content loss as illustrated in \figurename~\ref{fig:perceptual}. In this work, we found $l^{SR}_{VGG/5.4}$ to yield the perceptually most convincing results, which we attribute to the potential of deeper network layers to represent features of higher abstraction \cite{zeiler2014visualizing,Yosinski2015,Mahendran2016} away from pixel space. We speculate that feature maps of these deeper layers focus purely on the content while leaving the adversarial loss focusing on texture details which are the main difference between the super-resolved images without the adversarial loss and photo-realistic images.
-We also note that the ideal loss function depends on the application. For example, approaches that hallucinate finer detail might be less suited for medical applications or surveillance. The perceptually convincing reconstruction of text or structured scenes \cite{Huang15selfexemplars} is challenging and part of future work.
+\eng{
+Of particular importance when aiming for photo-realistic solutions to the \ac{SR} problem is the choice of the content loss as illustrated in \figurename~\ref{fig:perceptual}.
+}\kor{
+\figurename~\ref{fig:perceptual}에서 보여지듯이, \ac{초해상도화} 문제에서 실사와 같은 해를 목표로 할 때, 콘텐츠 손실의 선택은 매우 중요하다.
+} \eng{
+In this work, we found $l^{SR}_{VGG/5.4}$ to yield the perceptually most convincing results, which we attribute to the potential of deeper network layers to represent features of higher abstraction \cite{zeiler2014visualizing,Yosinski2015,Mahendran2016} away from pixel space.
+}\kor{
+본 연구에서는, $l^{SR}_{VGG/5.4}$가 지각적으로 더 실감나는 결과를 산출하는 것을 발견했으며,
+이는 깊은 네트워크 레이어가 픽셀 공간으로부터 고수준으로 추상화된 특징\cite{zeiler2014visualizing,Yosinski2015,Mahendran2016}을 나타낼 수 있는 잠재력이 있기 때문으로 추정된다.
+} \eng{
+We speculate that feature maps of these deeper layers focus purely on the content while leaving the adversarial loss focusing on texture details which are the main difference between the super-resolved images without the adversarial loss and photo-realistic images.
+}\kor{
+이러한 심층 레이어의 특징 맵은 순전히 내용에만 집중하는 반면, 적대적 손실은 적대적 손실이 없는 초해상도화된 이미지와 실사 이미지 사이의 주요한 차이점인 질감 세부 사항에 초점을 맞추는 것으로 추측된다.
+}
+\eng{
+We also note that the ideal loss function depends on the application.
+}\kor{
+또한, 이상적인 손실 함수는 응용에 따라 다르다는 점을 주목해야 한다.
+} \eng{
+For example, approaches that hallucinate finer detail might be less suited for medical applications or surveillance.
+}\kor{
+예를 들어, 미세한 세부 정보를 왜곡하는 방법은 의료 응용이나 감시(surveillance)에는 적합하지 않을 수 있다.
+} \eng{
+The perceptually convincing reconstruction of text or structured scenes \cite{Huang15selfexemplars} is challenging and part of future work.
+}\kor{
+텍스트나 구조화된 장면의 지각적으로 실감나는 재구성\cite{Huang15selfexemplars}은 어렵고, 이는 향후 연구의 일부분이다.
+}
+\eng{
 The development of content loss functions that describe image spatial content, but more invariant to changes in pixel space will further improve photo-realistic image \ac{SR} results.
+}\kor{
+이미지 공간의 내용을 묘사하는 내용 손실 함수를 픽셀 공간의 변화에 잘 변하지 않게 개발한다면, 사진과 실사 이미지 \ac{초해상도화} 결과를 더욱 향상시킬 수 있다.
+}
 %
-\section{Conclusion}
+\section{\eng{Conclusion}\kor{결론}}
 \label{sec:conclusion}
-We have described a deep residual network \textbf{SRResNet} that sets a new state of the art on public benchmark datasets when evaluated with the widely used \ac{PSNR} measure. We have highlighted some limitations of this \ac{PSNR}-focused image super-resolution and introduced \textbf{SRGAN}, which augments the content loss function with an adversarial loss by training a \ac{GAN}. Using extensive \ac{MOS} testing, we have confirmed that \textbf{SRGAN} reconstructions for large upscaling factors ($4\times$) are, by a considerable margin, more photo-realistic than reconstructions obtained with state-of-the-art reference methods.
+\eng{
+We have described a deep residual network \textbf{SRResNet} that sets a new state of the art on public benchmark datasets when evaluated with the widely used \ac{PSNR} measure.
+}\kor{
+본 논문에서는, 널리 사용되는 \ac{PSNR} 측정 지표를 사용하여 평가할 때, 공개 벤치마크 데이터 세트에서 새로운 최첨단 성능을 발휘하는 심층 잔류 신경망 \textbf{SRResNet}에 대해서 설명한다.
+} \eng{
+We have highlighted some limitations of this \ac{PSNR}-focused image super-resolution and introduced \textbf{SRGAN}, which augments the content loss function with an adversarial loss by training a \ac{GAN}.
+}\kor{
+또한, \ac{PSNR}에 초점을 맞춘 초해상도화의 몇가지 한계를 지적하고, \ac{GAN}을 훈련시키는 것으로, 적대적 손실로 내용 손실 함수를 보강한 \ac{SRGAN}을 소개한다.
+}\eng{
+Using extensive \ac{MOS} testing, we have confirmed that \textbf{SRGAN} reconstructions for large upscaling factors ($4\times$) are, by a considerable margin, more photo-realistic than reconstructions obtained with state-of-the-art reference methods.
+}\kor{
+광범위한 \ac{평균 의견 점수} 테스트를 통해, 큰 해상도 향상 계수($4\times$)를 사용한 \textbf{SRGAN} 재구성 결과가 최첨단 참조 방법들로 얻은 재구성 결과보다 상당히 큰 차이로 더욱 실사에 가까운 것을 확인했다.
+}
 
 {\footnotesize
 \bibliographystyle{ieee}
