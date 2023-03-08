@@ -308,7 +308,7 @@ Despite the breakthroughs in accuracy and speed of single image super-resolution
 }\eng{
 The behavior of optimization-based super-resolution methods is principally driven by the choice of the objective function. Recent work has largely focused on minimizing the mean squared reconstruction error.
 }\kor{
-최적화 기반 초해상도 방법의 동작은 주로 목적 함수를 선택하는 것에 의해 좌우된다. 최근 연구는 평균 제곱 재구성 오류 최소화하는 것에 크게 초점이 맞춰져 있다.
+최적화 기반 초해상도 방법의 동작은 주로 목적 함수를 선택하는 것에 의해 좌우된다. 최근 연구는 평균 제곱 재구성 오류를 최소화하는 것에 크게 초점이 맞춰져 있다.
 }\eng{
 The resulting estimates have high peak signal-to-noise ratios, but they are often lacking high-frequency details and are perceptually unsatisfying in the sense that they fail to match the fidelity expected at the higher resolution.
 }\kor{
@@ -328,7 +328,7 @@ In this paper, we present SRGAN, a generative adversarial network (GAN) for imag
 }\eng{
  The adversarial loss pushes our solution to the natural image manifold using a discriminator network that is trained to differentiate between the super-resolved images and original photo-realistic images.
 }\kor{
-초해상도화 이미지와 원본 실사 이미지를 구별하도록 훈련된 판별기(discriminator) 네트워크를 이용해서 적대적 손실은 해(solution)를 자연 이미지 데이터 공간(manifold)로 밀어넣는다.
+초해상도화 이미지와 원본 실사 이미지를 구별하도록 훈련된 판별기(discriminator) 네트워크를 이용해서 적대적 손실은 해(solution)를 자연 이미지 데이터 공간(manifold)으로 밀어넣는다.
 }\eng{
  In addition, we use a content loss motivated by perceptual similarity instead of similarity in pixel space.
 }\kor{
@@ -349,8 +349,7 @@ An extensive mean-opinion-score (MOS) test shows hugely significant gains in per
 \end{abstract}
 
 \summary{
-Hello World!
-동산에는 붙잡아 관현악이며, 것이다. 있음으로써 뜨고, 따뜻한 그것을 든 쓸쓸하랴? 그것은 별과 되는 어디 같이, 곳이 사막이다. 품고 목숨을 뼈 같은 철환하였는가? 이것이야말로 생생하며, 살았으며, 황금시대의 그리하였는가? 인도하겠다는 우리의 용기가 풀이 할지라도 트고, 우리는 천하를 뿐이다. 꽃 고동을 어디 심장은 듣는다. 기관과 못하다 못할 위하여 목숨을 사막이다. 보이는 얼마나 어디 이것이야말로 그리하였는가? 사람은 없으면 군영과 수 우리는 못할 설레는 얼마나 일월과 이것이다.
+이 논문은 SRGAN이라는 생성적 적대 신경망을 제안하며, 고해상도 이미지의 질감을 복원하는 문제를 해결함. SRGAN은 적대적 손실과 내용 손실로 구성된 지각 손실 함수를 사용하며, 대규모 평가에서 높은 평균 의견 점수를 받음. 이를 통해 SRGAN이 최첨단 방법보다 원본 고해상도 이미지에 가까운 결과를 보인다는 것을 확인함.
 }
 
 %%%%%%%%% BODY TEXT
@@ -363,6 +362,10 @@ The highly challenging task of estimating a \ac{HR} image from its \ac{LR} count
 \ac{SR} received substantial attention from within the computer vision research community and has a wide range of applications \cite{yang2007spatial,Zou12,Nasrollahi2014}.
 }\kor{
 \ac{초해상도화}는 컴퓨터 비전 연구 공동체 내에서 상당한 관심을 받았으며, 광범위하게 응용되고 있다 \cite{yang2007spatial,Zou12,Nasrollahi2014}.
+}
+
+\summary{
+초해상도화의 개념
 }
 % includes face recognition in surveillance videos \cite{Zou12}, super-resolution of depth maps \cite{yang2007spatial}, video streaming and medical applications.
 
@@ -386,7 +389,7 @@ Super-resolved image (left) is almost indistinguishable from original (right). [
 \eng{
 The ill-posed nature of the underdetermined \ac{SR} problem is particularly pronounced for high upscaling factors, for which texture detail in the reconstructed \ac{SR} images is typically absent.
 }\kor{
-불량 조건인(\ac{저해상도}를 \ac{고해상도}로 복원하는 경우 정답이 한 개가 아닌 여러 개가 존재하는 것을 불량 조건을 가진다고 함) 미결정 \ac{초해상도화} 문제의 본질은 특히 일반적으로 재구성된 \ac{초해상도화} 이미지의 질감 세부 사항이 없는 높은 해상도 향상 계수에서 두드러진다.
+불량 조건인(ill-posed) 미결정 \ac{초해상도화} 문제의 본질은 특히 일반적으로 재구성된 \ac{초해상도화} 이미지의 질감 세부 사항이 없는 높은 해상도 향상 계수에서 두드러진다.
 }
 %Assumptions about the data have to be made to approximate the \ac{HR} image, such as exploiting image redundancies. % or employing specifically trained feature models.
 %
@@ -421,7 +424,7 @@ The optimization target of supervised \ac{SR} algorithms is commonly the minimiz
 }\eng{
  This is convenient as minimizing \ac{MSE} also maximizes the \ac{PSNR}, which is a common measure used to evaluate and compare \ac{SR} algorithms \cite{Yang14benchmark}.
 }\kor{
-\ac{MSE}를 최적화하는 것은 \ac{초해상도화} 알고리듬을 평가하고 비교하는데 일반적으로 사용되는 \ac{PSNR}을 최대화하기 때문에 편리하다.\cite{Yang14benchmark}
+\ac{MSE}를 최적화하는 것은 \ac{초해상도화} 알고리듬\cite{Yang14benchmark}을 평가하고 비교하는데 일반적으로 사용되는 \ac{PSNR}을 최대화하기 때문에 편리하다.
 }
 \eng{
 However, the ability of MSE (and PSNR) to capture perceptually relevant differences, such as high texture detail, is very limited as they are defined based on pixel-wise image differences \cite{Wang2003,Wang2004,Gupta2011}.
@@ -435,6 +438,10 @@ However, the ability of MSE (and PSNR) to capture perceptually relevant differen
  The perceptual difference between the super-resolved and original image means that the recovered image is not photo-realistic as defined by Ferwerda \cite{Ferwerda2003}.
 }\kor{
 초해상도 (생성물)과 원본 이미지 사이의 지각적 차이는, 복원한 이미지는 Ferwerda \cite{Ferwerda2003}에서 정의된 것처럼 실사적이지 않다는 것이다.
+}
+
+\summary{
+높은 해상도 향상 계수에서의 초해상도화는 질감 세부 사항이 부족하며, MSE와 PSNR을 최적화 목표로 삼는 경우 높은 질감 세부사항과 같이 지각적으로 관련된 차이를 포착하는 능력이 제한적임.
 }
 
 
@@ -453,6 +460,10 @@ An example photo-realistic image that was super-resolved with a $4\times$ upscal
 $4\times$ 해상도 향상 계수로 초해상도화한 예제 실사 이미지는 \figurename~\ref{fig:exampleIntroFirst}에서 보여진다.
 }
 
+\summary{
+본 논문에서는 건너뛴 연결과 단일 최적화 목표로부터 MSE를 분리한 ResNet을 사용한 SRGAN을 제안하고, VGG 네트워크의 고수준 특징 맵을 사용해 새로운 지각 손실을 정의함.
+}
+
 \subsection{관련 연구}
 \subsubsection{이미지 초해상도화}
 %There is a vast amount of literature and research that focuses on image \ac{SR}.
@@ -464,6 +475,10 @@ Recent overview articles on image \ac{SR} include Nasrollahi and Moeslund \cite{
 Here we will focus on \ac{SISR} and will not further discuss approaches that recover \ac{HR} images from multiple images \cite{Borman1998aSurvey,Farsiu2004}.
 }\kor{
 본 논문에서는 \ac{단일 이미지 초해상도화}에 초점을 맞추고, 고해상도 \ac{고해상도} 이미지들을 여러 이미지로부터 복원하는 \cite{Borman1998aSurvey,Farsiu2004} 접근에 대해서는 더 논의하지 않을 것이다.
+}
+
+\summary{
+이미지 초해상화 분야의 개요적 기사 및 본 논문에서 다루는 세부 분야 제시
 }
 
 
@@ -480,6 +495,10 @@ While these filtering approaches, \eg linear, bicubic or Lanczos \cite{Duchon197
 Methods that put particularly focus on edge-preservation have been proposed \cite{Allebach96, Li2001}.
 }\kor{
 모서리 보존 방법에 특히 초점을 맞추는 방법은 \cite{Allebach96, Li2001}에 의해 제안되었다.
+}
+
+\summary{
+예측 기반 방법과 필터링 접근법의 한계와 모서리 보존 방법
 }
 
 \eng{
@@ -511,19 +530,27 @@ Gu et al. \cite{gu2015convolutional} proposed a convolutional sparse coding appr
 Gu 외. \cite{gu2015convolutional}는 패치를 겹치는 방법을 사용하기보다는 전체 이미지를 처리하여 일관성을 향상시키는 합성곱 희소 표현(convolutional sparese coding)을 제안했다.
 }
 
+\summary{
+저해상도와 고해상도의 복잡한 사상(mapping)을 만들어내는 더 강력한 접근 방식과 관련된 초창기 연구 및 방법들의 소개
+}
+
 \eng{
 To reconstruct realistic texture detail while avoiding edge artifacts, Tai et al. \cite{Tai2010} combine an edge-directed \ac{SR} algorithm based on a gradient profile prior \cite{Sun2008} with the benefits of learning-based detail synthesis. Zhang et al.
 }\kor{
-가장자리의 인공물(artifacts)을 피하면서 사실적인 질감 세부 사항을 재구성하기 위해서, Tai 외. \cite{Tai2010}는 경사 프로필 우선(gradient profile prior) \cite{Sun2008} 방법에 기반한 모서리 방향(edge-directed) \ac{초해상도화} 알고리듬을 학습 기반 세부 사항 합성의 이점과 함께 (Zhang 외.) 결합한다.
+가장자리의 인공물(artifacts)을 피하면서 사실적인 질감 세부 사항을 재구성하기 위해서, Tai 외. \cite{Tai2010}는 경사 프로필 우선(gradient profile prior)\cite{Sun2008} 방법에 기반한 모서리 방향(edge-directed) \ac{초해상도화} 알고리듬을 학습 기반 세부 사항 합성의 이점과 함께 (Zhang 외.) 결합한다.
 } \eng{
 \cite{zhang2012multi} propose a multi-scale dictionary to capture redundancies of similar image patches at different scales.
 }\kor{
-\cite{zhang2012multi}은 서로 다른 크기에서 비슷한 이미지 패치의 중복성을 포착하기 위한 다중-크기(multi-scale) 사전을 제안한다.
+\cite{zhang2012multi}은 서로 다른 크기에서 비슷한 이미지 패치의 중복성을 포착하기 위한 다중 크기(multi-scale) 사전을 제안한다.
 } % with the goal to enhance visual details.
 \eng{
 To super-resolve landmark images, Yue et al. \cite{Yue2013} retrieve correlating \ac{HR} images with similar content from the web and propose a structure-aware matching criterion for alignment.
 }\kor{
 랜드마크 이미지들을 초해상도화하기 위해, Yue 외. \cite{Yue2013}은 웹에 있는 유사한 이미지와 관련이 있는 \ac{고해상도} 이미지를 검색하고, 정렬을 위한 구조 인식(structure-aware) 일치 기준을 제안한다.
+}
+
+\summary {
+경사 프로필 우선 알고리즘과 다중-크기 사전을 활용한 초해상도화 방법과 구조 인식 일치 기준을 제안한 연구들
 }
 
 \eng{
@@ -546,6 +573,10 @@ In Dai et al. \cite{dai2015jointly} a multitude of patch-specific regressors is 
 }\kor{
 Dai 외. \cite{dai2015jointly}에서는 다수의 패치별 회귀 분석기를 학습시키고, 가장 적합한 회귀 분석기를 테스트 중에 선택한다.
 } %. During testing the most appropriate regressors for a given \ac{LR} patch are then selected using kNN.
+
+\summary{
+이웃 임베딩, 커널 능선 회귀, 가우시안 프로세스 회귀, 랜덤 포레스트 방법에 대한 간단한 소개
+}
 
 \eng{
 Recently \ac{CNN} based \ac{SR} algorithms have shown excellent performance.
@@ -579,6 +610,10 @@ Of particular relevance for our paper are the works by Johnson et al. \cite{John
 특히 본 논문과 관련성이 있는 것은 시각적으로 더 실감나는 \ac{고해상도} 이미지를 복원하기 위해, 지각적 유사성에 더 가까운 손실 함수에 의존하는 Johnson 외. \cite{Johnson16PercepLoss}와 Bruna et al. \cite{bruna2016super}의 작업이다.
 }
 
+\summary{
+CNN 기반 초해상도화, LISTA 알고리즘, DRCN, 지각적 유사성 손실 함수 등 초해상도화 분야의 신경망을 이용한 최근 기술과 방법 소개
+}
+
 
 \subsubsection{
 \eng{Design of convolutional neural networks}
@@ -589,10 +624,12 @@ The state of the art for many computer vision problems is meanwhile set by speci
 한편, 많은 컴퓨터 비전 문제에 대한 최첨단 방법은 Krizhevsky 외. \cite{krizhevsky2012imagenet} 작업의 성공의 따라, 특별히 설계된 \ac{합성곱 신경망} 구조에 의해 설정된다.
 }
 
+\summary{컴퓨터 비전의 주류 최첨단 방법인 CNN}
+
 \eng{
 It was shown that deeper network architectures can be difficult to train but have the potential to substantially increase the network's accuracy as they allow modeling mappings of very high complexity \cite{simonyan2014very,szegedy2015going}.
 }\kor{
-심층 네트워크 구조는 훈련하기 어려울 수 있지만, 매우 높은 복잡성의 모델링 매핑을 허용하므로 네트워크의 정확도를 충분히 높일 수 있는 잠재력이 있는 것을 보여준다.
+심층 네트워크 구조는 훈련하기 어려울 수 있지만, 매우 높은 복잡성의 모델링 사상(mapping)을 허용하므로 네트워크의 정확도를 충분히 높일 수 있는 잠재력이 있는 것을 보여준다.
 } \eng{
 To efficiently train these deeper network architectures, batch-normalization \cite{Ioffe2015} is often used to counteract the internal co-variate shift.
 }\kor{
@@ -612,6 +649,8 @@ Skip-connections relieve the network architecture of modeling the identity mappi
 건너뛴 연결은 본질적으로 사소한 항등 사상(identity mapping)을 모델링하는 네트워크 구조를 완화하지만, 이는 합성곱 커널(convolutional kernels)로 표현하기에는 잠재적으로 사소한 것이 아니다.
 }
 
+\summary{심층 네트워크 구조, 배치 정규화, 잔차 블록과 건너뛴 연결 등의 방법과 구조는 초해상도화 성능 향상에 있어 중요함.}
+
 \eng{
 In the context of \ac{SISR} it was also shown that learning upscaling filters is beneficial in terms of accuracy and speed \cite{dong2016accelerating,Shi2016ESPCN,Wang2016}.
 }\kor{
@@ -622,6 +661,10 @@ This is an improvement over Dong et al. \cite{dong2016image} where bicubic inter
 }\kor{
 이는 이미지를 \ac{합성곱 신경망}에 투입하기 전에, \ac{저해상도} 관측(observation)을 해상도 향상하기 위해 쌍삼차 보간(bicubic interpolation)을 사용하는 Dong 외. \cite{dong2016image}에 비해 개선된 것이다.
 } %In addition, by extracting the feature maps in \ac{LR} space as in \cite{Shi2016ESPCN, Johnson16PercepLoss, dong2016accelerating}, the gain in speed can be used to employ a deep \ac{ResNet} to increase accuracy.
+
+\summary{
+쌍삼차 보간을 이용한 방법보다 정확도와 속도 면에서 개선된 방법인 해상도 필터 학습 방법
+}
 
 \begin{figure}[ht]
 \includegraphics[trim=0 0 0 0, clip, width=3.1in]{images/used/jpg/manifold.jpg}
@@ -641,7 +684,7 @@ MSE 기반 방법은 픽셀 공간에서 가능한 해의 픽셀 단위(pixel-wi
 \eng{
 Pixel-wise loss functions such as \ac{MSE} struggle to handle the uncertainty inherent in recovering lost high-frequency details such as texture: minimizing \ac{MSE} encourages finding pixel-wise averages of plausible solutions which are typically overly-smooth and thus have poor perceptual quality \cite{Mathieu2015, Johnson16PercepLoss, dosovitskiy2016generating, bruna2016super}.
 }\kor{
-\ac{MSE}와 같은 픽셀 단위 손실 함수는 질감과 같은 손실된 고주파 세부 정보를 복원할 때, 내재된 불확실성을 처리하기 위해 노력한다: \ac{MSE}를 최소화하는 것은 일반적으로 지나치게 매끄러워서, 나쁜 지각적 품질을 가지는 그럴듯한 해를 찾는 것을 촉진한다\cite{Mathieu2015, Johnson16PercepLoss, dosovitskiy2016generating, bruna2016super}.
+\ac{MSE}와 같은 픽셀 단위 손실 함수는 질감과 같은 손실된 고주파 세부 정보를 복원할 때, 내재된 불확실성을 처리하기 위해 노력한다: \ac{MSE}를 최소화하는 것은 일반적으로 지나치게 매끄러워서, 나쁜 지각적 품질을 가지는 그럴듯한 해(plausible solutions)를 찾는 것을 촉진한다\cite{Mathieu2015, Johnson16PercepLoss, dosovitskiy2016generating, bruna2016super}.
 }
 \eng{
 Reconstructions of varying perceptual quality are exemplified with corresponding \ac{PSNR} in \figurename~\ref{fig:exampleIntro}.
@@ -651,6 +694,10 @@ Reconstructions of varying perceptual quality are exemplified with corresponding
 We illustrate the problem of minimizing \ac{MSE} in \figurename~\ref{fig:manifold} where multiple potential solutions with high texture details are averaged to create a smooth reconstruction.
 }\kor{
 높은 질감 세부 사항의 여러 잠재적 해가 평균화되어 매끄러운 복원물을 만드는 \figurename~\ref{fig:manifold}에서는 \ac{MSE}를 최소화하는 문제를 설명한다.
+}
+
+\summary{
+MSE 손실 함수는 고주파 세부 정보를 복원하기 어려워, 나쁜 지각적 품질을 가지는 해를 찾을 수 있음.
 }
 
 \eng{
@@ -669,12 +716,16 @@ Yu와 Porikli \cite{yu2016ultra}는 큰 해상도 향상 계수($8\times$)로 �
 \eng{
 The idea of using \acp{GAN} to learn a mapping from one manifold to another is described by Li and Wand \cite{Li2016} for style transfer and Yeh et al. \cite{Yeh2016} for inpainting.
 }\kor{
-한 데이터 공간(manifold)에서 다른 데이터 공간(manifold)로의 사상(mapping)을 학습하기 위해 GAN을 사용하는 아이디어는 스타일 전이를 위한 Li와 Wand \cite{Li2016}와 이미지 복원(inpainting)을 위한 Yeh 외. \cite{Yeh2016}에서 설명된다.
+한 데이터 공간(manifold)에서 다른 데이터 공간(manifold)로의 사상(mapping)을 학습하기 위해 GAN을 사용하는 아이디어는 스타일 전송을 위한 Li와 Wand \cite{Li2016}와 이미지 복원(inpainting)을 위한 Yeh 외. \cite{Yeh2016}에서 설명된다.
 }
 \eng{
 Bruna et al. \cite{bruna2016super} minimize the squared error in the feature spaces of VGG19 \cite{simonyan2014very} and scattering networks.
 }\kor{
 Bruna 외. \cite{bruna2016super}는 VGG19의 특징 공간과 산란 네트워크에서 제곱 오차를 최소화한다.
+}
+
+\summary{
+얼굴 이미지 초해상도화, 스타일 전송, 이미지 복원 등 다양한 분야에서 사용되는 GAN
 }
 
 \eng{
@@ -700,6 +751,10 @@ Recently, Li and Wand \cite{Li2016} also investigated the effect of comparing an
 최근 Li와 Wand \cite{Li2016}는 픽셀 또는 VGG 특징 공간의 패치를 비교하고 혼합하는 효과에 대해서도 조사했다.
 }
 
+\summary{
+특징 공간의 유클리드 거리에 기반한 손실 함수와 VGG19 네트워크에서 추출된 특징을 사용하는 초해상도화 및 스타일 전송에 대한 연구 소개
+}
+
 \subsection{\eng{Contribution}\kor{기여}}
 \eng{
 \acp{GAN} provide a powerful framework for generating plausible-looking natural images with high perceptual quality.
@@ -711,6 +766,10 @@ Recently, Li and Wand \cite{Li2016} also investigated the effect of comparing an
 The \ac{GAN} procedure encourages the reconstructions to move towards regions of the search space with high probability of containing photo-realistic images and thus closer to the natural image manifold as shown in \figurename~\ref{fig:manifold}.
 }\kor{
 GAN 절차는 복원물이 실사 이미지를 포함할 확률이 높은 검색 공간의 영역 쪽으로 이동하도록 도와서 \figurename~\ref{fig:manifold}에서 보여지는 것처럼 자연 이미지 데이터 공간(manifold)에 가까워지게 한다.
+}
+
+\summary{
+실사 이미지 생성을 위한 강력한 프레임워크인 GAN
 }
 
 \eng{
@@ -736,6 +795,10 @@ We confirm with an extensive \ac{MOS} test on images from three public benchmark
 }
 \end{itemize}
 
+\summary{
+심층 ResNet 구조를 이용한 최첨단 성능의 달성, 새로운 지각 손실에 최적화된 GAN 기반 네트워크인 SRGAN 제시, MOS 테스트를 통한 실사 초해상도 이미지 추정 성능에서의 최첨단 성능 확인
+}
+
 %The adversarial loss is driven by a discriminator network to encourage solutions from the natural image domain while the content loss ensures that the super-resolved images have the same content as their low-resolution counterparts. We further replace the \ac{MSE}-based content loss function with the euclidean distance between the last convolutional feature maps of the VGG network \cite{simonyan2014very}, which are more invariant to changes in pixel space as illustrated in Figures 3 and 4 in Li and Wand \cite{Li2016}.
 % We validate the proposed approaches using images from three publicly available benchmark.
 %datasets and compare the performance against state-of-the-art works.
@@ -753,6 +816,10 @@ A quantitative evaluation on public benchmark datasets as well as visual illustr
 The paper concludes with a discussion in Section \ref{sec:discussion} and concluding remarks in Section \ref{sec:conclusion}.
 }\kor{
 본 논문은 토론 부분 \ref{sec:discussion}과 결언 부분 \ref{sec:conclusion}으로 끝맺는다.
+}
+
+\summary{
+구조, 평가, 결론에 대한 간단한 설명
 }
 
 \section{\eng{Method}\kor{방법}}
@@ -795,10 +862,14 @@ For an image with $C$ color channels, we describe $I^{LR}$ by a real-valued tens
 $C$개의 색상 채널이 있는 이미지의 경우, $I^{LR}$은 실제로 값을 가지는 $W \times H \times C$ 크기의 텐서로, $I^{HR}$, $I^{SR}$은 $rW \times rH \times C$로 표현된다.
 }
 
+\summary{
+단일 이미지 초해상도화의 목표와 과정에 대한 설명
+}
+
 \eng{
 Our ultimate goal is to train a generating function $G$ that estimates for a given \ac{LR} input image its corresponding \ac{HR} counterpart.
 }\kor{
-최종적인 목표는 주어진 \ac{저해상도} 입력 이미지에 대해, 해당 이미지와 대응하는 \ac{고해상도} 이미지를 추정하는 생성 함수 $G$를 훈련하는 것이다.
+최종적인 목표는 주어진 \ac{저해상도} 입력 이미지에 대해, 해당 이미지와 대응하는 \ac{고해상도} 이미지를 추정하는 생성 함수(generating function) $G$를 훈련하는 것이다.
 } \eng{
 To achieve this, we train a generator network as a feed-forward \ac{CNN} $G_{\theta_G}$ parametrized by ${\theta_G}$.
 }\kor{
@@ -815,6 +886,11 @@ For training images $I^{HR}_n$ , $n = 1,\dots,N$ with corresponding $I^{LR}_n$ ,
 \begin{equation}
 \hat{{\theta}}_G = \arg\min_{\theta_G} \frac{1}{N} \sum_{n=1}^{N}{l^{SR}(G_{\theta_G}(I^{LR}_n),I^{HR}_n)}
 \end{equation}
+
+\summary{
+저해상도 입력 이미지에서 고해상도 이미지를 생성하는 생성 함수 $G$를 이용한 네트워크 훈련
+}
+
 \eng{
 In this work we will specifically design a perceptual loss $l^{SR}$ as a weighted combination of several loss components that model distinct desirable characteristics of the recovered \ac{SR} image.
 }\kor{
@@ -823,6 +899,10 @@ In this work we will specifically design a perceptual loss $l^{SR}$ as a weighte
 The individual loss functions are described in more detail in Section \ref{sec:losses}.
 }\kor{
 개별 손실 함수의 더 자세한 세부 사항은 \ref{sec:losses}에서 설명된다.
+}
+
+\summary{
+복원된 이미지가 바람직한 특성을 가질 수 있게하는 손실 함수 설계
 }
 
 \subsection{\eng{Adversarial network architecture}\kor{적대적 네트워크 구조}}
@@ -838,6 +918,11 @@ Goodfellow 외. \cite{Goodfellow14GAN}에 이어, 교대로 최적화하기 위�
 & \mathbb{E}_{I^{LR}\sim p_G(I^{LR})} [ \log (1-D_{\theta_D}(G_{\theta_G}(I^{LR})) ]
 \end{split}
 \end{equation}
+
+\summary{
+판별기 네트워크의 구조
+}
+
 \eng{
 The general idea behind this formulation is that it allows one to train a generative model $G$ with the goal of fooling a differentiable discriminator $D$ that is trained to distinguish super-resolved images from real images.
 }\kor{
@@ -857,6 +942,10 @@ This is in contrast to \ac{SR} solutions obtained by minimizing pixel-wise error
 이것은 \ac{MSE}와 같이, 픽셀 단위 오류 측정을 최소화하는 것으로 얻어진 \ac{초해상도화} 해들과는 대조적이다.
 }
 
+\summary{
+GAN은 실제 이미지와 매우 유사한 해를 만들어 판독기 $D$를 속이는 것으로 학습하며, 지각적으로 우수한 해를 장려함. 이 해들은 MSE처럼 픽셀 단위 오류 측정을 최소화하여 얻은 해들과는 대조적임.
+}
+
 \eng{
 At the core of our very deep generator network $G$, which is illustrated in \figurename~\ref{fig:generator} are $B$ residual blocks with identical layout. Inspired by Johnson et al.
 }\kor{
@@ -874,6 +963,10 @@ Specifically, we use two convolutional layers with small $3\times3$ kernels and 
 We increase the resolution of the input image with two trained sub-pixel convolution layers as proposed by Shi et al. \cite{Shi2016ESPCN}.
 }\kor{
 Shi 외. \cite{Shi2016ESPCN}가 제안한 것처럼 입력 이미지의 해상도를 두개의 훈련된 하위 픽셀(sub-pixel) 합성곱 레이어를 통해 증가시킨다.
+}
+
+\summary{
+잔차 블록을 사용하는 고심층 생성기 네트워크 G의 구조: 3x3 커널, 64개의 특징 맵, 두개의 합성곱 레이어, 배치 정규화 레이어, 활성화 함수로 ParametricRELU 사용
 }
 
 \eng{
@@ -907,6 +1000,10 @@ The resulting 512 feature maps are followed by two dense layers and a final sigm
 512개의 특징 맵의 결과 뒤에는 샘플 분류에 대한 확률을 얻기 위해 두 개의 밀집 레이어(dense layer)와 최종 시그모이드(sigmoid) 활성화 함수가 뒤따른다.
 }
 
+\summary{
+실제 이미지와 생성된 고해상도화 샘플을 구별하기 위해 판별기 네트워크를 훈련하며, 판별기 네트워크는 8개의 합성곱 레이어(64 → 512, 2배씩 증가, 3 × 3 필터 커널)와 스트라이드 합성곱, 두개의 밀집 레이어와 시그모이드 활성화 함수를 사용하여 구성하였음.
+}
+
 \subsection{\eng{Perceptual loss function}\kor{지각적 손실 함수}}
 \label{sec:losses}
 \eng{
@@ -926,10 +1023,19 @@ We formulate the perceptual loss as the weighted sum of a content loss ($l^{SR}_
 \begin{equation}
 l^{SR} = \underbrace{\underbrace{l^{SR}_\textrm{X}}_{\text{\eng{content loss}\kor{내용 손실}}} + \underbrace{10^{-3} l^{SR}_{Gen}}_{\text{\eng{adversarial loss}\kor{적대적 손실}}}}_{\text{\eng{perceptual loss (for VGG based content losses)}\kor{지각적 손실 (VGG 기반 내용 손실에 대한)}}}
 \end{equation}
+
+\summary{
+내용 손실과 적대적 손실의 가중 합으로 구성된 본 논문의 지각 손실 함수 $l^{SR}$
+}
+
 \eng{
 In the following we describe possible choices for the content loss $l^{SR}_\textrm{X}$ and the adversarial loss $l^{SR}_\textrm{Gen}$.
 }\kor{
 다음에서는, 내용 손실 $l^{SR}_\textrm{X}$과 적대적 손실 $l^{SR}_\textrm{Gen}$에 대해 가능한 선택을 설명한다.
+}
+
+\summary{
+내용 손실과 적대적 손실에 대한 설명 제시
 }
 
 \subsubsection{\eng{Content loss}\kor{내용 손실}}
@@ -950,6 +1056,10 @@ This is the most widely used optimization target for image \ac{SR} on which many
 However, while achieving particularly high \ac{PSNR}, solutions of \ac{MSE} optimization problems often lack high-frequency content which results in perceptually unsatisfying solutions with overly smooth textures (\cf \figurename~\ref{fig:exampleIntro}).
 }\kor{
 하지만, 특히 높은 \ac{PSNR}을 달성하는 동안, \ac{MSE} 최적화 문제의 해는 종종 고주파 내용이 부족해서 과하게 매끄러운 질감(\cf \figurename~\ref{fig:exampleIntro})으로 지각적으로 만족스럽지 못한 해를 초래한다.
+}
+
+\summary{
+픽셀 단위 MSE 손실과 해당 손실을 이용하여 얻은 해의 문제점
 }
 
 \eng{
@@ -979,10 +1089,18 @@ l^{SR}_{VGG/i.j} =
 \label{eq:vgg}
 \end{equation}
 
+\summary{
+VGG 손실을 사용하여 재구성-참조 이미지 간의 유클리드 거리를 이용하는 지각적 유사성에 더 가까운 손실 함수를 정의
+}
+
 \eng{
 Here $W_{i,j}$ and $H_{i,j}$ describe the dimensions of the respective feature maps within the VGG network.
 }\kor{
 여기서 $W_{i,j}$와 $H_{i,j}$는 VGG 네트워크 내에서 해당하는 특징 맵의 크기를 나타낸다.
+}
+
+\summary{
+특징 맵의 크기 표현 제시
 }
 
 \subsubsection{\eng{Adversarial loss}\kor{적대적 손실}}
@@ -1003,14 +1121,22 @@ The generative loss $l^{SR}_{Gen}$ is defined based on the probabilities of the 
 l^{SR}_{Gen} = \sum_{n=1}^{N} -\log D_{\theta_D}(G_{\theta_G}(I^{LR}))
 \end{equation}
 
+\summary{
+GAN의 생성 요소를 추가하여 만든 지각 손실의 정의
+}
+
 \eng{
 Here, $D_{\theta_D}(G_{\theta_G}(I^{LR}))$ is the probability that the reconstructed image $G_{\theta_G}(I^{LR})$ is a natural HR image.
 }\kor{
-여기서 $D_{\theta_D}(G_{\theta_G}(I^{LR}))$는 재구성된 이미지 $G_{\theta_G}(I^{LR})$가 자연스러운 고해상도이미지일 확률이다.
+여기서 $D_{\theta_D}(G_{\theta_G}(I^{LR}))$는 재구성된 이미지 $G_{\theta_G}(I^{LR})$가 자연스러운 고해상도 이미지일 확률이다.
 } \eng{
 For better gradient behavior we minimize $-\log D_{\theta_D}(G_{\theta_G}(I^{LR}))$ instead of $\log [1-D_{\theta_D}(G_{\theta_G}(I^{LR}))]$ \cite{Goodfellow14GAN}.
 }\kor{
 더 나은 경사 동작(gradient behavior)을 위해, 본 논문에서는 $\log [1-D_{\theta_D}(G_{\theta_G}(I^{LR}))]$ \cite{Goodfellow14GAN} 대신 $-\log D_{\theta_D}(G_{\theta_G}(I^{LR}))$를 최소화했다.
+}
+
+\summary{
+지각 손실의 정의 설명
 }
 
 %
@@ -1047,13 +1173,21 @@ SRResNet ($l^{SR}_{MSE}$와 $l^{SR}_{VGG/2.2}$ 손실을 위한)과 SRGAN 변형
 \eng{
 Statistical tests were performed as paired two-sided Wilcoxon signed-rank tests and significance determined at $p<0.05$.
 }\kor{
-통계적 테스트는 쌍체 양측 월콕슨 부호 순위 검정(paired two-sided Wilcoxon signed-rank tests)으로 수행되었으며, 유의성(significance)은 $p<0.05$으로 결정되었다.
+통계적 검정(Statistical tests)은 쌍체 양측 월콕슨 부호 순위 검정(paired two-sided Wilcoxon signed-rank tests)으로 수행되었으며, 유의성(significance)은 $p<0.05$으로 결정되었다.
+}
+
+\summary{
+세 가지 데이터 세트(Set5, Set14, BSD100-BSD300)에 대한 실험을 수행했으며, PSNR 및 SSIM 지표를 이용하여 측정한 값들을 통계적 테스트를 이용하여 비교함.
 }
 
 \eng{
 The reader may also be interested in an independently developed GAN-based solution on GitHub\footnote{\url{https://github.com/david-gpu/srez}}. However it only provides experimental results on a limited set of faces, which is a more constrained and easier task.
 }\kor{
 독자는 GitHub\footnote{\url{https://github.com/david-gpu/srez}}에서 독립적으로 개발된 GAN 기반의 방법에 관심이 있을 수도 있다. 하지만 이는 한정된 얼굴 집합에 대한 실험 결과만 제공하므로, 더 제한적이고 쉬운 작업이다.
+}
+
+\summary{
+GitHub에서 개발된 GAN 방법의 한계 제시
 }
 
 \subsection{\eng{Training details and parameters}\kor{훈련 세부 사항과 매개변수}}
@@ -1104,7 +1238,7 @@ Goodfellow 외. \cite{Goodfellow14GAN}에서 사용된 $k=1$과 동일한 생성
 } \eng{
 Our generator network has 16 identical ($B=16$) residual blocks.
 }\kor{
-생성기(generator) 네트워크는 16개의 동일한 ($B=16$) 잔차 블록을 가진다.
+생성기(generator) 네트워크는 16개의 동일한 ($B=16$) 잔차 블록(residual blocks)을 가진다.
 } \eng{
 During test time we turn batch-normalization update off to obtain an output that deterministically depends only on the input \cite{Ioffe2015}.
 }\kor{
@@ -1113,6 +1247,10 @@ During test time we turn batch-normalization update off to obtain an output that
 Our implementation is based on Theano \cite{theano2016} and Lasagne \cite{lasagne2015}.
 }\kor{
 본 논문의 구현은 Theano \cite{theano2016}와 Lasagne \cite{lasagne2015}을 기반으로 한다.
+}
+
+\summary{
+ImageNet 데이터베이스에서 무작위 샘플 350,000개를 사용하여 SRResNet 및 SRGAN 모델을 훈련시켰으며, 최적화를 위해 Adam $\beta_1=0.9$을 사용하였음. 생성기와 판별기 네트워크는 번갈아 갱신했으며, 생성기 네트워크의 구조는 16개의 잔차 블록을 가짐.
 }
 
 \subsection{\eng{Mean opinion score (MOS) testing}\kor{평균 의견 점수 (MOS) 테스트}}
@@ -1152,10 +1290,18 @@ Raters very consistently rated NN interpolated test images as 1 and the original
 평가자들은 상당히 일관되게 최근접 이웃 방법으로 보간된 테스트 이미지를 1로, 원본 고해상도 이미지를 5 (\cf \figurename~\ref{fig:MOS})로 평가했다.
 }
 
+\summary{
+평균 의견 점수 테스트를 통해 평가자들에게 다양한 초해상도화 방법의 평가를 요청하여, 이미지 품질을 정량화하고 평가의 일관성을 확인했음.
+}
+
 \eng{
 The experimental results of the conducted \ac{MOS} tests are summarized in Table \ref{tab:perceptual}, Table \ref{tab:performance} and \figurename~\ref{fig:MOS}.
 }\kor{
 수행된 \ac{평균 의견 점수} 테스트의 실험 결과는 Table \ref{tab:perceptual}, Table \ref{tab:performance}와 \figurename~\ref{fig:MOS}에 요약되어 있다.
+}
+
+\summary{
+평균 의견 점수 테스트 결과 제시
 }
 
 \begin{table}[]
@@ -1213,6 +1359,11 @@ SRGAN-VGG22: $l^{SR}_{VGG/2.2}$ ($\phi_{2,2}$ 사용), 낮은 수준의 특징 \
 \textbf{SRGAN}-VGG54: $l^{SR}_{VGG/5.4}$ ($\phi_{5,4}$ 사용), 이미지 내용에 집중할 수 있는 더 큰 잠재력이 있는 심층 신경망 레이어의 고수준 특징 맵에 정의된 손실. 본 논문에서는 앞으로 이 네트워크를 \textbf{SRGAN}로 표기한다.
 }
 \end{itemize}
+
+\summary{
+내용 손실에 따른 지각 손실 영향 조사, SRGAN-MSE, SRGAN-VGG22, SRGAN-VGG54 손실에 대한 설명
+}
+
 \eng{
 We also evaluate the performance of the generator network without adversarial component for the two losses $l^{SR}_{MSE}$ (\textbf{SRResNet}-MSE) and $l^{SR}_{VGG/2.2}$ (SRResNet-VGG22). We refer to SRResNet-MSE as \textbf{SRResNet}.
 }\kor{
@@ -1252,12 +1403,16 @@ However, \textbf{SRGAN}-VGG54 significantly outperformed other SRGAN and SRResNe
 \eng{
 We observed a trend that using the higher level VGG feature maps $\phi_{5,4}$ yields better texture detail when compared to $\phi_{2,2}$ (\cf \figurename~\ref{fig:perceptual}).
 }\kor{
-더 높은 수준의 VGG 기능 맵 $\phi_{5,4}$를 사용하면 $\phi_{2,2}$ (\cf \figurename~\ref{fig:perceptual})와 비교하여 더 나은 질감 세부 정보를 얻을 수 있는 경향를 관찰했다.
+고수준의 VGG 기능 맵 $\phi_{5,4}$를 사용하면 $\phi_{2,2}$ (\cf \figurename~\ref{fig:perceptual})와 비교하여 더 나은 질감 세부 정보를 얻을 수 있는 경향를 관찰했다.
 }
 \eng{
 Further examples of perceptual improvements through \textbf{SRGAN} over \textbf{SRResNet} are provided in the supplementary material.
 }\kor{
 \textbf{SRResNet}에 따른 \textbf{SRGAN}을 통한 추가적인 지각적 개선 사례는 보충 자료에 제시된다.
+}
+
+\summary{
+SRGAN 및 SRResNet의 성능 평가와 손실 선택의 영향 조사. SRGAN-VGG54는 특히 더 뛰어난 성능을 보였음. 고수준의 VGG 기능 맵 $\phi_{5,4}$ 사용 시 높은 성능 보임.
 }
 \begin{figure}[ht!]
 \includegraphics[width=0.48\textwidth]{images/used/jpg/MOS_heatmapcropped}
@@ -1360,6 +1515,10 @@ Please note that we used a publicly available framework for evaluation (\cf Sect
 평가를 위해 사용 가능한 공개된 프레임워크(\cf \ref{subsec:data} 부분)를 사용했으며, 따라서 보고된 값은 원래 논문에 보고된 값과 약간 다를 수 있다.
 }
 
+\summary{
+각 방법에 대한 SRResNet와 SRGAN의 성능 비교
+}
+
 \eng{
 We further obtained \ac{MOS} ratings for \textbf{SRGAN} and all reference methods on \textbf{BSD100}.
 }\kor{
@@ -1382,6 +1541,11 @@ The distribution of all collected \ac{MOS} ratings is summarized in \figurename~
 }\kor{
 수집된 모든 \ac{평균 의견 점수} 등급의 분포는 \figurename~\ref{fig:MOS}에 요약되어 있다.
 }
+
+\summary{
+다른 참조 방법들을 큰 폭으로 능가하고 실사 이미지 초해상도화를 위한 새로운 최첨단 방법이 된 SRGAN
+}
+
 
 \section{\eng{Discussion and future work}\kor{토론 및 향후 연구}}
 \label{sec:discussion}
@@ -1427,6 +1591,10 @@ We further found \ac{SRGAN} variants of deeper networks are increasingly difficu
 }
 % and could potentially explain the different findings.
 
+\summary{
+SRGAN은 PSNR과 SSIM보다 인간 지각 체계와 관련된 평가 지표에서 우수한 성능을 보였으며, ResNet 설계는 심층 네트워크 성능에 큰 영향을 미쳤음. 심층 네트워크는 더 나은 성능을 제공하지만 훈련 및 테스트 시간이 더 오래 걸리며, 고주파 인공물이 발생하여 훈련이 어렵다는 것을 발견함.
+}
+
 \eng{
 Of particular importance when aiming for photo-realistic solutions to the \ac{SR} problem is the choice of the content loss as illustrated in \figurename~\ref{fig:perceptual}.
 }\kor{
@@ -1457,7 +1625,11 @@ The perceptually convincing reconstruction of text or structured scenes \cite{Hu
 \eng{
 The development of content loss functions that describe image spatial content, but more invariant to changes in pixel space will further improve photo-realistic image \ac{SR} results.
 }\kor{
-이미지 공간의 내용을 묘사하는 내용 손실 함수를 픽셀 공간의 변화에 잘 변하지 않게 개발한다면, 사진과 실사 이미지 \ac{초해상도화} 결과를 더욱 향상시킬 수 있다.
+이미지 공간의 내용을 묘사하는 내용 손실 함수를 픽셀 공간의 변화에 잘 변하지 않게 개발한다면, 사진과 실사 이미지 \ac{초해상도화} 결과를 더욱 향상시킬 수 있을 것이다.
+}
+
+\summary{
+콘텐츠 손실의 선택은 초해상도화 결과에 큰 영향을 미침. 이상적인 손실 함수는 응용에 따라 달라질 수 있으며, 픽셀 공간의 변화에 불변하도록 내용 손실 함수를 개발한다면 결과를 더욱 향상시킬 수 있을 것으로 보임.
 }
 %
 \section{\eng{Conclusion}\kor{결론}}
@@ -1474,6 +1646,10 @@ We have highlighted some limitations of this \ac{PSNR}-focused image super-resol
 Using extensive \ac{MOS} testing, we have confirmed that \textbf{SRGAN} reconstructions for large upscaling factors ($4\times$) are, by a considerable margin, more photo-realistic than reconstructions obtained with state-of-the-art reference methods.
 }\kor{
 광범위한 \ac{평균 의견 점수} 테스트를 통해, 큰 해상도 향상 계수($4\times$)를 사용한 \textbf{SRGAN} 재구성 결과가 최첨단 참조 방법들로 얻은 재구성 결과보다 상당히 큰 차이로 실사에 더욱 가까운 것을 확인했다.
+}
+
+\summary{
+본 논문에서는 PSNR 기반 초해상도화의 한계를 지적하며, 적대적 손실로 내용 손실 함수를 보강한 SRGAN을 소개하였음. SRGAN의 결과는 최첨단 참조 방법들보다 실사에 더 가까운 것을 확인함.
 }
 
 {\footnotesize
