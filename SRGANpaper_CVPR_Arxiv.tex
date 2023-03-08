@@ -1,0 +1,1947 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage{comment}
+\usepackage{kotex}
+\usepackage{cvpr}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{nicefrac}
+\usepackage{mathtools}
+\usepackage{adjustbox}
+
+
+\usepackage{caption}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{spy,calc}
+\usepackage{array}
+\newcolumntype{x}[1]{>{\centering\arraybackslash\hspace{0pt}}p{#1}}
+%%%
+\newif\ifblackandwhitecycle
+\gdef\patternnumber{0}
+
+\pgfkeys{/tikz/.cd,
+zoombox paths/.style={
+    draw=orange,
+    very thick
+},
+black and white/.is choice,
+black and white/.default=static,
+black and white/static/.style={
+    draw=white,
+    zoombox paths/.append style={
+        draw=white,
+        postaction={
+            draw=black,
+            loosely dashed
+        }
+    }
+},
+black and white/static/.code={
+    \gdef\patternnumber{1}
+},
+black and white/cycle/.code={
+    \blackandwhitecycletrue
+    \gdef\patternnumber{1}
+},
+black and white pattern/.is choice,
+black and white pattern/0/.style={},
+black and white pattern/1/.style={
+    draw=white,
+    postaction={
+        draw=black,
+        dash pattern=on 2pt off 2pt
+    }
+},
+black and white pattern/2/.style={
+    draw=white,
+    postaction={
+        draw=black,
+        dash pattern=on 4pt off 4pt
+    }
+},
+black and white pattern/3/.style={
+    draw=white,
+    postaction={
+        draw=black,
+        dash pattern=on 4pt off 4pt on 1pt off 4pt
+    }
+},
+black and white pattern/4/.style={
+    draw=white,
+    postaction={
+        draw=black,
+        dash pattern=on 4pt off 2pt on 2 pt off 2pt on 2 pt off 2pt
+    }
+},
+zoomboxarray inner gap/.initial=5pt,
+zoomboxarray columns/.initial=2,
+zoomboxarray rows/.initial=2,
+subfigurename/.initial={},
+figurename/.initial={zoombox},
+zoomboxarray/.style={
+    execute at begin picture={
+        \begin{scope}
+            [
+            spy using outlines={%
+                zoombox paths,
+                width=\imagewidth / \pgfkeysvalueof{/tikz/zoomboxarray columns} - (\pgfkeysvalueof{/tikz/zoomboxarray columns} - 1) / \pgfkeysvalueof{/tikz/zoomboxarray columns} * \pgfkeysvalueof{/tikz/zoomboxarray inner gap} -\pgflinewidth,
+                height=\imageheight / \pgfkeysvalueof{/tikz/zoomboxarray rows} - (\pgfkeysvalueof{/tikz/zoomboxarray rows} - 1) / \pgfkeysvalueof{/tikz/zoomboxarray rows} * \pgfkeysvalueof{/tikz/zoomboxarray inner gap}-\pgflinewidth,
+                magnification=3,
+                every spy on node/.style={
+                    zoombox paths
+                },
+                every spy in node/.style={
+                    zoombox paths
+                }
+            }
+            ]
+    },
+    execute at end picture={
+        \end{scope}
+%\node at (image.north) [anchor=north,inner sep=0pt] {\subcaptionbox{\label{\pgfkeysvalueof{/tikz/figurename}-image}}{\phantomimage}};
+%\node at (zoomboxes container.north) [anchor=north,inner sep=0pt] {\subcaptionbox{\label{\pgfkeysvalueof{/tikz/figurename}-zoom}}{\phantomimage}};
+\gdef\patternnumber{0}
+},
+spymargin/.initial=0.5em,
+zoomboxes xshift/.initial=1,
+zoomboxes right/.code=\pgfkeys{/tikz/zoomboxes xshift=1},
+zoomboxes left/.code=\pgfkeys{/tikz/zoomboxes xshift=-1},
+zoomboxes yshift/.initial=0,
+zoomboxes above/.code={
+\pgfkeys{/tikz/zoomboxes yshift=1},
+\pgfkeys{/tikz/zoomboxes xshift=0}
+},
+zoomboxes below/.code={
+\pgfkeys{/tikz/zoomboxes yshift=-1},
+\pgfkeys{/tikz/zoomboxes xshift=0}
+},
+caption margin/.initial=0.4ex,
+},
+adjust caption spacing/.code={},
+image container/.style={
+inner sep=0pt,
+at=(image.north),
+anchor=north,
+adjust caption spacing
+},
+zoomboxes container/.style={
+inner sep=0pt,
+at=(image.north),
+anchor=north,
+name=zoomboxes container,
+xshift=\pgfkeysvalueof{/tikz/zoomboxes xshift}*(\imagewidth+\pgfkeysvalueof{/tikz/spymargin}),
+yshift=\pgfkeysvalueof{/tikz/zoomboxes yshift}*(\imageheight+\pgfkeysvalueof{/tikz/spymargin}+\pgfkeysvalueof{/tikz/caption margin}),
+adjust caption spacing
+},
+calculate dimensions/.code={
+\pgfpointdiff{\pgfpointanchor{image}{south west} }{\pgfpointanchor{image}{north east} }
+\pgfgetlastxy{\imagewidth}{\imageheight}
+\global\let\imagewidth=\imagewidth
+\global\let\imageheight=\imageheight
+\gdef\columncount{1}
+\gdef\rowcount{1}
+\gdef\zoomboxcount{1}
+},
+image node/.style={
+inner sep=0pt,
+name=image,
+anchor=south west,
+append after command={
+[calculate dimensions]
+node [image container,subfigurename=\pgfkeysvalueof{/tikz/figurename}-image] {\phantomimage}
+node [zoomboxes container,subfigurename=\pgfkeysvalueof{/tikz/figurename}-zoom] {\phantomimage}
+}
+},
+color code/.style={
+zoombox paths/.append style={draw=#1}
+},
+connect zoomboxes/.style={
+spy connection path={\draw[draw=none,zoombox paths] (tikzspyonnode) -- (tikzspyinnode);}
+},
+help grid code/.code={
+\begin{scope}[
+x={(image.south east)},
+y={(image.north west)},
+font=\footnotesize,
+help lines,
+overlay
+]
+\foreach \x in {0,1,...,9} {
+\draw(\x/10,0) -- (\x/10,1);
+\node [anchor=north] at (\x/10,0) {0.\x};
+}
+\foreach \y in {0,1,...,9} {
+\draw(0,\y/10) -- (1,\y/10);                        \node [anchor=east] at (0,\y/10) {0.\y};
+}
+\end{scope}
+},
+help grid/.style={
+append after command={
+[help grid code]
+}
+},
+}
+
+\newcommand\phantomimage{%
+\phantom{%
+\rule{\imagewidth}{\imageheight}%
+}%
+}
+\newcommand\zoombox[2][]{
+\begin{scope}[zoombox paths]
+\pgfmathsetmacro\xpos{
+(\columncount-1)*(\imagewidth / \pgfkeysvalueof{/tikz/zoomboxarray columns} + \pgfkeysvalueof{/tikz/zoomboxarray inner gap} / \pgfkeysvalueof{/tikz/zoomboxarray columns} ) + \pgflinewidth
+}
+\pgfmathsetmacro\ypos{
+(\rowcount-1)*( \imageheight / \pgfkeysvalueof{/tikz/zoomboxarray rows} + \pgfkeysvalueof{/tikz/zoomboxarray inner gap} / \pgfkeysvalueof{/tikz/zoomboxarray rows} ) + 0.5*\pgflinewidth
+}
+\edef\dospy{\noexpand\spy [
+#1,
+zoombox paths/.append style={
+black and white pattern=\patternnumber
+},
+every spy on node/.append style={#1},
+x=\imagewidth,
+y=\imageheight
+] on (#2) in node [anchor=north west] at ($(zoomboxes container.north west)+(\xpos pt,-\ypos pt)$);}
+\dospy
+\pgfmathtruncatemacro\pgfmathresult{ifthenelse(\columncount==\pgfkeysvalueof{/tikz/zoomboxarray columns},\rowcount+1,\rowcount)}
+\global\let\rowcount=\pgfmathresult
+\pgfmathtruncatemacro\pgfmathresult{ifthenelse(\columncount==\pgfkeysvalueof{/tikz/zoomboxarray columns},1,\columncount+1)}
+\global\let\columncount=\pgfmathresult
+\ifblackandwhitecycle
+\pgfmathtruncatemacro{\newpatternnumber}{\patternnumber+1}
+\global\edef\patternnumber{\newpatternnumber}
+\fi
+\end{scope}
+}
+
+%%%
+\usepackage[acronym,shortcuts]{glossaries}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\Mod}[2]{\text{mod}\left(#1,#2\right)}
+\usepackage{setspace}
+
+%
+\usepackage[pagebackref=true,breaklinks=true,letterpaper=true,colorlinks,bookmarks=false]{hyperref}
+
+\usepackage{booktabs}
+
+\cvprfinalcopy
+
+\def\cvprPaperID{1948} % *** Enter the CVPR Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+
+% Pages are numbered in submission mode, and unnumbered in camera-ready
+\ifcvprfinal\pagestyle{empty}\fi
+
+\makeglossaries
+
+\newacronym{SISR}{SISR}{single image super-resolution}
+\newacronym{단일 이미지 초해상도화}{단일 이미지 초해상도화}{single image super-resolution}
+\newacronym{PSNR}{PSNR}{peak signal-to-noise ratio}
+\newacronym{MSE}{MSE}{mean squared error}
+\newacronym{평균 제곱 오차}{평균 제곱 오차}{mean squared error}
+\newacronym{CNN}{CNN}{convolutional neural network}
+\newacronym{합성곱 신경망}{합성곱 신경망}{convolutional neural network}
+\newacronym{ESPCN}{ESPCN}{efficient sub-pixel convolutional neural network}
+\newacronym{DRCN}{DRCN}{deeply-recursive convolutional network}
+\newacronym{ResNet}{ResNet}{residual network}
+\newacronym{GAN}{GAN}{generative adversarial network}
+\newacronym{LR}{LR}{low-resolution}
+\newacronym{저해상도}{저해상도}{low-resolution}
+\newacronym{HR}{HR}{high-resolution}
+\newacronym{고해상도}{고해상도}{high-resolution}
+\newacronym{SR}{SR}{super-resolution}
+\newacronym{초해상도화}{초해상도화}{super-resolution}
+\newacronym{MOS}{MOS}{mean opinion score}
+\newacronym{평균 의견 점수}{평균 의견 점수}{mean opinion score}
+\newacronym{SSIM}{SSIM}{structural similarity}
+\newacronym{PSNR-HVS}{PSNR-HVS}{peak signal-to-noise ratio - human visual system}
+\newacronym{MS-SSIM}{MS-SSIM}{multi-scale structural similarity}
+\newacronym{SRGAN}{SRGAN}{super-resolution generative adversarial network}
+
+\newcommand{\lrimage}[0]{\mathbf{I}^{LR}}
+\newcommand{\hrimage}[0]{\mathbf{I}^{HR}}
+\newcommand{\networkoutput}[0]{\mathbf{I}^{SR}}
+\newcommand{\convolution}[2]{#1\ast#2}
+\newcommand{\nonlinearity}[0]{\phi}
+\newcommand{\periodicshufflingoperator}[0]{\mathcal{PS}}
+\newcommand{\kor}[1]{#1}
+\newcommand{\eng}[1]{}
+\newcommand{\summary}[1]{}
+
+\usepackage{subcaption}
+
+\hyphenpenalty=1000
+\tolerance=1000
+
+\begin{document}
+
+%%%%%%%%% TITLE
+%\title{Photo-Realistic Single Image Super-Resolution Using a Generative Adversarial Network}
+\title{
+\eng{Photo-Realistic Single Image Super-Resolution Using a Generative Adversarial Network}
+\kor{생성적 적대 신경망을 이용한 실사 단일 이미지 초해상도화}}
+
+\onehalfspacing
+\author{Christian Ledig, Lucas Theis, Ferenc Husz\'{a}r, Jose Caballero, Andrew Cunningham, \\Alejandro Acosta, Andrew Aitken, Alykhan Tejani, Johannes Totz, Zehan Wang, Wenzhe Shi\\
+Twitter\\
+{\tt\footnotesize \{cledig,ltheis,fhuszar,jcaballero,aacostadiaz,aaitken,atejani,jtotz,zehanw,wshi\}@twitter.com}
+}
+
+\maketitle
+
+%%%%%%%%% ABSTRACT
+\singlespacing
+\begin{abstract}
+%Super-resolution aims at predicting or recovering lost information and is thus a highly ill-posed problem with a large set of possible solutions.
+\eng{
+Despite the breakthroughs in accuracy and speed of single image super-resolution using faster and deeper convolutional neural networks, one central problem remains largely unsolved: how do we recover the finer texture details when we super-resolve at large upscaling factors?
+}\kor{
+더 빠르고 깊은 합성곱 신경망을 사용하는 단일 이미지 초해상도화 기술에 대한 정확도와 속도의 획기적인 약진에도 불구하고, ``큰 해상도 향상 계수를 사용해서 초해상도 이미지를 생성할 때, 어떻게 해야 고품질 질감의 세부 사항을 복구할 수 있는가?''라는 중요한 문제는 해결되지 않았다.
+}\eng{
+The behavior of optimization-based super-resolution methods is principally driven by the choice of the objective function. Recent work has largely focused on minimizing the mean squared reconstruction error.
+}\kor{
+최적화 기반 초해상도 방법의 동작은 주로 목적 함수를 선택하는 것에 의해 좌우된다. 최근 연구는 평균 제곱 재구성 오류를 최소화하는 것에 크게 초점이 맞춰져 있다.
+}\eng{
+The resulting estimates have high peak signal-to-noise ratios, but they are often lacking high-frequency details and are perceptually unsatisfying in the sense that they fail to match the fidelity expected at the higher resolution.
+}\kor{
+추정 결과들은 높은 최대 신호 대 잡음비(PSNR)를 가지지만 보통 고주파 세부 사항이 부족한 경우를 보이고, 이는 높은 해상도에서 기대되는 정확도와 일치하지 않는다는 점에서 지각적으로 불만족스럽다.
+}\eng{
+In this paper, we present SRGAN, a generative adversarial network (GAN) for image super-resolution (SR).
+}\kor{
+본 논문에서는 이미지 초해상도화를 위한 생성적 적대 신경망인 SRGAN을 제시한다.
+}\eng{
+ To our knowledge, it is the first framework capable of inferring photo-realistic natural images for $4\times$ upscaling factors.
+}\kor{
+ 우리가 아는 한, SRGAN은 $4\times$ 해상도 향상 계수로 자연스러운 실사 이미지 추론을 할 수 있는 첫번째 프레임워크이다.
+}\eng{
+ To achieve this, we propose a perceptual loss function which consists of an adversarial loss and a content loss.
+}\kor{
+ 이를 달성하기 위해서, 적대적 손실(loss)와 내용 손실(loss)로 구성된 지각 손실 함수를 제안한다.
+}\eng{
+ The adversarial loss pushes our solution to the natural image manifold using a discriminator network that is trained to differentiate between the super-resolved images and original photo-realistic images.
+}\kor{
+초해상도화 이미지와 원본 실사 이미지를 구별하도록 훈련된 판별기(discriminator) 네트워크를 이용해서 적대적 손실은 해(solution)를 자연 이미지 데이터 공간(manifold)으로 밀어넣는다.
+}\eng{
+ In addition, we use a content loss motivated by perceptual similarity instead of similarity in pixel space.
+}\kor{
+ 추가적으로, 픽셀 공간의 유사성 대신 지각적 유사성으로부터 영감를 받은 내용 손실(content loss)이 사용된다.
+}\eng{
+ Our deep residual network is able to recover photo-realistic textures from heavily downsampled images on public benchmarks.
+}\kor{
+본 논문에서 제시하는 심층 잔류 신경망은 공개 벤치마크에서 심하게 다운샘플링된 이미지로부터 실사와 같은 질감을 복원해낼 수 있다.
+}\eng{
+An extensive mean-opinion-score (MOS) test shows hugely significant gains in perceptual quality using SRGAN.
+}\kor{
+대규모 평균 의견 점수(mean opinion score) 검사는 SRGAN을 사용할 때 지각 품질이 상당히 크게 향상된 것을 보여준다.
+}\eng{
+ The MOS scores obtained with SRGAN are closer to those of the original high-resolution images than to those obtained with any state-of-the-art method.
+}\kor{
+ SRGAN으로부터 얻어진 평균 의견 점수는 어떠한 최첨단 방법으로 얻어진 점수보다도 원본 고해상도 이미지의 점수에 가깝다.
+}
+\end{abstract}
+
+\summary{
+이 논문은 SRGAN이라는 생성적 적대 신경망을 제안하며, 고해상도 이미지의 질감을 복원하는 문제를 해결함. SRGAN은 적대적 손실과 내용 손실로 구성된 지각 손실 함수를 사용하며, 대규모 평가에서 높은 평균 의견 점수를 받음. 이를 통해 SRGAN이 최첨단 방법보다 원본 고해상도 이미지에 가까운 결과를 보인다는 것을 확인함.
+}
+
+%%%%%%%%% BODY TEXT
+\section{서론}
+\eng{
+The highly challenging task of estimating a \ac{HR} image from its \ac{LR} counterpart is referred to as \ac{SR}.
+}\kor{
+\ac{고해상도} 이미지에 대응하는 \ac{저해상도} 이미지로부터 \ac{고해상도} 이미지를 추정하는 상당히 도전적인 작업을 \ac{초해상도화}라고 한다.
+}\eng{
+\ac{SR} received substantial attention from within the computer vision research community and has a wide range of applications \cite{yang2007spatial,Zou12,Nasrollahi2014}.
+}\kor{
+\ac{초해상도화}는 컴퓨터 비전 연구 공동체 내에서 상당한 관심을 받았으며, 광범위하게 응용되고 있다 \cite{yang2007spatial,Zou12,Nasrollahi2014}.
+}
+
+\summary{
+초해상도화의 개념
+}
+% includes face recognition in surveillance videos \cite{Zou12}, super-resolution of depth maps \cite{yang2007spatial}, video streaming and medical applications.
+
+\begin{figure}[ht]
+\begin{tabular}{cc}
+\eng{$4\times$ SRGAN (proposed) & original \\}\kor{$4\times$ SRGAN (제안된) & 원본 \\}
+\includegraphics[trim=0 0 0 0, clip, width=1.5in]{images/used/jpg/baboon_SRGAN-VGG54} &
+\includegraphics[trim=0 0 0 0, clip, width=1.5in]{images/used/jpg/baboon_HR} \\
+
+\end{tabular}
+\caption{
+\eng{
+Super-resolved image (left) is almost indistinguishable from original (right). [$4\times$ upscaling]
+}\kor{
+초해상도화된 이미지(좌측)는 원본(우측)과 거의 구분이 불가능하다. [$4\times$ 해상도 향상]
+}}
+\label{fig:exampleIntroFirst}
+\end{figure}
+
+%One major difficulty when estimating the \ac{HR} image is the ambiguity of solutions to the underdetermined \ac{SR} problem.
+\eng{
+The ill-posed nature of the underdetermined \ac{SR} problem is particularly pronounced for high upscaling factors, for which texture detail in the reconstructed \ac{SR} images is typically absent.
+}\kor{
+불량 조건인(ill-posed) 미결정 \ac{초해상도화} 문제의 본질은 특히 일반적으로 재구성된 \ac{초해상도화} 이미지의 질감 세부 사항이 없는 높은 해상도 향상 계수에서 두드러진다.
+}
+%Assumptions about the data have to be made to approximate the \ac{HR} image, such as exploiting image redundancies. % or employing specifically trained feature models.
+%
+%	Over the last few decades substantial advances have been made in image \ac{SR} \cite{Nasrollahi2014, Yang14benchmark}, with early methods based on interpolation, simple image features (e.g. edges) or statistical image priors.
+%	Later example-based methods very successfully detected and exploited patch correspondences within a training database or calculated optimized dictionaries allowing for high-detail data representation. While of good accuracy, the involved optimization procedures for both patch detection and sparse coding are computationally intensive.
+%	More advanced methods formulate image-based \ac{SR} as a regression problem that can be tackled for example with Random Forests \cite{schulter2015fast}.
+%	The recent rise of \acp{CNN} also had a substantial impact on image \ac{SR} \cite{dong2016image}, not only improving the state of the art with respect to accuracy but also computational speed, enabling real-time \ac{SR} for 2D video frames \cite{Shi2016ESPCN}.
+%
+\begin{figure*}[ht]
+\begin{tabular}{cccc}
+\eng{bicubic &  SRResNet  & SRGAN & original \\}\kor{쌍삼차(bicubic) &  SRResNet  & SRGAN & 원본 \\}
+(21.59dB/0.6423) &   (23.53dB/0.7832) & (21.15dB/0.6868) & \\
+\includegraphics[trim=0pt 0pt 0pt 0pt, clip, width=1.55in]{images/used/jpg/comic_SRF_4_bicubic} &
+\includegraphics[trim=0pt 0pt 0pt 0pt, clip, width=1.55in]{images/used/jpg/comic_SRResNet-MSE} &
+\includegraphics[trim=0pt 0pt 0pt 0pt, clip, width=1.55in]{images/used/jpg/comic_SRGAN-VGG54} &
+\includegraphics[trim=0pt 0pt 0pt 0pt, clip, width=1.55in]{images/used/jpg/comic_HR.jpg} \\
+\end{tabular}
+\caption{
+\eng{
+From left to right: bicubic interpolation, deep residual network optimized for MSE, deep residual generative adversarial network optimized for a loss more sensitive to human perception, original HR image. Corresponding PSNR and SSIM are shown in brackets. [$4\times$ upscaling]
+}\kor{
+왼쪽에서 오른쪽 순으로: 쌍삼차(bicubic), MSE로 최적화된 심층 잔류 신경망, 원본 고해상도 이미지에 대해서 조금 더 사람의 지각에 민감한 손실로 최적화된 심층 잔류 생성적 적대 신경망. PSNR과 SSIM은 괄호 안에 표시된다. [$4\times$ 해상도 향상]
+}
+}
+\label{fig:exampleIntro}
+\end{figure*}
+%
+\eng{
+The optimization target of supervised \ac{SR} algorithms is commonly the minimization of the \ac{MSE} between the recovered \ac{HR} image and the ground truth.
+}\kor{
+지도(supervised) \ac{초해상도화} 알고리듬의 최적화 목표는 보통 \ac{고해상도} 이미지와 정답 사이의 \ac{MSE}를 최소화하는 것이다.
+}\eng{
+ This is convenient as minimizing \ac{MSE} also maximizes the \ac{PSNR}, which is a common measure used to evaluate and compare \ac{SR} algorithms \cite{Yang14benchmark}.
+}\kor{
+\ac{MSE}를 최적화하는 것은 \ac{초해상도화} 알고리듬\cite{Yang14benchmark}을 평가하고 비교하는데 일반적으로 사용되는 \ac{PSNR}을 최대화하기 때문에 편리하다.
+}
+\eng{
+However, the ability of MSE (and PSNR) to capture perceptually relevant differences, such as high texture detail, is very limited as they are defined based on pixel-wise image differences \cite{Wang2003,Wang2004,Gupta2011}.
+}\kor{
+하지만, MSE(그리고 PSNR)의 높은 질감 세부 정보와 같은 지각적으로 관련된 차이를 포착하는 능력은 픽셀 단위의 이미지 차이\cite{Wang2003,Wang2004,Gupta2011}를 기반으로 정의되었기 때문에 매우 제한적이다.
+}\eng{
+ This is illustrated in \figurename~\ref{fig:exampleIntro}, where highest PSNR does not necessarily reflect the perceptually better \ac{SR} result.
+}\kor{
+ 이것은 높은 PSNR이 필연적으로 지각적으로 더 높은 \ac{초해상도화} 결과를 반영하지 않는 경우인 \figurename~\ref{fig:exampleIntro}에서 보여진다.
+}\eng{
+ The perceptual difference between the super-resolved and original image means that the recovered image is not photo-realistic as defined by Ferwerda \cite{Ferwerda2003}.
+}\kor{
+초해상도 (생성물)과 원본 이미지 사이의 지각적 차이는, 복원한 이미지는 Ferwerda \cite{Ferwerda2003}에서 정의된 것처럼 실사적이지 않다는 것이다.
+}
+
+\summary{
+높은 해상도 향상 계수에서의 초해상도화는 질감 세부 사항이 부족하며, MSE와 PSNR을 최적화 목표로 삼는 경우 높은 질감 세부사항과 같이 지각적으로 관련된 차이를 포착하는 능력이 제한적임.
+}
+
+
+\eng{
+In this work we propose a \ac{SRGAN} for which we employ a deep \ac{ResNet} with skip-connection and diverge from \ac{MSE} as the sole optimization target.
+}\kor{
+본 논문에서는 건너뛴 연결(skip-connection)을 사용하고 단일 최적화 목표로부터 \ac{MSE}를 분리한 심층 \ac{ResNet}을 이용한 \ac{SRGAN}을 제안한다.
+}\eng{
+ Different from previous works, we define a novel perceptual loss using high-level feature maps of the VGG network \cite{simonyan2014very,Johnson16PercepLoss,bruna2016super} combined with a discriminator that encourages solutions perceptually hard to distinguish from the \ac{HR} reference images.
+}\kor{
+ 이전 연구와 달리, \ac{고해상도} 참조 이미지와 지각적으로 구분하기 어려운 해들(solutions)을 부추기는 판별기(discriminator)와 결합한 VGG 네트워크 \cite{simonyan2014very,Johnson16PercepLoss,bruna2016super}의 고수준 특징 맵을 사용해서 새로운 지각 손실을 정의한다.
+}
+\eng{
+An example photo-realistic image that was super-resolved with a $4\times$ upscaling factor is shown in \figurename~\ref{fig:exampleIntroFirst}.
+}\kor{
+$4\times$ 해상도 향상 계수로 초해상도화한 예제 실사 이미지는 \figurename~\ref{fig:exampleIntroFirst}에서 보여진다.
+}
+
+\summary{
+본 논문에서는 건너뛴 연결과 단일 최적화 목표로부터 MSE를 분리한 ResNet을 사용한 SRGAN을 제안하고, VGG 네트워크의 고수준 특징 맵을 사용해 새로운 지각 손실을 정의함.
+}
+
+\subsection{관련 연구}
+\subsubsection{이미지 초해상도화}
+%There is a vast amount of literature and research that focuses on image \ac{SR}.
+\eng{
+Recent overview articles on image \ac{SR} include Nasrollahi and Moeslund \cite{Nasrollahi2014} or Yang et al. \cite{Yang14benchmark}.
+}\kor{
+최근 이미지 \ac{초해상도화} 분야의 개요적 기사에는 Nasrollahi와 Moeslund \cite{Nasrollahi2014} 또는 Yang 외. 가 있다.
+}\eng{
+Here we will focus on \ac{SISR} and will not further discuss approaches that recover \ac{HR} images from multiple images \cite{Borman1998aSurvey,Farsiu2004}.
+}\kor{
+본 논문에서는 \ac{단일 이미지 초해상도화}에 초점을 맞추고, 고해상도 \ac{고해상도} 이미지들을 여러 이미지로부터 복원하는 \cite{Borman1998aSurvey,Farsiu2004} 접근에 대해서는 더 논의하지 않을 것이다.
+}
+
+\summary{
+이미지 초해상화 분야의 개요적 기사 및 본 논문에서 다루는 세부 분야 제시
+}
+
+
+\eng{
+Prediction-based methods were among the first methods to tackle \ac{SISR}.
+}\kor{
+예측 기반 방법은 \ac{단일 이미지 초해상도화} 문제를 해결하려고 한 첫번째 방법 중 하나였다.
+} \eng{
+While these filtering approaches, \eg linear, bicubic or Lanczos \cite{Duchon1979} filtering, can be very fast, they oversimplify the \ac{SISR} problem and usually yield solutions with overly smooth textures.
+}\kor{
+\eg 선형, 쌍삼차(bicubic), Lanczos \cite{Duchon1979} 필터링과 같은 필터링 접근법들은 매우 빠를수 있지만, \ac{SISR} 문제를 지나치게 단순화하고, 일반적으로 과하게 부드러운 질감을 가지는 해(solution)을 산출한다.
+}
+\eng{
+Methods that put particularly focus on edge-preservation have been proposed \cite{Allebach96, Li2001}.
+}\kor{
+모서리 보존 방법에 특히 초점을 맞추는 방법은 \cite{Allebach96, Li2001}에 의해 제안되었다.
+}
+
+\summary{
+예측 기반 방법과 필터링 접근법의 한계와 모서리 보존 방법
+}
+
+\eng{
+More powerful approaches aim to establish a complex mapping between low- and high-resolution image information and usually rely on training data.
+}\kor{
+더 강력한 접근 방식은 저해상도와 고해상도의 이미지 정보 간의 복잡한 사상(mapping)을 만드는 것에 목표를 두며, 보통 훈련 데이터에 의존한다.
+}\eng{
+Many methods that are based on example-pairs rely on \ac{LR} training patches for which the corresponding \ac{HR} counterparts are known. Early work was presented by Freeman et al. \cite{Freeman2000,Freeman2002}.
+}\kor{
+예제 쌍을 기반으로 하는 많은 방법들은 상응하는 \ac{고해상도} 대응물이 알려진 \ac{저해상도} 훈련 패치에 의존한다. 초창기 연구는 Freeman 외. \cite{Freeman2000,Freeman2002}에 의해 제시되었다.
+}\eng{
+Related approaches to the \ac{SR} problem originate in compressed sensing \cite{Yang08, Dong2011, zeyde2012single}.
+}\kor{
+\ac{초해상도화} 문제의 관련된 접근법은 압축 감지(compressed sensing) \cite{Yang08, Dong2011, zeyde2012single}로부터 유래되었다.
+}
+% and aim to estimate a sparse patch representation with respect to an over-complete dictionary
+    \eng{
+    In Glasner et al. \cite{glasner2009super} the authors exploit patch redundancies across scales within the image to drive the \ac{SR}.
+    }\kor{
+    Glasner 외. \cite{glasner2009super}에서 저자는 이미지 안의 여러 크기에 걸친 패치 중복성을 활용하여 \ac{초해상도화}를 이끌어 낸다.
+    } \eng{
+    This paradigm of self-similarity is also employed in Huang et al. \cite{Huang15selfexemplars}, where self dictionaries are extended by further allowing for small transformations and shape variations.
+    }\kor{
+    이러한 자기 유사성 패러다임은 작은 변환과 모양 변형을 더 많이 허용하여 자체적인 사전을 확장하는 Hung 외. \cite{Huang15selfexemplars}에서도 사용된다.
+    }
+\eng{
+Gu et al. \cite{gu2015convolutional} proposed a convolutional sparse coding approach that improves consistency by processing the whole image rather than overlapping patches.
+}\kor{
+Gu 외. \cite{gu2015convolutional}는 패치를 겹치는 방법을 사용하기보다는 전체 이미지를 처리하여 일관성을 향상시키는 합성곱 희소 표현(convolutional sparese coding)을 제안했다.
+}
+
+\summary{
+저해상도와 고해상도의 복잡한 사상(mapping)을 만들어내는 더 강력한 접근 방식과 관련된 초창기 연구 및 방법들의 소개
+}
+
+\eng{
+To reconstruct realistic texture detail while avoiding edge artifacts, Tai et al. \cite{Tai2010} combine an edge-directed \ac{SR} algorithm based on a gradient profile prior \cite{Sun2008} with the benefits of learning-based detail synthesis. Zhang et al.
+}\kor{
+가장자리의 인공물(artifacts)을 피하면서 사실적인 질감 세부 사항을 재구성하기 위해서, Tai 외. \cite{Tai2010}는 경사 프로필 우선(gradient profile prior)\cite{Sun2008} 방법에 기반한 모서리 방향(edge-directed) \ac{초해상도화} 알고리듬을 학습 기반 세부 사항 합성의 이점과 함께 (Zhang 외.) 결합한다.
+} \eng{
+\cite{zhang2012multi} propose a multi-scale dictionary to capture redundancies of similar image patches at different scales.
+}\kor{
+\cite{zhang2012multi}은 서로 다른 크기에서 비슷한 이미지 패치의 중복성을 포착하기 위한 다중 크기(multi-scale) 사전을 제안한다.
+} % with the goal to enhance visual details.
+\eng{
+To super-resolve landmark images, Yue et al. \cite{Yue2013} retrieve correlating \ac{HR} images with similar content from the web and propose a structure-aware matching criterion for alignment.
+}\kor{
+랜드마크 이미지들을 초해상도화하기 위해, Yue 외. \cite{Yue2013}은 웹에 있는 유사한 이미지와 관련이 있는 \ac{고해상도} 이미지를 검색하고, 정렬을 위한 구조 인식(structure-aware) 일치 기준을 제안한다.
+}
+
+\summary {
+경사 프로필 우선 알고리즘과 다중-크기 사전을 활용한 초해상도화 방법과 구조 인식 일치 기준을 제안한 연구들
+}
+
+\eng{
+Neighborhood embedding approaches upsample a \ac{LR} image patch by finding similar \ac{LR} training patches in a low dimensional manifold and combining their corresponding \ac{HR} patches for reconstruction \cite{timofte2013anchored,timofte2014a+}.
+}\kor{
+이웃 임베딩(Neighborhood embedding) 접근법은 저차원 데이터 공간에 있는 비슷한 \ac{저해상도} 훈련 패치를 찾고, 재구성을 위해 대응하는 \ac{고해상도} 패치를 합치는 과정\cite{timofte2013anchored,timofte2014a+}을 통해 \ac{저해상도} 이미지 패치를 업샘플한다.
+}
+\eng{
+In Kim and Kwon \cite{Kim10kernelregression} the authors emphasize the tendency of neighborhood approaches to overfit and formulate a more general map of example pairs using kernel ridge regression.
+}\kor{
+Kim과 Kwon \cite{Kim10kernelregression}에서는 커널 능선 회귀(kernel ridge regression)을 사용하여 더 일반적인 예제 쌍의 맵을 만들고, 과적합시키는 이웃 접근법의 경향을 강조한다.
+}
+\eng{
+The regression problem can also be solved with Gaussian process regression \cite{he2011single}, trees \cite{salvador2015naive} or Random Forests \cite{schulter2015fast}.
+}\kor{
+회귀 문제는 가우시안 프로세스 회귀(Gaussian process regression) \cite{he2011single}, 트리 \cite{salvador2015naive} 또는 랜덤 포레스트(Random forests) \cite{schulter2015fast}의 방법들로 해결될 수 있다.
+}
+\eng{
+In Dai et al. \cite{dai2015jointly} a multitude of patch-specific regressors is learned and the most appropriate regressors selected during testing.
+}\kor{
+Dai 외. \cite{dai2015jointly}에서는 다수의 패치별 회귀 분석기를 학습시키고, 가장 적합한 회귀 분석기를 테스트 중에 선택한다.
+} %. During testing the most appropriate regressors for a given \ac{LR} patch are then selected using kNN.
+
+\summary{
+이웃 임베딩, 커널 능선 회귀, 가우시안 프로세스 회귀, 랜덤 포레스트 방법에 대한 간단한 소개
+}
+
+\eng{
+Recently \ac{CNN} based \ac{SR} algorithms have shown excellent performance.
+}\kor{
+최근에는 \ac{합성곱 신경망} 기반 \ac{초해상도화} 알고리듬이 우수한 성능을 보여주고 있다.
+}
+\eng{
+In Wang et al. \cite{Wang2015} the authors encode a sparse representation prior into their feed-forward network architecture based on the learned iterative shrinkage and thresholding algorithm (LISTA)
+}\kor{
+Wang 외에. \cite{Wang2015}에서 저자들은 반복 수축 및 임계값 알고리즘(LISTA)\cite{gregor2010learning}을 기반으로 순방향 네트워크 구조에 앞서 희소 표현을 부호화한다.
+}
+\eng{
+Dong et al. \cite{dong2014learning,dong2016image} used bicubic interpolation to upscale an input image and trained a three layer deep fully convolutional network end-to-end to achieve state-of-the-art \ac{SR} performance.
+}\kor{
+Dong 외. \cite{dong2014learning,dong2016image}는 입력 이미지의 해상도를 향상시키기 위해 쌍삼차 보간(bicubic interpolation)을 사용하고, 최첨단 \ac{초해상도화} 성능을 달성하기 위해 세 개의 훈련된 레이어를 가지는 완전한 심층 합성곱 신경망을 종단 간(end-to-end) 훈련시켰다.
+}
+\eng{
+Subsequently, it was shown that enabling the network to learn the upscaling filters directly can further increase performance both in terms of accuracy and speed \cite{dong2016accelerating,Shi2016ESPCN,Wang2016}.
+}\kor{
+그 결과로, 네트워크가 해상도 향상 필터를 직접 학습할 수 있게 하면 정확도와 속도 측면에서 성능을 더욱 향상시킬 수 있다는 것을 보여주었다.
+}
+%	In Shi et al. \cite{Shi2016ESPCN} the upscaling is only performed in the last layer of the network avoiding expensive computations in the high-resolution space of the \ac{SR} image.
+\eng{
+With their \ac{DRCN}, Kim et al. \cite{kim2016deeply} presented a highly performant architecture that allows for long-range pixel dependencies while keeping the number of model parameters small.
+}\kor{
+Kim 외. \cite{kim2016deeply}는 \ac{DRCN}과 함께, 적은 수의 모델 매개변수를 유지하면서, 장거리 픽셀 의존성을 허용하는 고성능 구조를 제시했다.
+}
+\eng{
+Of particular relevance for our paper are the works by Johnson et al. \cite{Johnson16PercepLoss} and Bruna et al. \cite{bruna2016super}, who rely on a loss function closer to perceptual similarity to recover visually more convincing \ac{HR} images.
+}\kor{
+특히 본 논문과 관련성이 있는 것은 시각적으로 더 실감나는 \ac{고해상도} 이미지를 복원하기 위해, 지각적 유사성에 더 가까운 손실 함수에 의존하는 Johnson 외. \cite{Johnson16PercepLoss}와 Bruna et al. \cite{bruna2016super}의 작업이다.
+}
+
+\summary{
+CNN 기반 초해상도화, LISTA 알고리즘, DRCN, 지각적 유사성 손실 함수 등 초해상도화 분야의 신경망을 이용한 최근 기술과 방법 소개
+}
+
+
+\subsubsection{
+\eng{Design of convolutional neural networks}
+\kor{합성곱 신경망의 설계}}
+\eng{
+The state of the art for many computer vision problems is meanwhile set by specifically designed \ac{CNN} architectures following the success of the work by Krizhevsky et al. \cite{krizhevsky2012imagenet}.
+}\kor{
+한편, 많은 컴퓨터 비전 문제에 대한 최첨단 방법은 Krizhevsky 외. \cite{krizhevsky2012imagenet} 작업의 성공의 따라, 특별히 설계된 \ac{합성곱 신경망} 구조에 의해 설정된다.
+}
+
+\summary{컴퓨터 비전의 주류 최첨단 방법인 CNN}
+
+\eng{
+It was shown that deeper network architectures can be difficult to train but have the potential to substantially increase the network's accuracy as they allow modeling mappings of very high complexity \cite{simonyan2014very,szegedy2015going}.
+}\kor{
+심층 네트워크 구조는 훈련하기 어려울 수 있지만, 매우 높은 복잡성의 모델링 사상(mapping)을 허용하므로 네트워크의 정확도를 충분히 높일 수 있는 잠재력이 있는 것을 보여준다.
+} \eng{
+To efficiently train these deeper network architectures, batch-normalization \cite{Ioffe2015} is often used to counteract the internal co-variate shift.
+}\kor{
+이러한 심층 네트워크 구조를 효율적으로 훈련하기 위해, 배치 정규화(batch-normalization) \cite{Ioffe2015}가 종종 내부 공변량(co-variate) 이동에 대응하는 데 사용된다.
+} \eng{
+Deeper network architectures have also been shown to increase performance for \ac{SISR}, \eg Kim et al. \cite{kim2016deeply} formulate a recursive \ac{CNN} and present state-of-the-art results.
+}\kor{
+또한 심층 네트워크 구조는 \ac{단일 이미지 초해상도화}에 대한 성능도 향상시키는 것을 보여준다. \eg Kim 외.  \cite{kim2016deeply}는 재귀적 \ac{합성곱 신경망}을 만들어내고, 최첨단 결과를 제시한다.
+}
+\eng{
+Another powerful design choice that eases the training of deep \ac{CNN}s is the recently introduced concept of residual blocks \cite{he2015deep} and skip-connections \cite{he2016identity,kim2016deeply}.
+}\kor{
+심층 \ac{합성곱 신경망}들의 훈련을 용이하게 해주는 또 다른 강력한 설계 선택지는 최근 도입된 잔차 블록(residual blocks) \cite{he2015deep}과 건너뛴 연결(skip-connections) \cite{he2016identity,kim2016deeply}의 개념이다.
+} \eng{
+Skip-connections relieve the network architecture of modeling the identity mapping that is trivial in nature, however, potentially non-trivial to represent with convolutional kernels.
+}\kor{
+건너뛴 연결은 본질적으로 사소한 항등 사상(identity mapping)을 모델링하는 네트워크 구조를 완화하지만, 이는 합성곱 커널(convolutional kernels)로 표현하기에는 잠재적으로 사소한 것이 아니다.
+}
+
+\summary{심층 네트워크 구조, 배치 정규화, 잔차 블록과 건너뛴 연결 등의 방법과 구조는 초해상도화 성능 향상에 있어 중요함.}
+
+\eng{
+In the context of \ac{SISR} it was also shown that learning upscaling filters is beneficial in terms of accuracy and speed \cite{dong2016accelerating,Shi2016ESPCN,Wang2016}.
+}\kor{
+또한 \ac{단일 이미지 초해상도화}의 맥락에서, 해상도 향상 필터를 학습하는 것은 정확도와 속도면에서 유익하다는 것을 보여주었다\cite{dong2016accelerating,Shi2016ESPCN,Wang2016}.
+}
+\eng{
+This is an improvement over Dong et al. \cite{dong2016image} where bicubic interpolation is employed to upscale the LR observation before feeding the image to the \ac{CNN}.
+}\kor{
+이는 이미지를 \ac{합성곱 신경망}에 투입하기 전에, \ac{저해상도} 관측(observation)을 해상도 향상하기 위해 쌍삼차 보간(bicubic interpolation)을 사용하는 Dong 외. \cite{dong2016image}에 비해 개선된 것이다.
+} %In addition, by extracting the feature maps in \ac{LR} space as in \cite{Shi2016ESPCN, Johnson16PercepLoss, dong2016accelerating}, the gain in speed can be used to employ a deep \ac{ResNet} to increase accuracy.
+
+\summary{
+쌍삼차 보간을 이용한 방법보다 정확도와 속도 면에서 개선된 방법인 해상도 필터 학습 방법
+}
+
+\begin{figure}[ht]
+\includegraphics[trim=0 0 0 0, clip, width=3.1in]{images/used/jpg/manifold.jpg}
+\caption{\eng{
+Illustration of patches from the natural image manifold (red) and super-resolved patches obtained with MSE (blue) and GAN (orange).
+}\kor{
+자연 이미지 데이터 공간(manifold)에서 얻어진 패치 (적색), MSE로 초해상도화하여 얻어진 패치 (청색), GAN을 이용해서 얻은 패치 (주황색)들의 사진
+} \eng{
+The MSE-based solution appears overly smooth due to the pixel-wise average of possible solutions in the pixel space, while GAN drives the reconstruction towards the natural image manifold producing perceptually more convincing solutions.
+}\kor{
+MSE 기반 방법은 픽셀 공간에서 가능한 해의 픽셀 단위(pixel-wise) 평균으로 인해 과하게 매끄럽게 보이는 반면, GAN은 자연 이미지 데이터 공간(manifold)쪽으로 재구성을 유도해서, 지각적으로 더 실감나는 해를 생성한다.
+}}
+\label{fig:manifold}
+\end{figure}
+
+\subsubsection{\eng{Loss functions}\kor{손실 함수}}
+\eng{
+Pixel-wise loss functions such as \ac{MSE} struggle to handle the uncertainty inherent in recovering lost high-frequency details such as texture: minimizing \ac{MSE} encourages finding pixel-wise averages of plausible solutions which are typically overly-smooth and thus have poor perceptual quality \cite{Mathieu2015, Johnson16PercepLoss, dosovitskiy2016generating, bruna2016super}.
+}\kor{
+\ac{MSE}와 같은 픽셀 단위 손실 함수는 질감과 같은 손실된 고주파 세부 정보를 복원할 때, 내재된 불확실성을 처리하기 위해 노력한다: \ac{MSE}를 최소화하는 것은 일반적으로 지나치게 매끄러워서, 나쁜 지각적 품질을 가지는 그럴듯한 해(plausible solutions)를 찾는 것을 촉진한다\cite{Mathieu2015, Johnson16PercepLoss, dosovitskiy2016generating, bruna2016super}.
+}
+\eng{
+Reconstructions of varying perceptual quality are exemplified with corresponding \ac{PSNR} in \figurename~\ref{fig:exampleIntro}.
+}\kor{
+다양한 지각 품질의 재구성 결과는 \figurename~\ref{fig:exampleIntro}에서 \ac{PSNR}과 함께 확인할 수 있다.
+} \eng{
+We illustrate the problem of minimizing \ac{MSE} in \figurename~\ref{fig:manifold} where multiple potential solutions with high texture details are averaged to create a smooth reconstruction.
+}\kor{
+높은 질감 세부 사항의 여러 잠재적 해가 평균화되어 매끄러운 복원물을 만드는 \figurename~\ref{fig:manifold}에서는 \ac{MSE}를 최소화하는 문제를 설명한다.
+}
+
+\summary{
+MSE 손실 함수는 고주파 세부 정보를 복원하기 어려워, 나쁜 지각적 품질을 가지는 해를 찾을 수 있음.
+}
+
+\eng{
+In Mathieu et al. \cite{Mathieu2015} and Denton et al. \cite{Denton2015} the authors tackled this problem by employing \acp{GAN} \cite{Goodfellow14GAN} for the application of image generation.
+}\kor{
+Mathieu 외. \cite{Mathieu2015}와 Denton 외. \cite{Denton2015}에서 저자들은 이미지 생성의 응용을 위해 \acp{GAN} \cite{Goodfellow14GAN}을 사용함으로써 이 문제를 해결했다.
+} \eng{
+Yu and Porikli \cite{yu2016ultra} augment pixel-wise \ac{MSE} loss with a discriminator loss to train a network that super-resolves face images with large upscaling factors ($8\times$).
+}\kor{
+Yu와 Porikli \cite{yu2016ultra}는 큰 해상도 향상 계수($8\times$)로 얼굴 이미지를 초해상도화하는 네트워크를 훈련시키기 위해 판별기(discriminator) 손실과 함께 픽셀 단위의 \ac{MSE} 손실을 증가시켰다.
+} \eng{
+\acp{GAN} were also used for unsupervised representation learning in Radford et al. \cite{Radford2015}.
+}\kor{
+\acp{GAN}는 Radford 외. \cite{Radford2015}의 비지도 표현 학습에도 사용되었다.
+}
+\eng{
+The idea of using \acp{GAN} to learn a mapping from one manifold to another is described by Li and Wand \cite{Li2016} for style transfer and Yeh et al. \cite{Yeh2016} for inpainting.
+}\kor{
+한 데이터 공간(manifold)에서 다른 데이터 공간(manifold)로의 사상(mapping)을 학습하기 위해 GAN을 사용하는 아이디어는 스타일 전송을 위한 Li와 Wand \cite{Li2016}와 이미지 복원(inpainting)을 위한 Yeh 외. \cite{Yeh2016}에서 설명된다.
+}
+\eng{
+Bruna et al. \cite{bruna2016super} minimize the squared error in the feature spaces of VGG19 \cite{simonyan2014very} and scattering networks.
+}\kor{
+Bruna 외. \cite{bruna2016super}는 VGG19의 특징 공간과 산란 네트워크에서 제곱 오차를 최소화한다.
+}
+
+\summary{
+얼굴 이미지 초해상도화, 스타일 전송, 이미지 복원 등 다양한 분야에서 사용되는 GAN
+}
+
+\eng{
+Dosovitskiy and Brox \cite{dosovitskiy2016generating} use loss functions based on Euclidean distances computed in the feature space of neural networks in combination with adversarial training.
+}\kor{
+Dosovitskiy와 Brox \cite{dosovitskiy2016generating}는 신경망의 특징 공간에서 계산된 유클리드 거리에 기반한 손실 함수를 적대적 훈련과 함께 사용한다.
+} \eng{
+It is shown that the proposed loss allows visually superior image generation and can be used to solve the ill-posed inverse problem of decoding nonlinear feature representations.
+}\kor{
+제안된 손실은 시각적으로 우수한 이미지의 생성을 가능하게 하며, 비선형 특징 표현을 복호화하는 역 불량 조건 문제를 해결하는데 사용될 수 있음을 보여준다.
+}
+\eng{
+Similar to this work, Johnson et al. \cite{Johnson16PercepLoss} and Bruna et al. \cite{bruna2016super} propose the use of features extracted from a pre-trained VGG network instead of low-level pixel-wise error measures.
+}\kor{
+이 작업과 유사하게, Johnson 외. \cite{Johnson16PercepLoss}와 Bruna 외. \cite{bruna2016super}는 저수준의 픽셀 단위 오류 측정 대신 사전 훈련된 VGG 네트워크로부터 추출된 특징을 사용하는 것을 제안한다.
+} \eng{
+Specifically the authors formulate a loss function based on the euclidean distance between feature maps extracted from the VGG19 \cite{simonyan2014very} network. Perceptually more convincing results were obtained for both super-resolution and artistic style-transfer \cite{Gatys2015nips,Gatys2016cvpr}.
+}\kor{
+특히 저자들은 VGG19 \cite{simonyan2014very} 네트워크로부터 추출된 특징 맵 사이의 유클리드 거리에 기반한 손실 함수를 만들었다. 그리고 초해상도화와 예술적 스타일 전송 \cite{Gatys2015nips,Gatys2016cvpr} 모두에서 지각적으로 더 사실적인 결과를 얻었다.
+} \eng{
+Recently, Li and Wand \cite{Li2016} also investigated the effect of comparing and blending patches in pixel or VGG feature space.
+}\kor{
+최근 Li와 Wand \cite{Li2016}는 픽셀 또는 VGG 특징 공간의 패치를 비교하고 혼합하는 효과에 대해서도 조사했다.
+}
+
+\summary{
+특징 공간의 유클리드 거리에 기반한 손실 함수와 VGG19 네트워크에서 추출된 특징을 사용하는 초해상도화 및 스타일 전송에 대한 연구 소개
+}
+
+\subsection{\eng{Contribution}\kor{기여}}
+\eng{
+\acp{GAN} provide a powerful framework for generating plausible-looking natural images with high perceptual quality.
+}\kor{
+\acp{GAN}는 높은 지각 품질과 함께 사실적으로 보이는 자연 이미지를 생성하는 강력한 프레임워크를 제공한다.
+}
+%In the \ac{GAN} framework, two neural networks, a generator and a discriminator, are trained simultaneously with competing goals. The discriminator network is trained to distinguish natural and synthetically generated images, while the generator learns to generate images that are indistinguishable from natural images by the best discriminator.
+\eng{
+The \ac{GAN} procedure encourages the reconstructions to move towards regions of the search space with high probability of containing photo-realistic images and thus closer to the natural image manifold as shown in \figurename~\ref{fig:manifold}.
+}\kor{
+GAN 절차는 복원물이 실사 이미지를 포함할 확률이 높은 검색 공간의 영역 쪽으로 이동하도록 도와서 \figurename~\ref{fig:manifold}에서 보여지는 것처럼 자연 이미지 데이터 공간(manifold)에 가까워지게 한다.
+}
+
+\summary{
+실사 이미지 생성을 위한 강력한 프레임워크인 GAN
+}
+
+\eng{
+In this paper we describe the first very deep \ac{ResNet} \cite{he2015deep,he2016identity} architecture using the concept of \acp{GAN} to form a perceptual loss function for photo-realistic \ac{SISR}. Our main contributions are:
+}\kor{
+본 논문에서는 \ac{단일 이미지 초해상도화}를 위한 지각적 손실 함수를 형성하기 위해 \acp{GAN}의 개념을 사용하는 최초의 고심층(very deep) \ac{ResNet} \cite{he2015deep,he2016identity} 구조를 설명한다. 주요한 기여는 다음과 같다:
+}
+\begin{itemize}
+\item \eng{
+We set a new state of the art for image \ac{SR} with high upscaling factors ($4\times$) as measured by \ac{PSNR} and \ac{SSIM} with our 16 blocks deep \ac{ResNet} (SRResNet) optimized for \ac{MSE}.
+}\kor{
+\ac{MSE}에 최적화된 16개의 블록을 가진 심층 \ac{ResNet} (SRResNet)을 이용하여, \ac{PSNR}과 \ac{SSIM}으로 측정한 높은 해상도 향상 계수($4\times$)를 가진 이미지 초해상도화에 대한 최첨단 성능을 보였다.
+} %Specifically, we employ the fast feature learning in \ac{LR} space \cite{Shi2016ESPCN,Johnson16PercepLoss} and batch-normalization \cite{Ioffe2015} to robustly train a network of 16 residual blocks for better accuracy.
+\item \eng{
+We propose SRGAN which is a \ac{GAN}-based network optimized for a new perceptual loss. Here we replace the \ac{MSE}-based content loss with a loss calculated on feature maps of the VGG network \cite{simonyan2014very}, which are more invariant to changes in pixel space \cite{Li2016}.
+}\kor{
+새로운 지각 손실에 최적화된 \ac{GAN} 기반 네트워크인 SRGAN을 제안한다. 여기서 우리는 \ac{MSE} 기반 내용 손실을 픽셀 공간\cite{Li2016}에서의 변화에 의해 잘 변하지 않는 VGG 네트워크 \cite{simonyan2014very}의 특징 맵에서 계산된 손실로 대체한다.
+} %as illustrated in Figures 3 and 4 in Li and Wand .
+\item \eng{
+We confirm with an extensive \ac{MOS} test on images from three public benchmark datasets that SRGAN is the new state of the art, by a large margin, for the estimation of photo-realistic \ac{SR} images with high upscaling factors ($4\times$).
+}\kor{
+세 개의 공개 벤치마크 데이터 세트의 이미지들에 대해 큰 차이로 SRGAN이 큰 해상도 향상 계수를 가지는 ($4\times$) 실사 \ac{초해상도화} 이미지 추정을 위한 새로운 최첨단임을 광범위한 \ac{MOS} 테스트를 통해 확인했다.
+}
+\end{itemize}
+
+\summary{
+심층 ResNet 구조를 이용한 최첨단 성능의 달성, 새로운 지각 손실에 최적화된 GAN 기반 네트워크인 SRGAN 제시, MOS 테스트를 통한 실사 초해상도 이미지 추정 성능에서의 최첨단 성능 확인
+}
+
+%The adversarial loss is driven by a discriminator network to encourage solutions from the natural image domain while the content loss ensures that the super-resolved images have the same content as their low-resolution counterparts. We further replace the \ac{MSE}-based content loss function with the euclidean distance between the last convolutional feature maps of the VGG network \cite{simonyan2014very}, which are more invariant to changes in pixel space as illustrated in Figures 3 and 4 in Li and Wand \cite{Li2016}.
+% We validate the proposed approaches using images from three publicly available benchmark.
+%datasets and compare the performance against state-of-the-art works.
+%including SRCNN \cite{dong2014learning}, SelfExSR \cite{Huang15selfexemplars} and \ac{DRCN} \cite{kim2016deeply}. We confirm our network's potential to reconstruct photo-realistic images under $4\times$ downsampling factors using standard measures and extensive MOS testing.
+
+\eng{
+We describe the network architecture and the perceptual loss in Section \ref{sec:method}.
+}\kor{
+우리는 \ref{sec:method} 부분에서 네트워크 구조와 지각 손실에 대해 설명한다.
+} \eng{
+A quantitative evaluation on public benchmark datasets as well as visual illustrations are provided in Section \ref{sec:experiments}.
+}\kor{
+공개 벤치마크 데이터 세트에 대한 정량적 평가와 시각적 삽화는 \ref{sec:experiments} 부분에서 제공된다.
+} \eng{
+The paper concludes with a discussion in Section \ref{sec:discussion} and concluding remarks in Section \ref{sec:conclusion}.
+}\kor{
+본 논문은 토론 부분 \ref{sec:discussion}과 결언 부분 \ref{sec:conclusion}으로 끝맺는다.
+}
+
+\summary{
+구조, 평가, 결론에 대한 간단한 설명
+}
+
+\section{\eng{Method}\kor{방법}}
+\label{sec:method}
+
+\begin{figure*}[ht!]
+\begin{center}
+\begin{tabular}{c}
+\includegraphics[width=6.5in]{images/used/jpg/generator}\\
+\includegraphics[width=6.5in]{images/used/jpg/discriminator}
+\end{tabular}
+\end{center}
+\caption{\eng{
+Architecture of Generator and Discriminator Network with corresponding kernel size (k), number of feature maps (n) and stride (s) indicated for each convolutional layer.
+}\kor{
+각 합성곱 레이어 커널 크기 (k), 특징 맵의 수 (n), 스트라이드 (s)가 표시된 생성기(generator)와 판별기(discriminator) 네트워크의 구조
+}}
+\label{fig:generator}
+\end{figure*}
+%
+\eng{
+In \ac{SISR} the aim is to estimate a high-resolution, super-resolved image $I^{SR}$ from a low-resolution input image $I^{LR}$.
+}\kor{
+\ac{단일 이미지 초해상도화}의 목표는 저해상도 입력 이미지 $I^{LR}$로부터 \ac{초해상도화}된 이미지 $I^{SR}$를 추정하는 것이다.
+} \eng{
+Here $I^{LR}$ is the low-resolution version of its high-resolution counterpart $I^{HR}$.
+}\kor{
+여기서 $I^{LR}$은 고해상도 이미지 $I^{HR}$에 대응하는 저해상도 버전이다.
+} \eng{
+The high-resolution images are only available during training.
+}\kor{
+고해상도 이미지는 훈련 중에만 사용이 가능하다.
+} \eng{
+In training, $I^{LR}$ is obtained by applying a Gaussian filter to $I^{HR}$ followed by a downsampling operation with downsampling factor $r$.
+}\kor{
+훈련 과정 내에서, $I^{LR}$은 $I^{HR}$에 가우시안 필터를 적용한 후 다운샘플링 계수 $r$로 다운샘플링 연산을 적용해서 얻는다.
+} \eng{
+For an image with $C$ color channels, we describe $I^{LR}$ by a real-valued tensor of size $W \times H \times C$ and $I^{HR}$, $I^{SR}$ by $rW \times rH \times C$ respectively.
+}\kor{
+$C$개의 색상 채널이 있는 이미지의 경우, $I^{LR}$은 실제로 값을 가지는 $W \times H \times C$ 크기의 텐서로, $I^{HR}$, $I^{SR}$은 $rW \times rH \times C$로 표현된다.
+}
+
+\summary{
+단일 이미지 초해상도화의 목표와 과정에 대한 설명
+}
+
+\eng{
+Our ultimate goal is to train a generating function $G$ that estimates for a given \ac{LR} input image its corresponding \ac{HR} counterpart.
+}\kor{
+최종적인 목표는 주어진 \ac{저해상도} 입력 이미지에 대해, 해당 이미지와 대응하는 \ac{고해상도} 이미지를 추정하는 생성 함수(generating function) $G$를 훈련하는 것이다.
+} \eng{
+To achieve this, we train a generator network as a feed-forward \ac{CNN} $G_{\theta_G}$ parametrized by ${\theta_G}$.
+}\kor{
+이를 달성하기 위해, 생성기(generator) 네트워크를  ${\theta_G}$로 매개변수화된 순방향 \ac{합성곱 신경망} $G_{\theta_G}$처럼 훈련시킨다.
+} \eng{
+Here ${\theta_G}=\{W_{1:L}; b_{1:L}\}$ denotes the weights and biases of a $L$-layer deep network and is obtained by optimizing a SR-specific loss function $l^{SR}$.
+}\kor{
+여기서 ${\theta_G}=\{W_{1:L}; b_{1:L}\}$는 $L$개의 레이어를 가지는 심층 네트워크의 가중치와 편향을 나타내며, 초해상도화에 특징화된(SR-specific) 손실 함수 $l^{SR}$를 최적화해서 얻어진다.
+} \eng{
+For training images $I^{HR}_n$ , $n = 1,\dots,N$ with corresponding $I^{LR}_n$ , $n = 1,\dots,N$, we solve:
+}\kor{
+훈련 이미지 $I^{HR}_n$ , $n = 1,\dots,N$ 와 대응하는 $I^{LR}_n$ , $n = 1,\dots,N$에 대해서 해를 구했다:
+}
+\begin{equation}
+\hat{{\theta}}_G = \arg\min_{\theta_G} \frac{1}{N} \sum_{n=1}^{N}{l^{SR}(G_{\theta_G}(I^{LR}_n),I^{HR}_n)}
+\end{equation}
+
+\summary{
+저해상도 입력 이미지에서 고해상도 이미지를 생성하는 생성 함수 $G$를 이용한 네트워크 훈련
+}
+
+\eng{
+In this work we will specifically design a perceptual loss $l^{SR}$ as a weighted combination of several loss components that model distinct desirable characteristics of the recovered \ac{SR} image.
+}\kor{
+본 연구에서는 복원된 \ac{초해상도화} 이미지의 명확하고 바람직한 특성을 만들어내는 여러 손실 구성 요소의 가중 조합(weighted combination)으로 지각 손실 $l^{SR}$을 구체적으로 설계할 것이다.
+} \eng{
+The individual loss functions are described in more detail in Section \ref{sec:losses}.
+}\kor{
+개별 손실 함수의 더 자세한 세부 사항은 \ref{sec:losses}에서 설명된다.
+}
+
+\summary{
+복원된 이미지가 바람직한 특성을 가질 수 있게하는 손실 함수 설계
+}
+
+\subsection{\eng{Adversarial network architecture}\kor{적대적 네트워크 구조}}
+\eng{
+Following Goodfellow et al. \cite{Goodfellow14GAN} we further define a discriminator network $D_{\theta_D}$ which we optimize in an alternating manner along with $G_{\theta_G}$ to solve the adversarial min-max problem:
+}\kor{
+Goodfellow 외. \cite{Goodfellow14GAN}에 이어, 교대로 최적화하기 위해 적대적 최대-최소 문제를 해결하기 위한 $G_{\theta_G}$와 함께 판별기(discriminator) 네트워크 $D_{\theta_D}$를 추가적으로 정의한다.
+}
+\begin{equation}
+\label{eq:minmax}
+\begin{split}
+\min_{\theta_G} \max_{\theta_D} ~& \mathbb{E}_{I^{HR}\sim p_\textrm{train}(I^{HR})} [ \log D_{\theta_D}(I^{HR}) ] + \\
+& \mathbb{E}_{I^{LR}\sim p_G(I^{LR})} [ \log (1-D_{\theta_D}(G_{\theta_G}(I^{LR})) ]
+\end{split}
+\end{equation}
+
+\summary{
+판별기 네트워크의 구조
+}
+
+\eng{
+The general idea behind this formulation is that it allows one to train a generative model $G$ with the goal of fooling a differentiable discriminator $D$ that is trained to distinguish super-resolved images from real images.
+}\kor{
+이 공식 뒤에 있는 일반적인 아이디어는 실제 이미지로부터 초해상화된 이미지를 구별하도록 훈련된 구별 능력을 갖춘 판독기(differentiable discriminator) $D$를 속이는 것을 목표로 생성 모델 $G$를 훈련할 수 있다는 것이다.
+}
+\eng{
+With this approach our generator can learn to create solutions that are highly similar to real images and thus difficult to classify by $D$.
+}\kor{
+이 접근법을 통한 본 논문의 생성기(generator)는 실제 이미지와 매우 유사해서 $D$에 의해 분류되기 어려운 해를 만드는 방법을 배울 수 있다.
+} \eng{
+This encourages perceptually superior solutions residing in the subspace, the manifold, of natural images.
+}\kor{
+이는 자연 이미지의 하위 공간인 데이터 공간(manifold)에 위치한 지각적으로 우수한 해를 장려한다.
+} \eng{
+This is in contrast to \ac{SR} solutions obtained by minimizing pixel-wise error measurements, such as the \ac{MSE}.
+}\kor{
+이것은 \ac{MSE}와 같이, 픽셀 단위 오류 측정을 최소화하는 것으로 얻어진 \ac{초해상도화} 해들과는 대조적이다.
+}
+
+\summary{
+GAN은 실제 이미지와 매우 유사한 해를 만들어 판독기 $D$를 속이는 것으로 학습하며, 지각적으로 우수한 해를 장려함. 이 해들은 MSE처럼 픽셀 단위 오류 측정을 최소화하여 얻은 해들과는 대조적임.
+}
+
+\eng{
+At the core of our very deep generator network $G$, which is illustrated in \figurename~\ref{fig:generator} are $B$ residual blocks with identical layout. Inspired by Johnson et al.
+}\kor{
+\figurename~\ref{fig:generator}에 설명된 고심층(very deep) 생성기 네트워크 $G$의 핵심에는 동일한 설계(layout)를 가진 잔차 블록(residual blocks)가 있다. 이는 Johnson 외. \cite{Johnson16PercepLoss}에서 영감을 받았다.
+} \eng{
+we employ the block layout proposed by Gross and Wilber \cite{gross2016}.
+}\kor{
+본 논문에서는 Gross와 Wilber \cite{gross2016}가 제안한 블록 설계를 사용했다.
+} \eng{
+Specifically, we use two convolutional layers with small $3\times3$ kernels and 64 feature maps followed by batch-normalization layers \cite{Ioffe2015} and ParametricReLU \cite{He2015relu} as the activation function.
+}\kor{
+구체적으로, 작은 $3\times3$ 커널과 64개의 특징 맵과 함께 두개의 합성곱 레이어를 사용한 후 배치 정규화 레이어 \cite{Ioffe2015}와 ParametricReLU \cite{He2015relu}를 활성화 함수로 사용했다.
+}
+\eng{
+We increase the resolution of the input image with two trained sub-pixel convolution layers as proposed by Shi et al. \cite{Shi2016ESPCN}.
+}\kor{
+Shi 외. \cite{Shi2016ESPCN}가 제안한 것처럼 입력 이미지의 해상도를 두개의 훈련된 하위 픽셀(sub-pixel) 합성곱 레이어를 통해 증가시킨다.
+}
+
+\summary{
+잔차 블록을 사용하는 고심층 생성기 네트워크 G의 구조: 3x3 커널, 64개의 특징 맵, 두개의 합성곱 레이어, 배치 정규화 레이어, 활성화 함수로 ParametricRELU 사용
+}
+
+\eng{
+To discriminate real \ac{HR} images from generated \ac{SR} samples we train a discriminator network.
+}\kor{
+실제 \ac{고해상도} 이미지를 생성된 고해상도화 샘플과 구별하기 위해 판별기 네트워크를 훈련시킨다.
+} \eng{
+The architecture is shown in \figurename~\ref{fig:generator}.
+}\kor{
+이 구조는 \figurename~\ref{fig:generator}에서 보여진다.
+}
+\eng{
+We follow the architectural guidelines summarized by Radford et al. \cite{Radford2015} and use LeakyReLU activation ($\alpha=0.2$) and avoid max-pooling throughout the network.
+}\kor{
+본 논문에서는 Radford 외. \cite{Radford2015}가 요약한 구조 지침을 따르며 LeakyReLU 활성화 ($\alpha=0.2$)를 사용하고, 네트워크 전체에서 최대 풀링(max-pooling)을 피한다.
+} \eng{
+The discriminator network is trained to solve the maximization problem in Equation \ref{eq:minmax}.
+}\kor{
+판별기(discriminator) 네트워크는 \ref{eq:minmax} 방정식에서의 최대화 문제를 해결하기 위해 훈련된다.
+} \eng{
+It contains eight convolutional layers with an increasing number of $3\times3$ filter kernels, increasing by a factor of 2 from 64 to 512 kernels as in the VGG network \cite{simonyan2014very}.
+}\kor{
+VGG 네트워크 \cite{simonyan2014very}에서와 같이 64개에서 512개로 2배씩 증가하는 $3\times3$ 필터 커널이 있는 8개의 합성곱 레이어를 포함한다.
+} \eng{
+Strided convolutions are used to reduce the image resolution each time the number of features is doubled.
+}\kor{
+스트라이드 합성곱(strided convolutions)은 특징의 개수가 두배가 될 때 마다 이미지의 해상도를 줄이기 위해 사용되었다.
+} \eng{
+The resulting 512 feature maps are followed by two dense layers and a final sigmoid activation function to obtain a probability for sample classification.
+}\kor{
+512개의 특징 맵의 결과 뒤에는 샘플 분류에 대한 확률을 얻기 위해 두 개의 밀집 레이어(dense layer)와 최종 시그모이드(sigmoid) 활성화 함수가 뒤따른다.
+}
+
+\summary{
+실제 이미지와 생성된 고해상도화 샘플을 구별하기 위해 판별기 네트워크를 훈련하며, 판별기 네트워크는 8개의 합성곱 레이어(64 → 512, 2배씩 증가, 3 × 3 필터 커널)와 스트라이드 합성곱, 두개의 밀집 레이어와 시그모이드 활성화 함수를 사용하여 구성하였음.
+}
+
+\subsection{\eng{Perceptual loss function}\kor{지각적 손실 함수}}
+\label{sec:losses}
+\eng{
+The definition of our perceptual loss function $l^{SR}$  is critical for the performance of our generator network.
+}\kor{
+지각 손실 함수 $l^{SR}$의 정의는 생성기(generator) 네트워크의 성능에 중요하다.
+} \eng{
+While $l^{SR}$ is commonly modeled based on the \ac{MSE}  \cite{dong2016image,Shi2016ESPCN}, we improve on Johnson et al. \cite{Johnson16PercepLoss} and Bruna et al. \cite{bruna2016super} and design a loss function that assesses a solution with respect to perceptually relevant characteristics.
+}\kor{
+$l^{SR}$은 일반적으로 \ac{MSE} \cite{dong2016image,Shi2016ESPCN}을 기반으로 모델링되지만, 본 논문은 Johnson 외. \cite{Johnson16PercepLoss}와 Bruna 외. 를 개선시키고 지각적으로 관련된 특성에 관하여 해를 평가하는 손실 함수를 설계한다.
+} \eng{
+We formulate the perceptual loss as the weighted sum of a content loss ($l^{SR}_\textrm{X}$) and an adversarial loss component as:
+}\kor{
+본 논문에서는 지각 손실을 내용 손실($l^{SR}_\textrm{X}$)과 적대적 손실 구성 요소의 가중 합으로 공식화한다:
+}
+
+\begin{equation}
+l^{SR} = \underbrace{\underbrace{l^{SR}_\textrm{X}}_{\text{\eng{content loss}\kor{내용 손실}}} + \underbrace{10^{-3} l^{SR}_{Gen}}_{\text{\eng{adversarial loss}\kor{적대적 손실}}}}_{\text{\eng{perceptual loss (for VGG based content losses)}\kor{지각적 손실 (VGG 기반 내용 손실에 대한)}}}
+\end{equation}
+
+\summary{
+내용 손실과 적대적 손실의 가중 합으로 구성된 본 논문의 지각 손실 함수 $l^{SR}$
+}
+
+\eng{
+In the following we describe possible choices for the content loss $l^{SR}_\textrm{X}$ and the adversarial loss $l^{SR}_\textrm{Gen}$.
+}\kor{
+다음에서는, 내용 손실 $l^{SR}_\textrm{X}$과 적대적 손실 $l^{SR}_\textrm{Gen}$에 대해 가능한 선택을 설명한다.
+}
+
+\summary{
+내용 손실과 적대적 손실에 대한 설명 제시
+}
+
+\subsubsection{\eng{Content loss}\kor{내용 손실}}
+
+\eng{
+The pixel-wise \textbf{\ac{MSE} loss} is calculated as:
+}\kor{
+픽셀 단위 \textbf{\ac{MSE} 손실}은 다음과 같이 계산된다:
+}
+\begin{equation}
+l^{SR}_{MSE} = \frac{1}{r^2WH} \sum_{x=1}^{rW} \sum_{y=1}^{rH} (I^{HR}_{x,y} - G_{\theta_G}(I^{LR})_{x,y})^2
+\end{equation}
+\eng{
+This is the most widely used optimization target for image \ac{SR} on which many state-of-the-art approaches rely \cite{dong2016image,Shi2016ESPCN}.
+}\kor{
+이는 \cite{dong2016image,Shi2016ESPCN}에 의존하는 많은 최첨단 접근법들이 이미지 \ac{초해상도화}에 가장 널리 사용하는 최적화 대상이다.
+} \eng{
+However, while achieving particularly high \ac{PSNR}, solutions of \ac{MSE} optimization problems often lack high-frequency content which results in perceptually unsatisfying solutions with overly smooth textures (\cf \figurename~\ref{fig:exampleIntro}).
+}\kor{
+하지만, 특히 높은 \ac{PSNR}을 달성하는 동안, \ac{MSE} 최적화 문제의 해는 종종 고주파 내용이 부족해서 과하게 매끄러운 질감(\cf \figurename~\ref{fig:exampleIntro})으로 지각적으로 만족스럽지 못한 해를 초래한다.
+}
+
+\summary{
+픽셀 단위 MSE 손실과 해당 손실을 이용하여 얻은 해의 문제점
+}
+
+\eng{
+Instead of relying on pixel-wise losses we build on the ideas of Gatys et al. \cite{Gatys2015nips}, Bruna et al. \cite{bruna2016super} and Johnson et al. \cite{Johnson16PercepLoss} and use a loss function that is closer to perceptual similarity.
+}\kor{
+픽셀 단위 손실에 의존하는 대신, Gatys 외. \cite{Gatys2015nips}, Bruna 외. \cite{bruna2016super} 그리고 Johnson 외. \cite{Johnson16PercepLoss}의 아이디어를 기반으로, 지각적 유사성에 더 가까운 손실 함수를 사용한다.
+} \eng{
+We define the \textbf{VGG loss} based on the ReLU activation layers of the pre-trained 19 layer VGG network described in Simonyan and Zisserman \cite{simonyan2014very}.
+}\kor{
+본 논문에서는 Simonyan과 Zisserman \cite{simonyan2014very}에서 기술한 사전 훈련된 19 레이어 VGG 네트워크의 ReLU 활성화 레이어에 기반한 \textbf{VGG 손실}을 정의한다.
+}\eng{
+With $\phi_{i,j}$ we indicate the feature map obtained by the j-th convolution (after activation) before the i-th maxpooling layer within the VGG19 network, which we consider given.
+}\kor{
+$\phi_{i,j}$는 VGG19 네트워크에서 i번째 최대 풀링 레이어 이전의 j번째 합성곱(활성화 이후)에서 얻어진 특징 맵(feature map)을 나타내며, 이는 본 논문에서 주어진 것으로 간주한다.
+}
+\eng{
+We then define the VGG loss as the euclidean distance between the feature representations of a reconstructed image $G_{\theta_G}(I^{LR})$ and the reference image $I^{HR}$:
+}\kor{
+그 다음, VGG 손실을 재구성된 이미지 $G_{\theta_G}(I^{LR})$의 특징 표현과 참조 이미지 $I^{HR}$ 사이의 유클리드 거리로 정의한다:
+}
+\begin{equation}
+\begin{split}
+l^{SR}_{VGG/i.j} =
+\frac{1}{W_{i,j}H_{i,j}} & \sum_{x=1}^{W_{i,j}} \sum_{y=1}^{H_{i,j}} (\phi_{i,j}(I^{HR})_{x,y} \\
+& - \phi_{i,j}(G_{\theta_G}(I^{LR}))_{x,y})^2
+\end{split}
+\label{eq:vgg}
+\end{equation}
+
+\summary{
+VGG 손실을 사용하여 재구성-참조 이미지 간의 유클리드 거리를 이용하는 지각적 유사성에 더 가까운 손실 함수를 정의
+}
+
+\eng{
+Here $W_{i,j}$ and $H_{i,j}$ describe the dimensions of the respective feature maps within the VGG network.
+}\kor{
+여기서 $W_{i,j}$와 $H_{i,j}$는 VGG 네트워크 내에서 해당하는 특징 맵의 크기를 나타낸다.
+}
+
+\summary{
+특징 맵의 크기 표현 제시
+}
+
+\subsubsection{\eng{Adversarial loss}\kor{적대적 손실}}
+\eng{
+In addition to the content losses described so far, we also add the generative component of our \ac{GAN} to the perceptual loss.
+}\kor{
+지금까지 설명한 내용 손실 외에도, 지각 손실에 \ac{GAN}의 생성 요소를 추가한다.
+} \eng{
+This encourages our network to favor solutions that reside on the manifold of natural images, by trying to fool the discriminator network.
+}\kor{
+이것은 판별기(discriminator) 네트워크를 속이기 위해 노력함으로써 자연 이미지들의 데이터 공간(manifold)에 있는 해를 선호하도록 부추긴다.
+} \eng{
+The generative loss $l^{SR}_{Gen}$ is defined based on the probabilities of the discriminator $D_{\theta_D}(G_{\theta_G}(I^{LR}))$ over all training samples as:
+}\kor{
+생성 손실 $l^{SR}_{Gen}$은 모든 훈련 샘플에 대한 판별기(discriminator) $D_{\theta_D}(G_{\theta_G}(I^{LR}))$의 확률을 기반으로 다음과 같이 정의된다:
+}
+\begin{equation}
+l^{SR}_{Gen} = \sum_{n=1}^{N} -\log D_{\theta_D}(G_{\theta_G}(I^{LR}))
+\end{equation}
+
+\summary{
+GAN의 생성 요소를 추가하여 만든 지각 손실의 정의
+}
+
+\eng{
+Here, $D_{\theta_D}(G_{\theta_G}(I^{LR}))$ is the probability that the reconstructed image $G_{\theta_G}(I^{LR})$ is a natural HR image.
+}\kor{
+여기서 $D_{\theta_D}(G_{\theta_G}(I^{LR}))$는 재구성된 이미지 $G_{\theta_G}(I^{LR})$가 자연스러운 고해상도 이미지일 확률이다.
+} \eng{
+For better gradient behavior we minimize $-\log D_{\theta_D}(G_{\theta_G}(I^{LR}))$ instead of $\log [1-D_{\theta_D}(G_{\theta_G}(I^{LR}))]$ \cite{Goodfellow14GAN}.
+}\kor{
+더 나은 경사 동작(gradient behavior)을 위해, 본 논문에서는 $\log [1-D_{\theta_D}(G_{\theta_G}(I^{LR}))]$ \cite{Goodfellow14GAN} 대신 $-\log D_{\theta_D}(G_{\theta_G}(I^{LR}))$를 최소화했다.
+}
+
+\summary{
+지각 손실의 정의 설명
+}
+
+%
+\section{\eng{Experiments}\kor{실험}}
+\label{sec:experiments}
+\subsection{\eng{Data and similarity measures}\kor{데이터 및 유사성 측정}}
+\label{subsec:data}
+\eng{
+We perform experiments on three widely used benchmark datasets \textbf{Set5} \cite{bevilacqua2012low}, \textbf{Set14} \cite{zeyde2012single} and \textbf{BSD100}, the testing set of BSD300 \cite{MartinFTM01}.
+}\kor{
+본 논문에서는 널리 사용되는 세 가지 벤치마크 데이터 세트인 \textbf{Set5} \cite{bevilacqua2012low}, \textbf{Set14} \cite{zeyde2012single} 그리고 \textbf{BSD100}, BSD300 \cite{MartinFTM01}의 테스트 세트(testing set)에 대한 실험을 수행한다.
+} \eng{
+All experiments are performed with a scale factor of $4\times$ between low- and high-resolution images.
+}\kor{
+모든 실험은 저해상도와 고해상도 이미지 사이에서 $4\times$의 향상 계수로 수행된다.
+} \eng{
+This corresponds to a $16\times$ reduction in image pixels.
+}\kor{
+이는 이미지 픽셀에서의 $16\times$ 감소에 해당한다.
+} \eng{
+For fair comparison, all reported \ac{PSNR} [dB] and \ac{SSIM} \cite{Wang2004} measures were calculated on the y-channel of center-cropped, removal of a 4-pixel wide strip from each border, images using the daala package\footnote{\url{https://github.com/xiph/daala} (commit: 8d03668)}.
+}\kor{
+공정한 비교를 위해, 보고된 모든 \ac{PSNR} [DB]과 \ac{SSIM} \cite{Wang2004} 측정은 중앙 크롭된 y 채널을 통해 계산되었으며, 각 경계에서의 4 픽셀 폭의 선(4-pixel wide strip)을 제거했고, 이미지들에는 daala 패키지\footnote{\url{https://github.com/xiph/daala} (commit: 8d03668)}가 사용되었다.
+} \eng{
+Super-resolved images for the reference methods, including nearest neighbor, bicubic, SRCNN \cite{dong2014learning} and SelfExSR \cite{Huang15selfexemplars}, were obtained from online material supplementary to Huang et al.\footnote{\url{https://github.com/jbhuang0604/SelfExSR}} \cite{Huang15selfexemplars} and for DRCN from Kim et al.\footnote{\url{http://cv.snu.ac.kr/research/DRCN/}} \cite{kim2016deeply}.
+}\kor{
+최근접 이웃(nearest neighbor), 쌍삼차(bicubic), SRCNN \cite{dong2014learning}과 SelfExSR \cite{Huang15selfexemplars} 참조 방법에 대한 초해상도화된 이미지는 Huang 외.\footnote{\url{https://github.com/jbhuang0604/SelfExSR}} \cite{Huang15selfexemplars}와 DRCN을 위한 Kim 외.\footnote{\url{http://cv.snu.ac.kr/research/DRCN/}} \cite{kim2016deeply}에 대한 온라인 보충 자료에서 얻었다.
+}
+\eng{
+Results obtained with SRResNet (for losses: $l^{SR}_{MSE}$ and $l^{SR}_{VGG/2.2}$) and the SRGAN variants are available online\footnote{\url{https://twitter.box.com/s/lcue6vlrd01ljkdtdkhmfvk7vtjhetog}}.
+}\kor{
+SRResNet ($l^{SR}_{MSE}$와 $l^{SR}_{VGG/2.2}$ 손실을 위한)과 SRGAN 변형으로부터 얻어진 결과는 온라인\footnote{\url{https://twitter.box.com/s/lcue6vlrd01ljkdtdkhmfvk7vtjhetog}}에서 사용할 수 있다.
+}
+\eng{
+Statistical tests were performed as paired two-sided Wilcoxon signed-rank tests and significance determined at $p<0.05$.
+}\kor{
+통계적 검정(Statistical tests)은 쌍체 양측 월콕슨 부호 순위 검정(paired two-sided Wilcoxon signed-rank tests)으로 수행되었으며, 유의성(significance)은 $p<0.05$으로 결정되었다.
+}
+
+\summary{
+세 가지 데이터 세트(Set5, Set14, BSD100-BSD300)에 대한 실험을 수행했으며, PSNR 및 SSIM 지표를 이용하여 측정한 값들을 통계적 테스트를 이용하여 비교함.
+}
+
+\eng{
+The reader may also be interested in an independently developed GAN-based solution on GitHub\footnote{\url{https://github.com/david-gpu/srez}}. However it only provides experimental results on a limited set of faces, which is a more constrained and easier task.
+}\kor{
+독자는 GitHub\footnote{\url{https://github.com/david-gpu/srez}}에서 독립적으로 개발된 GAN 기반의 방법에 관심이 있을 수도 있다. 하지만 이는 한정된 얼굴 집합에 대한 실험 결과만 제공하므로, 더 제한적이고 쉬운 작업이다.
+}
+
+\summary{
+GitHub에서 개발된 GAN 방법의 한계 제시
+}
+
+\subsection{\eng{Training details and parameters}\kor{훈련 세부 사항과 매개변수}}
+\eng{
+We trained all networks on a NVIDIA Tesla M40 GPU using a random sample of 350 thousand images from the \textbf{ImageNet} database \cite{russakovsky2014imagenet}.
+}\kor{
+본 논문에서는 \textbf{ImageNet} 데이터베이스 \cite{russakovsky2014imagenet}에서 350,000개 이미지의 무작위 샘플을 사용하여, NVIDIA Tesla M40 GPU에서 모든 네트워크를 훈련시켰다.
+} \eng{
+These images are distinct from the testing images. We obtained the \ac{LR} images by downsampling the \ac{HR} images (BGR, $C=3$) using bicubic kernel with downsampling factor $r=4$.
+}\kor{
+이러한 이미지들은 테스트 이미지들과는 다르다. 본 논문에서는 $r=4$인 다운샘플링 계수를 가지는 쌍삼차(bicubic) 커널을 사용하여 \ac{고해상도} 이미지 (BGR, $C=3$)를 다운샘플링하여 \ac{저해상도} 이미지를 얻었다.
+} \eng{
+For each mini-batch we crop 16 random $96\times96$ \ac{HR} sub images of distinct training images. Note that we can apply the generator model to images of arbitrary size as it is fully convolutional.
+}\kor{
+각 미니 배치에 대해, 우리는 서로 다른 훈련 이미지들 중에서 무작위로 선택하여 $96\times96$ 크기의 \ac{고해상도} 하위 이미지 16개를 잘라낸다. 또한 이 모델은 완전한 합성곱(fully convolutional)으로 구성되어 있기 때문에, 생성기(generator) 모델을 임의 크기의 이미지에 적용할 수 있다.
+}
+\eng{
+We scaled the range of the \ac{LR} input images to $[0, 1]$ and for the \ac{HR} images to $[-1, 1]$. The \ac{MSE} loss was thus calculated on images of intensity range $[-1, 1]$.
+}\kor{
+\ac{저해상도} 입력 이미지의 범위는 $[0, 1]$로, \ac{고해상도} 이미지는 $[-1, 1]$로 조정했다. 따라서 \ac{MSE} 손실은 $[-1, 1]$의 밝기 범위(intensity range)를 가지는 이미지에서 계산되었다.
+} \eng{
+VGG feature maps were also rescaled by a factor of $\frac{1}{12.75}$ to obtain VGG losses of a scale that is comparable to the \ac{MSE} loss. This is equivalent to multiplying Equation \ref{eq:vgg} with a rescaling factor of $\approx0.006$.
+}\kor{
+또한 VGG 특징 맵은 \ac{MSE} 손실과 비교 가능한 크기의 VGG 손실을 획득하기 위해 $\frac{1}{12.75}$의 비율로 재조정되었다. 이는 $\approx0.006$의 재조정 계수(rescaling factor)를 가진 방정식\ref{eq:vgg}에 곱하는 것과 같다.
+}
+\eng{
+For optimization we use Adam \cite{Kingma2014} with $\beta_1=0.9$.
+}\kor{
+최적화를 위해, Adam \cite{Kingma2014}과 $\beta_1=0.9$이 사용되었다.
+} \eng{
+The SRResNet networks were trained with a learning rate of $10^{-4}$ and $10^{6}$ update iterations.
+}\kor{
+SRResNet 네트워크는 $10^{-4}$의 학습률(learning rate)과 $10^{6}$번의 반복(update iterations)으로 훈련되었다.
+} \eng{
+We employed the trained \ac{MSE}-based SRResNet network as initialization for the generator when training the actual \ac{GAN} to avoid undesired local optima.
+}\kor{
+원치않는 지역 최소점(local optima)을 피하기 위해 실제 \ac{GAN}을 훈련할 때 훈련된 \ac{MSE} 기반 SRResNet 네트워크를 생성기(generator)의 초기 설정(initialization)으로 채택했다.
+}
+\eng{
+All SRGAN variants were trained with $10^5$ update iterations at a learning rate of $10^{-4}$ and another $10^5$ iterations at a lower rate of $10^{-5}$.
+}\kor{
+모든 SRGAN 변형은 $10^5$번의 반복(update iterations)과 $10^{-4}$의 학습률(learning rate), 그리고 더 낮은 $10^{-5}$의 학습률에서의 $10^5$번의 반복으로 훈련되었다.
+}
+\eng{
+We alternate updates to the generator and discriminator network, which is equivalent to $k=1$ as used in Goodfellow et al. \cite{Goodfellow14GAN}.
+}\kor{
+Goodfellow 외. \cite{Goodfellow14GAN}에서 사용된 $k=1$과 동일한 생성기(generator)와 판별기(discriminator) 네트워크를 번갈아 갱신한다.
+} \eng{
+Our generator network has 16 identical ($B=16$) residual blocks.
+}\kor{
+생성기(generator) 네트워크는 16개의 동일한 ($B=16$) 잔차 블록(residual blocks)을 가진다.
+} \eng{
+During test time we turn batch-normalization update off to obtain an output that deterministically depends only on the input \cite{Ioffe2015}.
+}\kor{
+테스트 시간 동안 결정적으로(deterministically) 입력\cite{Ioffe2015}에 의존하는 출력을 얻기 위해 배치 정규화 갱신을 해제한다.
+} \eng{
+Our implementation is based on Theano \cite{theano2016} and Lasagne \cite{lasagne2015}.
+}\kor{
+본 논문의 구현은 Theano \cite{theano2016}와 Lasagne \cite{lasagne2015}을 기반으로 한다.
+}
+
+\summary{
+ImageNet 데이터베이스에서 무작위 샘플 350,000개를 사용하여 SRResNet 및 SRGAN 모델을 훈련시켰으며, 최적화를 위해 Adam $\beta_1=0.9$을 사용하였음. 생성기와 판별기 네트워크는 번갈아 갱신했으며, 생성기 네트워크의 구조는 16개의 잔차 블록을 가짐.
+}
+
+\subsection{\eng{Mean opinion score (MOS) testing}\kor{평균 의견 점수 (MOS) 테스트}}
+\eng{
+We have performed a \ac{MOS} test to quantify the ability of different approaches to reconstruct perceptually convincing images.
+}\kor{
+우리는 지각적으로 실감나는 이미지를 재구성하기 위해 사용되는 다양한 접근법들의 능력을 정량화하기 위해 \ac{평균 의견 점수} 테스트를 수행했다.
+} \eng{
+Specifically, we asked 26 raters to assign an integral score from 1 (bad quality) to 5 (excellent quality) to the super-resolved images.
+}\kor{
+구체적으로, 26명의 평가자들에게 초해상도화된 이미지에 1 (나쁜 품질)부터 5 (우수한 품질)까지의 정수형 점수(integral score)를 매기도록 요청했다.
+} \eng{
+The raters rated 12 versions of each image on \textbf{Set5}, \textbf{Set14} and \textbf{BSD100}: nearest neighbor (NN), bicubic, SRCNN \cite{dong2014learning}, SelfExSR \cite{Huang15selfexemplars}, DRCN \cite{kim2016deeply}, ESPCN \cite{Shi2016ESPCN}, \textbf{SRResNet}-MSE, SRResNet-VGG22$^\ast$ ($^\ast$not rated on \textbf{BSD100}), SRGAN-MSE$^\ast$, SRGAN-VGG22$^\ast$, \textbf{SRGAN}-VGG54 and the original HR image.
+}\kor{
+평가자들은 \textbf{Set5}, \textbf{Set14} 그리고 \textbf{BSD100}에서 12가지 버전: 최근접 이웃(nearest neighbor, NN), 쌍삼차(bicubic), SRCNN \cite{dong2014learning}, SelfExSR \cite{Huang15selfexemplars}, DRCN \cite{kim2016deeply}, ESPCN \cite{Shi2016ESPCN}, \textbf{SRResNet}-MSE, SRResNet-VGG22$^\ast$ ($^\ast$\textbf{BSD100}에 대해서 평가하지 않음), SRGAN-MSE$^\ast$, SRGAN-VGG22$^\ast$, \textbf{SRGAN}-VGG54, 원본 고해상도 이미지 의 각각의 이미지에 대해 평가했다.
+} \eng{
+Each rater thus rated 1128 instances (12 versions of 19 images plus 9 versions of 100 images) that were presented in a randomized fashion.
+}\kor{
+따라서 각 평가자는 무작위 방식으로 제시된 1128개의 항목 (19개 이미지의 12가지 버전과 100개 이미지의 9가지 버전)을 평가했다.
+}
+\eng{
+The raters were calibrated on the NN (score 1) and HR (5) versions of 20 images from the BSD300 training set.
+}\kor{
+평가자들은 BSD300 훈련 세트에 있는 20개 이미지의 최근접 이웃 (점수 1)과 고해상도 (점수 5) 버전을 통해 보정되었다.
+} \eng{
+In a pilot study we assessed the calibration procedure and the test-retest reliability of 26 raters on a subset of 10 images from BSD100 by adding a method's images twice to a larger test set.
+}\kor{
+시범 연구에서는 더 큰 테스트 세트에 각 방법의 이미지를 두 번 추가하여, BSD100의 10개 이미지로 구성된 하위 집합에 대한 보정 절차와 26명의 평가자의 검사-재검사 신뢰도를 평가했다.
+} \eng{
+We found good reliability and no significant differences between the ratings of the identical images.
+}\kor{
+그리고, 높은 신뢰도와 함께, 동일한 이미지의 평가에는 큰 차이가 없다는 것을 발견했다.
+}
+\eng{
+Raters very consistently rated NN interpolated test images as 1 and the original HR images as 5 (\cf \figurename~\ref{fig:MOS}).
+}\kor{
+평가자들은 상당히 일관되게 최근접 이웃 방법으로 보간된 테스트 이미지를 1로, 원본 고해상도 이미지를 5 (\cf \figurename~\ref{fig:MOS})로 평가했다.
+}
+
+\summary{
+평균 의견 점수 테스트를 통해 평가자들에게 다양한 초해상도화 방법의 평가를 요청하여, 이미지 품질을 정량화하고 평가의 일관성을 확인했음.
+}
+
+\eng{
+The experimental results of the conducted \ac{MOS} tests are summarized in Table \ref{tab:perceptual}, Table \ref{tab:performance} and \figurename~\ref{fig:MOS}.
+}\kor{
+수행된 \ac{평균 의견 점수} 테스트의 실험 결과는 Table \ref{tab:perceptual}, Table \ref{tab:performance}와 \figurename~\ref{fig:MOS}에 요약되어 있다.
+}
+
+\summary{
+평균 의견 점수 테스트 결과 제시
+}
+
+\begin{table}[]
+\centering
+\caption{\eng{Performance of different loss functions for SRResNet and the adversarial networks on Set5 and Set14 benchmark data. MOS score significantly higher ($p<0.05$) than with other losses in that category$^*$. [$4\times$ upscaling]}\kor{
+\textbf{Set5}와 \textbf{Set14} 벤치마크 데이터에서 SRResNet과 적대적 네트워크의 여러 손실 함수에 대한 성능. 평균 의견 점수는
+해당 범주$^*$의 다른 손실보다 두드러지게 높은 값을 가진다 ($p<0.05$). [$4\times$ 해상도 향상]
+}}
+\label{tab:perceptual}
+\begin{adjustbox}{max width=0.48\textwidth}
+\begin{tabular}{lll | lll}
+& \multicolumn{2}{c}{SRResNet-} & \multicolumn{3}{c}{SRGAN-} \\
+\textbf{Set5} & MSE & VGG22 & MSE & VGG22 & VGG54 \\
+\hline
+
+PSNR &  32.05 & 30.51 & 30.64 & 29.84 & 29.40 \\
+SSIM & 0.9019 & 0.8803 & 0.8701 & 0.8468 & 0.8472 \\
+MOS  &  3.37 & 3.46 & 3.77 & 3.78 & 3.58 \\ [0.3cm]
+\textbf{Set14} & & &  \\
+\hline
+PSNR &  28.49 & 27.19 & 26.92 & 26.44 & 26.02 \\
+SSIM &  0.8184 & 0.7807 & 0.7611 & 0.7518 & 0.7397 \\
+MOS  &  2.98 & 3.15$^*$ & 3.43 & 3.57 & 3.72$^*$  \\
+%\textbf{BSD100} & & &  \\
+%\hline
+%PSNR &  25.95 & 25.67 & 25.16 \\
+%SSIM &  0.6698 & 0.6852 & 0.6688 \\
+\end{tabular}
+\end{adjustbox}
+\end{table}
+\subsection{\eng{Investigation of content loss}\kor{내용 손실 조사}}
+\eng{
+We investigated the effect of different content loss choices in the perceptual loss for the \ac{GAN}-based networks.
+}\kor{
+본 논문에서는 \ac{GAN} 기반 네트워크에 대한 다양한 내용 손실 선택이 지각 손실에 미치는 영향을 조사했다.
+} \eng{
+Specifically we investigate $l^{SR} = l^{SR}_\textrm{X} + 10^{-3}l^{SR}_{Gen}$ for the following content losses $l^{SR}_\textrm{X}$:\\
+}\kor{
+구체적으로는 내용 손실 $l^{SR}_\textrm{X}$에 대한 $l^{SR} = l^{SR}_\textrm{X} + 10^{-3}l^{SR}_{Gen}$을 조사한다:\\
+}
+\begin{itemize}
+\item \eng{
+SRGAN-MSE: $l^{SR}_{MSE}$, to investigate the adversarial network with the standard \ac{MSE} as content loss.
+}\kor{
+SRGAN-MSE: $l^{SR}_{MSE}$, 내용 손실로써 표준 \ac{MSE}를 이용하여 적대적 네트워크를 조사
+}
+\item \eng{
+SRGAN-VGG22: $l^{SR}_{VGG/2.2}$ with $\phi_{2,2}$, a loss defined on feature maps representing lower-level features \cite{zeiler2014visualizing}.
+}\kor{
+SRGAN-VGG22: $l^{SR}_{VGG/2.2}$ ($\phi_{2,2}$ 사용), 낮은 수준의 특징 \cite{zeiler2014visualizing}을 대변하는 특징 맵에 정의된 손실
+}
+\item \eng{
+\textbf{SRGAN}-VGG54: $l^{SR}_{VGG/5.4}$ with $\phi_{5,4}$, a loss defined on feature maps of higher level features from deeper network layers with more potential to focus on the content of the images \cite{zeiler2014visualizing,Yosinski2015,Mahendran2016}. We refer to this network as \textbf{SRGAN} in the following.
+}\kor{
+\textbf{SRGAN}-VGG54: $l^{SR}_{VGG/5.4}$ ($\phi_{5,4}$ 사용), 이미지 내용에 집중할 수 있는 더 큰 잠재력이 있는 심층 신경망 레이어의 고수준 특징 맵에 정의된 손실. 본 논문에서는 앞으로 이 네트워크를 \textbf{SRGAN}로 표기한다.
+}
+\end{itemize}
+
+\summary{
+내용 손실에 따른 지각 손실 영향 조사, SRGAN-MSE, SRGAN-VGG22, SRGAN-VGG54 손실에 대한 설명
+}
+
+\eng{
+We also evaluate the performance of the generator network without adversarial component for the two losses $l^{SR}_{MSE}$ (\textbf{SRResNet}-MSE) and $l^{SR}_{VGG/2.2}$ (SRResNet-VGG22). We refer to SRResNet-MSE as \textbf{SRResNet}.
+}\kor{
+또한 두 손실 $l^{SR}_{MSE}$ (\textbf{SRResNet}-MSE)와 $l^{SR}_{VGG/2.2}$ (SRResNet-VGG22)에 대해 적대적 구성요소가 없는 생성기(generator) 네트워크의 성능을 평가한다. \textbf{SRResNet}은 SRResNet-MSE로 표기한다.
+}
+\eng{
+Note, when training SRResNet-VGG22 we added an additional total variation loss with weight $2\times10^{-8}$ to $l^{SR}_{VGG/2.2}$ \cite{Aly2005,Johnson16PercepLoss}.
+}\kor{
+SRResNet-VGG22을 훈련할 때는 추가적인 총 변위 손실(total variation loss)을 $2\times10^{-8}$의 가중치와 함께 $l^{SR}_{VGG/2.2}$ \cite{Aly2005,Johnson16PercepLoss}에 추가했다.
+}
+\eng{
+Quantitative results are summarized in Table \ref{tab:perceptual} and visual examples provided in \figurename~\ref{fig:perceptual}.
+}\kor{
+정량적 결과의 요약은 Table \ref{tab:perceptual}에서, 시각적 예시는 \figurename~\ref{fig:perceptual}에서 제공된다.
+}
+\eng{
+Even combined with the adversarial loss, \ac{MSE} provides solutions with the highest \ac{PSNR} values that are, however, perceptually rather smooth and less convincing than results achieved with a loss component more sensitive to visual perception.
+}\kor{
+적대적 손실과 결합하더라도, 시각적 인식에 더 민감한 손실 구성 요소로 달성된 결과보다 \ac{MSE}는 가장 높은 \ac{PSNR}을 가지지만, 지각적으로 더 매끄럽고, 실감나지 않는 해를 제공한다.
+} \eng{
+This is caused by competition between the \ac{MSE}-based content loss and the adversarial loss.
+}\kor{
+이는 \ac{MSE} 기반 내용 손실과 적대적 손실간의 경쟁으로 인해 발생한다.
+} \eng{
+We further attribute minor reconstruction artifacts, which we observed in a minority of SRGAN-MSE-based reconstructions, to those competing objectives.
+}\kor{
+또한, SRGAN-MSE 기반으로 재구성한 소수 사례에서 관찰된 미미한 재구성 인공물(artifact)들은 이러한 경쟁 목표에 따라 기인된 것이다.
+} \eng{
+We could not determine a significantly best loss function for SRResNet or SRGAN with respect to \ac{MOS} score on \textbf{Set5}.
+}\kor{
+\textbf{Set5}의 \ac{MOS} 점수와 관련하여 SRResNet과 SRGAN에 대해 의미있는 최선의 손실 함수를 결정할 수는 없었다.
+} \eng{
+However, \textbf{SRGAN}-VGG54 significantly outperformed other SRGAN and SRResNet variants on \textbf{Set14} in terms of \ac{MOS}.
+}\kor{
+하지만, \textbf{SRGAN}-VGG54는 \textbf{Set14}의 \ac{MOS} 면에서 다른 SRGAN 및 SRResNet 변형보다 훨씬 뛰어난 성능을 보였다.
+}
+\eng{
+We observed a trend that using the higher level VGG feature maps $\phi_{5,4}$ yields better texture detail when compared to $\phi_{2,2}$ (\cf \figurename~\ref{fig:perceptual}).
+}\kor{
+고수준의 VGG 기능 맵 $\phi_{5,4}$를 사용하면 $\phi_{2,2}$ (\cf \figurename~\ref{fig:perceptual})와 비교하여 더 나은 질감 세부 정보를 얻을 수 있는 경향를 관찰했다.
+}
+\eng{
+Further examples of perceptual improvements through \textbf{SRGAN} over \textbf{SRResNet} are provided in the supplementary material.
+}\kor{
+\textbf{SRResNet}에 따른 \textbf{SRGAN}을 통한 추가적인 지각적 개선 사례는 보충 자료에 제시된다.
+}
+
+\summary{
+SRGAN 및 SRResNet의 성능 평가와 손실 선택의 영향 조사. SRGAN-VGG54는 특히 더 뛰어난 성능을 보였음. 고수준의 VGG 기능 맵 $\phi_{5,4}$ 사용 시 높은 성능 보임.
+}
+\begin{figure}[ht!]
+\includegraphics[width=0.48\textwidth]{images/used/jpg/MOS_heatmapcropped}
+\caption{\eng{Color-coded distribution of MOS scores on \textbf{BSD100}. For each method 2600 samples (100 images $\times$ 26 raters) were assessed. Mean shown as red marker, where the bins are centered around value $i$. [$4\times$ upscaling]}\kor{BSD100에 대한 평균 의견 점수의 색상 코드 분포. 각 방법에 대해 2600개의 샘플(100개의 이미지 $\times$ 26명의 평가자)이 평가되었다. 각 막대는 $i$ 값을 중심으로 배치되고, 빨간색 표식은 평균을 나타낸다. [$4\times$ 해상도 향상]}}
+\label{fig:MOS}
+\end{figure}
+
+\begin{figure*}[ht!]
+\begin{tabular}{ cx{3.7cm}cx{3.7cm}cx{3.7cm}cx{3.7cm}cx{3.7cm}}
+\eng{
+~~~~~~~~~\textbf{SRResNet} & ~~~~~~~SRGAN-MSE & ~SRGAN-VGG22 & \textbf{SRGAN}-VGG54 & original HR image \\
+} \kor{
+~~~~~\textbf{SRResNet} & ~~~~~~~SRGAN-MSE & ~~SRGAN-VGG22 & ~~\textbf{SRGAN}-VGG54 & 원본 고해상도 이미지~~~ \\
+}
+\end{tabular}
+
+\begin{tikzpicture}[zoomboxarray, zoomboxes below, zoomboxarray inner gap=0.1cm, zoomboxarray columns=2, zoomboxarray rows=2]
+\node [image node] { \includegraphics[trim=200 220 40 5, clip, width=1.3in]{images/used/jpg/baboon_SRResNet-MSE} };
+\zoombox[magnification=2,color code=red]{0.5,0.85}
+\zoombox[magnification=2,color code=yellow]{0.7,0.55}
+\zoombox[magnification=2,color code=orange]{0.35,0.3}
+\zoombox[magnification=5,color code=lime]{0.86,0.25}
+\end{tikzpicture}
+\begin{tikzpicture}[zoomboxarray, zoomboxes below, zoomboxarray inner gap=0.1cm, zoomboxarray columns=2, zoomboxarray rows=2]
+\node [image node] { \includegraphics[trim=200 220 40 5, clip, width=1.3in]{images/used/jpg/baboon_SRGAN-MSE} };
+\zoombox[magnification=2,color code=red]{0.5,0.85}
+\zoombox[magnification=2,color code=yellow]{0.7,0.55}
+\zoombox[magnification=2,color code=orange]{0.35,0.3}
+\zoombox[magnification=5,color code=lime]{0.86,0.25}
+\end{tikzpicture}
+\begin{tikzpicture}[zoomboxarray, zoomboxes below, zoomboxarray inner gap=0.1cm, zoomboxarray columns=2, zoomboxarray rows=2]
+\node [image node] { \includegraphics[trim=200 220 40 5, clip, width=1.3in]{images/used/jpg/baboon_SRGAN-VGG22} };
+\zoombox[magnification=2,color code=red]{0.5,0.85}
+\zoombox[magnification=2,color code=yellow]{0.7,0.55}
+\zoombox[magnification=2,color code=orange]{0.35,0.3}
+\zoombox[magnification=5,color code=lime]{0.86,0.25}
+\end{tikzpicture}
+\begin{tikzpicture}[zoomboxarray, zoomboxes below, zoomboxarray inner gap=0.1cm, zoomboxarray columns=2, zoomboxarray rows=2]
+\node [image node] { \includegraphics[trim=200 220 40 5, clip, width=1.3in]{images/used/jpg/baboon_SRGAN-VGG54} };
+\zoombox[magnification=2,color code=red]{0.5,0.85}
+\zoombox[magnification=2,color code=yellow]{0.7,0.55}
+\zoombox[magnification=2,color code=orange]{0.35,0.3}
+\zoombox[magnification=5,color code=lime]{0.86,0.25}
+\end{tikzpicture}
+\begin{tikzpicture}[zoomboxarray, zoomboxes below, zoomboxarray inner gap=0.1cm, zoomboxarray columns=2, zoomboxarray rows=2]
+\node [image node] { \includegraphics[trim=200 220 40 5, clip, width=1.3in]{images/used/jpg/baboon_HR} };
+\zoombox[magnification=2,color code=red]{0.5,0.85}
+\zoombox[magnification=2,color code=yellow]{0.7,0.55}
+\zoombox[magnification=2,color code=orange]{0.35,0.3}
+\zoombox[magnification=5,color code=lime]{0.86,0.25}
+\end{tikzpicture}
+\caption{\eng{\textbf{SRResNet} (left: a,b), SRGAN-MSE (middle left: c,d), SRGAN-VGG2.2 (middle: e,f) and  \textbf{SRGAN}-VGG54 (middle right: g,h) reconstruction results and corresponding reference HR image (right: i,j). [$4\times$ upscaling]} \kor{
+\textbf{SRResNet} (좌측: a,b), SRGAN-MSE (중앙 좌측: c,d), SRGAN-VGG2.2 (중앙: e,f), \textbf{SRGAN}-VGG54 (중앙 우측: g,h) 재구성 결과와 참조 고해상도 이미지 (우측: i,j). [$4\times$ 해상도 향상]}}
+\label{fig:perceptual}
+\end{figure*}
+
+\begin{table*}[htb!]
+\centering
+\caption{\eng{Comparison of NN, bicubic, SRCNN \cite{dong2014learning}, SelfExSR \cite{Huang15selfexemplars}, DRCN \cite{kim2016deeply}, ESPCN \cite{Shi2016ESPCN}, \textbf{SRResNet}, \textbf{SRGAN}-VGG54 and the original HR on benchmark data. Highest measures (PSNR [dB], SSIM, MOS) in bold. [$4\times$ upscaling]}\kor{벤치마크 데이터에서의 최근접 이웃(nearest neighbor), 쌍삼차(bicubic), \cite{dong2014learning}, SelfExSR \cite{Huang15selfexemplars}, DRCN \cite{kim2016deeply}, ESPCN \cite{Shi2016ESPCN}, \textbf{SRResNet}, \textbf{SRGAN}-VGG54 그리고 원본 고해상도 간의 비교. 높은 측정치(PSNR [dB], SSIM, MOS)는 굵게 표시됨. [$4\times$ 해상도 향상]}}
+\label{tab:performance}
+\begin{adjustbox}{max width=0.8\textwidth}
+\begin{tabular}{llllllllll}
+\eng{\textbf{Set5} & nearest & bicubic & SRCNN & SelfExSR & DRCN & ESPCN & \textbf{SRResNet} & \textbf{SRGAN} & HR \\}\kor{\textbf{Set5} & 최근접 이웃(NN) & 쌍삼차(bicubic) & SRCNN & SelfExSR & DRCN & ESPCN & \textbf{SRResNet} & \textbf{SRGAN} & 고해상도 \\}
+\hline
+PSNR & 26.26 & 28.43 & 30.07 & 30.33 & 31.52 & 30.76 & \textbf{32.05} & 29.40 & $\infty$ \\
+SSIM & 0.7552 & 0.8211 & 0.8627 & 0.872 & 0.8938 & 0.8784 & \textbf{0.9019} & 0.8472 & 1 \\
+MOS  & 1.28 & 1.97 & 2.57 & 2.65 & 3.26 & 2.89 & 3.37 & \textbf{3.58} & 4.32 \\ [0.3cm]
+
+\textbf{Set14} & & & & & & & & \\
+\hline
+PSNR & 24.64 & 25.99 & 27.18 & 27.45 & 28.02 & 27.66 & \textbf{28.49} & 26.02 & $\infty$ \\
+SSIM & 0.7100 & 0.7486 & 0.7861 & 0.7972 & 0.8074 & 0.8004 & \textbf{0.8184} & 0.7397 & 1 \\
+MOS  & 1.20 & 1.80 & 2.26 & 2.34 & 2.84 & 2.52 & 2.98 & \textbf{3.72} & 4.32 \\ [0.3cm]
+\textbf{BSD100} & & & & & & & &  \\
+\hline
+PSNR & 25.02 & 25.94 & 26.68 & 26.83 & 27.21 & 27.02 & \textbf{27.58} & 25.16 & $\infty$ \\
+SSIM & 0.6606 & 0.6935 & 0.7291 & 0.7387 & 0.7493 & 0.7442 & \textbf{0.7620} & 0.6688 & 1 \\
+MOS  & 1.11 & 1.47 & 1.87 & 1.89 & 2.12 & 2.01 & 2.29 & \textbf{3.56} & 4.46 \\
+\end{tabular}
+\end{adjustbox}
+\end{table*}
+
+\subsection{\eng{Performance of the final networks}\kor{최종 네트워크의 성능}}
+\label{subsec:msebased}
+%In this paper, we choose a network architecture for the generator (cf. Figure \ref{fig:generator}) which combines the effectiveness of the \ac{ESPCN} \cite{Shi2016ESPCN} and the high performance of the \ac{ResNet} \cite{he2015deep}.
+\eng{
+We compare the performance of \textbf{SRResNet} and \textbf{SRGAN} to NN, bicubic interpolation, and four state-of-the-art methods.
+}\kor{
+본 논문에서는 \textbf{SRResNet}와 \textbf{SRGAN}의 성능을 최근접 이웃(nearest neighbor), 쌍삼차 보간(bicubic interpolation) 및 4개의 최첨단 방법에 대해서 비교한다.
+}
+%: the super-resolution \ac{CNN} (SRCNN) described by Dong et al. \cite{dong2014learning}, a method based on transformed self-exemplars (SelfExSR) \cite{Huang15selfexemplars}, a deeply-recursive convolutional network (DRCN) described by Kim et al. \cite{kim2016deeply} and the efficient sub-pixel \ac{CNN} (ESPCNN) allowing real-time video \ac{SR} \cite{Shi2016ESPCN}.
+\eng{
+Quantitative results are summarized in Table \ref{tab:performance} and confirm that \textbf{SRResNet} (in terms of PSNR/SSIM) sets a new state of the art on three benchmark datasets.
+}\kor{
+정량적 결과는 Table \ref{tab:performance}에 요약되어 있으며, \textbf{SRResNet} (PSNR/SSIM의 측면에서)이 세가지 벤치마크 데이터 세트에서 새로운 최첨단(state of the art)인 것을 확인했다.
+}
+\eng{
+Please note that we used a publicly available framework for evaluation (\cf Section \ref{subsec:data}), reported values might thus slightly deviate from those reported in the original papers.
+}\kor{
+평가를 위해 사용 가능한 공개된 프레임워크(\cf \ref{subsec:data} 부분)를 사용했으며, 따라서 보고된 값은 원래 논문에 보고된 값과 약간 다를 수 있다.
+}
+
+\summary{
+각 방법에 대한 SRResNet와 SRGAN의 성능 비교
+}
+
+\eng{
+We further obtained \ac{MOS} ratings for \textbf{SRGAN} and all reference methods on \textbf{BSD100}.
+}\kor{
+추가적으로 \textbf{BSD100} 데이터 세트에서 \textbf{SRGAN}과 모든 참조 방법들에 대한 \ac{MOS} 평가를 수행했다.
+} \eng{
+Examples of images super-resolved with \textbf{SRResNet} and \textbf{SRGAN} are depicted in the supplementary material.
+}\kor{
+\textbf{SRResNet}과 \textbf{SRGAN}을 사용하여 초해상화한 이미지들의 예시는 보충 자료에서 제공된다.
+}
+\eng{
+The results shown in Table \ref{tab:performance} confirm that \textbf{SRGAN} outperforms all reference methods by a large margin and sets a new state of the art for photo-realistic image \ac{SR}.
+}\kor{
+Table \ref{tab:performance}에 표시된 결과는 \textbf{SRGAN}이 모든 참조 방법을 큰 폭으로 능가하고 실사 이미지 초해상도화를 위한 새로운 최첨단 방법이라는 것을 보여준다.
+} \eng{
+All differences in \ac{MOS} (\cf Table \ref{tab:performance}) are highly significant on \textbf{BSD100}, except SRCNN vs. SelfExSR.
+}\kor{
+\textbf{BSD100}에서의 모든 \ac{평균 의견 점수} 차이(\cf Table \ref{tab:performance})는 SRCNN 대 SelfExSR을 제외하고 상당히 유의미하다.
+} \eng{
+The distribution of all collected \ac{MOS} ratings is summarized in \figurename~\ref{fig:MOS}.
+}\kor{
+수집된 모든 \ac{평균 의견 점수} 등급의 분포는 \figurename~\ref{fig:MOS}에 요약되어 있다.
+}
+
+\summary{
+다른 참조 방법들을 큰 폭으로 능가하고 실사 이미지 초해상도화를 위한 새로운 최첨단 방법이 된 SRGAN
+}
+
+
+\section{\eng{Discussion and future work}\kor{토론 및 향후 연구}}
+\label{sec:discussion}
+\eng{
+We confirmed the superior perceptual performance of \textbf{SRGAN} using \ac{MOS} testing.
+}\kor{
+본 논문에서는 \ac{평균 의견 점수} 테스트를 통해 \textbf{SRGAN}의 우수한 지각 성능을 확인했다.
+} \eng{
+We have further shown that standard quantitative measures such as PSNR and SSIM fail to capture and accurately assess image quality with respect to the human visual system \cite{Toderici2016}.
+}\kor{
+또한 PSNR과 SSIM과 같은 정량적인 표준 측정 지표들이 인간 지각 체계 \cite{Toderici2016}와 관련하여 이미지 품질을 포착하고, 정확하게 평가하지 못한다는 것을 것을 확인했다.
+}
+%As \ac{PSNR} is not sufficiently capable of quantifying the perceptual quality of the \ac{SR} result. We thus quantified user experiences by collecting subjective measures as mean opinion scores (MOS), which confirmed the potential of SRGAN to recover photo-realistic images.
+\eng{
+The focus of this work was the perceptual quality of super-resolved images rather than computational efficiency.
+}\kor{
+본 연구의 초점은 계산 효율성보다는 초해상화된 이미지의 지각적 품질에 있다.
+} \eng{
+The presented model is, in contrast to Shi et al. \cite{Shi2016ESPCN}, not optimized for video \ac{SR} in real-time.
+}\kor{
+제시된 모델은, Shi 외. \cite{Shi2016ESPCN}와는 달리, 실시간 비디오 초해상도화에는 최적화되어있지 않다.
+}\eng{
+However, preliminary experiments on the network architecture suggest that shallower networks have the potential to provide very efficient alternatives at a small reduction of qualitative performance.
+}\kor{
+하지만, 네트워크 구조에 대한 예비 실험은, 얕은 네트워크가 질적 성능을 약간 감소시키는 대신 매우 효율적인 대안을 제공할 가능성이 있음을 보여준다.
+} %A deeper investigation of the network architecture as well as the perceptual loss will be part of future work.
+\eng{
+In contrast to Dong et al. \cite{dong2016image}, we found deeper network architectures to be beneficial.
+}\kor{
+Dong 외. \cite{dong2016image}와는 달리, 심층 네트워크 구조가 유익하다는 것을 발견했다.
+} \eng{
+We speculate that the \ac{ResNet} design has a substantial impact on the performance of deeper networks.
+}\kor{
+\ac{ResNet} 설계가 심층 네트워크의 성능에 상당한 영향을 미치는 것으로 추측된다.
+} \eng{
+We found that even deeper networks ($B>16$) can further increase the performance of \textbf{SRResNet}, however, come at the cost of longer training and testing times (\cf supplementary material).
+}\kor{
+또한 심층 네트워크 ($B>16$)가 \textbf{SRResNet}의 성능을 더 향상시킬 수 있지만, 훈련 및 테스트 시간이 더 오래 걸리는 문제가 있음을 발견했다 (\cf 보충 자료).
+} \eng{
+We further found \ac{SRGAN} variants of deeper networks are increasingly difficult to train due to the appearance of high-frequency artifacts.
+}\kor{
+추가적으로, 고주파 인공물(artifacts)의 출현으로 심층 네트워크의 \ac{SRGAN} 변형을 훈련하기가 더 힘들어지는 것을 발견했다.
+}
+% and could potentially explain the different findings.
+
+\summary{
+SRGAN은 PSNR과 SSIM보다 인간 지각 체계와 관련된 평가 지표에서 우수한 성능을 보였으며, ResNet 설계는 심층 네트워크 성능에 큰 영향을 미쳤음. 심층 네트워크는 더 나은 성능을 제공하지만 훈련 및 테스트 시간이 더 오래 걸리며, 고주파 인공물이 발생하여 훈련이 어렵다는 것을 발견함.
+}
+
+\eng{
+Of particular importance when aiming for photo-realistic solutions to the \ac{SR} problem is the choice of the content loss as illustrated in \figurename~\ref{fig:perceptual}.
+}\kor{
+\figurename~\ref{fig:perceptual}에서 보여지듯이, \ac{초해상도화} 문제에서 실사와 같은 해를 목표로 할 때, 콘텐츠 손실의 선택은 매우 중요하다.
+} \eng{
+In this work, we found $l^{SR}_{VGG/5.4}$ to yield the perceptually most convincing results, which we attribute to the potential of deeper network layers to represent features of higher abstraction \cite{zeiler2014visualizing,Yosinski2015,Mahendran2016} away from pixel space.
+}\kor{
+본 연구에서는, $l^{SR}_{VGG/5.4}$가 지각적으로 더 실감나는 결과를 산출하는 것을 발견했으며,
+이는 깊은 네트워크 레이어가 픽셀 공간으로부터 고수준으로 추상화된 특징\cite{zeiler2014visualizing,Yosinski2015,Mahendran2016}을 나타낼 수 있는 잠재력이 있기 때문으로 추정된다.
+} \eng{
+We speculate that feature maps of these deeper layers focus purely on the content while leaving the adversarial loss focusing on texture details which are the main difference between the super-resolved images without the adversarial loss and photo-realistic images.
+}\kor{
+이러한 심층 레이어의 특징 맵은 순전히 내용에만 집중하는 반면, 적대적 손실은 적대적 손실이 없는 초해상도화된 이미지와 실사 이미지 사이의 주요한 차이점인 질감 세부 사항에 초점을 맞추는 것으로 추측된다.
+}
+\eng{
+We also note that the ideal loss function depends on the application.
+}\kor{
+또한, 이상적인 손실 함수는 응용에 따라 다르다는 점을 주목해야 한다.
+} \eng{
+For example, approaches that hallucinate finer detail might be less suited for medical applications or surveillance.
+}\kor{
+예를 들어, 미세한 세부 정보를 왜곡하는 방법은 의료 응용이나 감시(surveillance)에는 적합하지 않을 수 있다.
+} \eng{
+The perceptually convincing reconstruction of text or structured scenes \cite{Huang15selfexemplars} is challenging and part of future work.
+}\kor{
+텍스트나 구조화된 장면의 지각적으로 실감나는 재구성\cite{Huang15selfexemplars}은 어렵고, 이는 향후 연구의 일부분이다.
+}
+\eng{
+The development of content loss functions that describe image spatial content, but more invariant to changes in pixel space will further improve photo-realistic image \ac{SR} results.
+}\kor{
+이미지 공간의 내용을 묘사하는 내용 손실 함수를 픽셀 공간의 변화에 잘 변하지 않게 개발한다면, 사진과 실사 이미지 \ac{초해상도화} 결과를 더욱 향상시킬 수 있을 것이다.
+}
+
+\summary{
+콘텐츠 손실의 선택은 초해상도화 결과에 큰 영향을 미침. 이상적인 손실 함수는 응용에 따라 달라질 수 있으며, 픽셀 공간의 변화에 불변하도록 내용 손실 함수를 개발한다면 결과를 더욱 향상시킬 수 있을 것으로 보임.
+}
+%
+\section{\eng{Conclusion}\kor{결론}}
+\label{sec:conclusion}
+\eng{
+We have described a deep residual network \textbf{SRResNet} that sets a new state of the art on public benchmark datasets when evaluated with the widely used \ac{PSNR} measure.
+}\kor{
+본 논문에서는, 널리 사용되는 \ac{PSNR} 측정 지표를 사용하여 평가할 때, 공개 벤치마크 데이터 세트에서 새로운 최첨단 성능을 발휘하는 심층 잔류 신경망 \textbf{SRResNet}에 대해서 설명한다.
+} \eng{
+We have highlighted some limitations of this \ac{PSNR}-focused image super-resolution and introduced \textbf{SRGAN}, which augments the content loss function with an adversarial loss by training a \ac{GAN}.
+}\kor{
+또한, \ac{PSNR}에 초점을 맞춘 초해상도화의 몇가지 한계를 지적하고, \ac{GAN}을 훈련시키는 것으로, 적대적 손실로 내용 손실 함수를 보강한 \ac{SRGAN}을 소개한다.
+}\eng{
+Using extensive \ac{MOS} testing, we have confirmed that \textbf{SRGAN} reconstructions for large upscaling factors ($4\times$) are, by a considerable margin, more photo-realistic than reconstructions obtained with state-of-the-art reference methods.
+}\kor{
+광범위한 \ac{평균 의견 점수} 테스트를 통해, 큰 해상도 향상 계수($4\times$)를 사용한 \textbf{SRGAN} 재구성 결과가 최첨단 참조 방법들로 얻은 재구성 결과보다 상당히 큰 차이로 실사에 더욱 가까운 것을 확인했다.
+}
+
+\summary{
+본 논문에서는 PSNR 기반 초해상도화의 한계를 지적하며, 적대적 손실로 내용 손실 함수를 보강한 SRGAN을 소개하였음. SRGAN의 결과는 최첨단 참조 방법들보다 실사에 더 가까운 것을 확인함.
+}
+
+{\footnotesize
+\bibliographystyle{ieee}
+\bibliography{bibliograph}
+}
+\clearpage
+\setcounter{section}{0}
+\renewcommand{\thesection}{\Alph{section}}
+\onecolumn
+%%%%%%%%% BODY TEXT
+\section{Supplementary Material}
+In this supplementary material we first briefly investigate the influence of network depth (number of residual blocks) on the performance (PSNR, time) of \textbf{SRResNet} in Section \ref{app:performance}. We then visualize on an example image how the \textbf{SRGAN} network performance evolves with increasing number of training iterations in Section \ref{app:evolution}. Results of the \ac{MOS} tests conducted on \textbf{Set5}, \textbf{Set14}, \textbf{BSD100} are summarized in Section \ref{app:MOS}. Finally we provide a visualization of all image reconstruction obtained with \textbf{SRResNet} and \textbf{SRGAN} with a $4\times$ upscaling factor for \textbf{Set5} (Section \ref{app:Set5}), \textbf{Set14} (Section \ref{app:Set14}) and five randomly selected images from \textbf{BSD100} (Section \ref{app:BSD100}).\\
+
+Images are best viewed and compared zoomed in. All original low-/high-resolution images and reconstructions ($4\times$ upscaling) obtained with different methods (bicubic, SRResNet-MSE, SRResNet-VGG22, SRGAN-MSE, SRGAN-VGG22, SRGAN-VGG54) described in the paper are available for download at \url{https://twitter.box.com/s/lcue6vlrd01ljkdtdkhmfvk7vtjhetog}.
+
+\clearpage
+
+\subsection{Performance (PSNR/time) vs. network depth}
+\label{app:performance}
+We investigated the influence of network depth, specifically the number of residual blocks, on performance (PSNR [dB] on BSD100 for $4\times$ SR) and inference time [s] of the network architecture described in Figure 4 of the main paper. Time was assessed on a NVIDIA M40 GPU and averaged over 100 reconstructions of a random low-resolution image with resolution 64$\times$64 with upscaling factor $4\times$. The measurements are plotted in \figurename~\ref{fig:app_psnrtime} for a network with (blue) and without (red) skip-connection.
+As expected the time of a single forward pass through the network depends approximately linearly on the number of residual blocks. Whether a skip-connection is used or not has no substantial impact on inference time. However, we observed substantial gains in performance with the additional skip-connection. We chose a network architecture of 16 residual blocks with skip-connection for the evaluation presented in the main paper as we consider this as good trade-off between accuracy and speed including training time. While accuracy gains slowly saturate beyond 16 blocks there is, nevertheless, a clear benefit of using even deeper networks.
+
+\begin{figure*}[ht!]
+\begin{tabular}{cc}
+\includegraphics[width=0.5\textwidth]{images/used/appendix/jpg/psnr_vs_depth} &
+\includegraphics[width=0.5 \textwidth]{images/used/appendix/jpg/time_vs_depth}\\
+\end{tabular}
+\caption{Dependence of network performance (PSNR, time) on network depth. PSNR (left) calculated on BSD100. Time (right) averaged over 100 reconstructions of a random LR image with resolution 64$\times$64.}
+\label{fig:app_psnrtime}
+\end{figure*}
+
+\clearpage
+\subsection{Evolution of Generator during SRGAN training}
+\label{app:evolution}
+We further investigated how reconstructions of the \textbf{SRGAN} generator network evolve (visually) with increasing number of training iterations. Visual results obtained after different number of training iterations are illustrated in \figurename~\ref{fig:app_perceptual}. It is interesting that after only 20 thousand training iterations the generator substantially diverged from the SRResNet initialization and produces reconstruction with a lot of high frequency content, including noise. With increasing number of training iterations reconstructions of the \textit{baboon} from \textbf{Set14} appear closer to the reference image. However, there is visually little change during the last 50-100 thousand update iterations.
+\begin{figure*}[ht!]
+\begin{tabular}{ cx{3.7cm}cx{3.7cm}cx{3.7cm}cx{3.7cm}cx{3.7cm}}
+~~~~~~~~~SRResNet & ~~~~~~20k & ~~~~~~~~~~~~~~40k & ~~~~~~~~~~~~~~~~~~60k & ~~~~~~~~~~~~~~~~~~~80k \\
+\end{tabular}
+
+\begin{tikzpicture}[zoomboxarray, zoomboxes below, zoomboxarray inner gap=0.1cm, zoomboxarray columns=2, zoomboxarray rows=2]
+\node [image node] { \includegraphics[trim=200 220 40 5, clip, width=1.3in]{images/used/appendix/jpg/evolution/baboon-net_gan_vgg54_16blocks_skip_fromMSE_noTV_noDS_evo_0} };
+\zoombox[magnification=2,color code=red]{0.5,0.85}
+\zoombox[magnification=2,color code=yellow]{0.7,0.55}
+\zoombox[magnification=2,color code=orange]{0.35,0.3}
+\zoombox[magnification=5,color code=lime]{0.86,0.25}
+\end{tikzpicture}
+\begin{tikzpicture}[zoomboxarray, zoomboxes below, zoomboxarray inner gap=0.1cm, zoomboxarray columns=2, zoomboxarray rows=2]
+\node [image node] { \includegraphics[trim=200 220 40 5, clip, width=1.3in]{images/used/appendix/jpg/evolution/baboon-net_gan_vgg54_16blocks_skip_fromMSE_noTV_noDS_evo_1} };
+\zoombox[magnification=2,color code=red]{0.5,0.85}
+\zoombox[magnification=2,color code=yellow]{0.7,0.55}
+\zoombox[magnification=2,color code=orange]{0.35,0.3}
+\zoombox[magnification=5,color code=lime]{0.86,0.25}
+\end{tikzpicture}
+\begin{tikzpicture}[zoomboxarray, zoomboxes below, zoomboxarray inner gap=0.1cm, zoomboxarray columns=2, zoomboxarray rows=2]
+\node [image node] { \includegraphics[trim=200 220 40 5, clip, width=1.3in]{images/used/appendix/jpg/evolution/baboon-net_gan_vgg54_16blocks_skip_fromMSE_noTV_noDS_evo_2} };
+\zoombox[magnification=2,color code=red]{0.5,0.85}
+\zoombox[magnification=2,color code=yellow]{0.7,0.55}
+\zoombox[magnification=2,color code=orange]{0.35,0.3}
+\zoombox[magnification=5,color code=lime]{0.86,0.25}
+\end{tikzpicture}
+\begin{tikzpicture}[zoomboxarray, zoomboxes below, zoomboxarray inner gap=0.1cm, zoomboxarray columns=2, zoomboxarray rows=2]
+\node [image node] { \includegraphics[trim=200 220 40 5, clip, width=1.3in]{images/used/appendix/jpg/evolution/baboon-net_gan_vgg54_16blocks_skip_fromMSE_noTV_noDS_evo_3} };
+\zoombox[magnification=2,color code=red]{0.5,0.85}
+\zoombox[magnification=2,color code=yellow]{0.7,0.55}
+\zoombox[magnification=2,color code=orange]{0.35,0.3}
+\zoombox[magnification=5,color code=lime]{0.86,0.25}
+\end{tikzpicture}
+\begin{tikzpicture}[zoomboxarray, zoomboxes below, zoomboxarray inner gap=0.1cm, zoomboxarray columns=2, zoomboxarray rows=2]
+\node [image node] { \includegraphics[trim=200 220 40 5, clip, width=1.3in]{images/used/appendix/jpg/evolution/baboon-net_gan_vgg54_16blocks_skip_fromMSE_noTV_noDS_evo_4} };
+\zoombox[magnification=2,color code=red]{0.5,0.85}
+\zoombox[magnification=2,color code=yellow]{0.7,0.55}
+\zoombox[magnification=2,color code=orange]{0.35,0.3}
+\zoombox[magnification=5,color code=lime]{0.86,0.25}
+\end{tikzpicture}\\
+\begin{tabular}{ cx{3.7cm}cx{3.7cm}cx{3.7cm}cx{3.7cm}cx{3.7cm}}
+~~~~~~~~~~~~100k & ~~~~~~~~~~~~~~~~~140k & ~~~~~~~~~~~~~~~~~180k & ~~~~~~~~~~~~~~~~~~~SRGAN & ~~~~~~~~original HR image \\
+\end{tabular}
+\begin{tikzpicture}[zoomboxarray, zoomboxes below, zoomboxarray inner gap=0.1cm, zoomboxarray columns=2, zoomboxarray rows=2]
+\node [image node] { \includegraphics[trim=200 220 40 5, clip, width=1.3in]{images/used/appendix/jpg/evolution/baboon-net_gan_vgg54_16blocks_skip_fromMSE_noTV_noDS_evo_5} };
+\zoombox[magnification=2,color code=red]{0.5,0.85}
+\zoombox[magnification=2,color code=yellow]{0.7,0.55}
+\zoombox[magnification=2,color code=orange]{0.35,0.3}
+\zoombox[magnification=5,color code=lime]{0.86,0.25}
+\end{tikzpicture}
+\begin{tikzpicture}[zoomboxarray, zoomboxes below, zoomboxarray inner gap=0.1cm, zoomboxarray columns=2, zoomboxarray rows=2]
+\node [image node] { \includegraphics[trim=200 220 40 5, clip, width=1.3in]{images/used/appendix/jpg/evolution/baboon-net_gan_vgg54_16blocks_skip_fromMSE_noTV_noDS_evo_7} };
+\zoombox[magnification=2,color code=red]{0.5,0.85}
+\zoombox[magnification=2,color code=yellow]{0.7,0.55}
+\zoombox[magnification=2,color code=orange]{0.35,0.3}
+\zoombox[magnification=5,color code=lime]{0.86,0.25}
+\end{tikzpicture}
+\begin{tikzpicture}[zoomboxarray, zoomboxes below, zoomboxarray inner gap=0.1cm, zoomboxarray columns=2, zoomboxarray rows=2]
+\node [image node] { \includegraphics[trim=200 220 40 5, clip, width=1.3in]{images/used/appendix/jpg/evolution/baboon-net_gan_vgg54_16blocks_skip_fromMSE_noTV_noDS_evo_9} };
+\zoombox[magnification=2,color code=red]{0.5,0.85}
+\zoombox[magnification=2,color code=yellow]{0.7,0.55}
+\zoombox[magnification=2,color code=orange]{0.35,0.3}
+\zoombox[magnification=5,color code=lime]{0.86,0.25}
+\end{tikzpicture}
+\begin{tikzpicture}[zoomboxarray, zoomboxes below, zoomboxarray inner gap=0.1cm, zoomboxarray columns=2, zoomboxarray rows=2]
+\node [image node] { \includegraphics[trim=200 220 40 5, clip, width=1.3in]{images/used/appendix/jpg/evolution/baboon-net_gan_vgg54_16blocks_skip_fromMSE_noTV_noDS_final} };
+\zoombox[magnification=2,color code=red]{0.5,0.85}
+\zoombox[magnification=2,color code=yellow]{0.7,0.55}
+\zoombox[magnification=2,color code=orange]{0.35,0.3}
+\zoombox[magnification=5,color code=lime]{0.86,0.25}
+\end{tikzpicture}
+\begin{tikzpicture}[zoomboxarray, zoomboxes below, zoomboxarray inner gap=0.1cm, zoomboxarray columns=2, zoomboxarray rows=2]
+\node [image node] { \includegraphics[trim=200 220 40 5, clip, width=1.3in]{images/used/jpg/baboon_HR} };
+\zoombox[magnification=2,color code=red]{0.5,0.85}
+\zoombox[magnification=2,color code=yellow]{0.7,0.55}
+\zoombox[magnification=2,color code=orange]{0.35,0.3}
+\zoombox[magnification=5,color code=lime]{0.86,0.25}
+\end{tikzpicture}
+
+\caption{Evolution of SRGAN generator network during training progress. Note: Generator initialized with SRResNet weights; learning rate set to  $10^{-4}$ for first 100k iterations, then reduced to $10^{-5}$ for another 100k iterations. [$4\times$ upscaling]}
+\label{fig:app_perceptual}
+\end{figure*}
+
+\clearpage
+
+\subsection{Mean opinion score (MOS) testing}
+\label{app:MOS}
+
+In all conducted \ac{MOS} tests we have asked 26 human raters to assign a score from 1 (Bad) to 5 (Excellent) to reconstructions of the $4\times$ downsampled versions of images from \textbf{Set5}, \textbf{Set14} and \textbf{BSD100}. On \textbf{BSD100} nine versions of each image were rated by each rater. On \textbf{Set5} and \textbf{Set14} the raters also rated three additional versions of the proposed methods to investigate different content losses. In total 26*100*9 + 26*14*12 + 26*5*12 = 29328 ratings were obtained, where each rater rated 1128 images. Images were presented in a completely randomized fashion without any indication of the employed super-resolution approach. The raters were calibrated on images not included in the testing set such that the nearest neighbor interpolated reconstruction should receive score 1 (Bad) and the original high-resolution image score 5 (Excellent).
+The distribution of \ac{MOS} ratings on each individual data set is summarized in \figurename~\ref{fig:app_mosdist}. The average ordinal rank over all corresponding ratings of an image and rater are shown in \figurename~\ref{fig:app_mosrank}. Note that a score of 1 corresponds to the best rank and ranks are averaged for samples that would have the same ordinal ranking.
+While results on \textbf{Set5} are somewhat inconclusive due to very small sample size and images with comparably little detail, ratings on \textbf{Set14} and especially on the large \textbf{BSD100} data set confirm that \textbf{SRGAN} is significantly better than any compared state-of-the-art method. In fact, \ac{MOS} ratings obtained with \textbf{SRGAN} are closer to those of the original high-resolution images than to those obtained with any reference method.
+\begin{figure*}[h!]
+\begin{tabular}{ccc}
+Set5 & Set14 & BSD100 \\
+\includegraphics[width=0.3\textwidth]{images/used/appendix/jpg/MOS/MOS_heatmap_Set5_cropped}&
+\includegraphics[width=0.3\textwidth]{images/used/appendix/jpg/MOS/MOS_heatmap_Set14_cropped} &
+\includegraphics[width=0.3\textwidth]{images/used/appendix/jpg/MOS/MOS_heatmap_BSD100_cropped} \\
+\end{tabular}
+\caption{Color-coded distribution of MOS scores on Set5, Set14, BSD100. Mean shown as red marker, where the bins are centered around value i. [$4\times$ upscaling]}
+\label{fig:app_mosdist}
+\end{figure*}
+\begin{figure*}[h!]
+\begin{tabular}{ccc}
+Set5 & Set14 & BSD100 \\
+\includegraphics[width=0.3\textwidth]{images/used/appendix/jpg/MOS/Ranks_Set5}&
+\includegraphics[width=0.3\textwidth]{images/used/appendix/jpg/MOS/Ranks_Set14} &
+\includegraphics[width=0.3\textwidth]{images/used/appendix/jpg/MOS/Ranks_BSD100} \\
+\end{tabular}
+\caption{Average rank on Set5, Set14, BSD100 by averaging the ranks over all available individual ratings. [$4\times$ upscaling]}
+\label{fig:app_mosrank}
+\end{figure*}
+\clearpage
+\subsection{Set5 - Visual Results}
+\label{app:Set5}
+\begin{figure*}[h!]
+\begin{tabular}{cccc}
+bicubic & SRResNet & SRGAN & original \\
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/baby_bicubic}&
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/baby_SRResNet-MSE} &
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/baby_SRGAN-VGG54} &
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/baby_HR} \\
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/bird_bicubic}&
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/bird_SRResNet-MSE} &
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/bird_SRGAN-VGG54} &
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/bird_HR} \\
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/butterfly_bicubic}&
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/butterfly_SRResNet-MSE} &
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/butterfly_SRGAN-VGG54} &
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/butterfly_HR} \\
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/head_bicubic}&
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/head_SRResNet-MSE} &
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/head_SRGAN-VGG54} &
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/head_HR} \\
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/woman_bicubic}&
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/woman_SRResNet-MSE} &
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/woman_SRGAN-VGG54} &
+\includegraphics[width=1.4in]{images/used/appendix/jpg/Set5/woman_HR} \\
+\end{tabular}
+\label{fig:app_Set5}
+\caption{Results for \textbf{Set5} using bicubic interpolation, SRResNet and SRGAN. [$4\times$ upscaling]}
+\end{figure*}
+
+\clearpage
+
+\subsection{Set14 - Visual Results}
+\label{app:Set14}
+\begin{figure*}[h!]
+\begin{tabular}{cccc}
+bicubic & SRResNet & SRGAN & original \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/baboon_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/baboon_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/baboon_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/baboon_HR} \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/barbara_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/barbara_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/barbara_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/barbara_HR} \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/bridge_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/bridge_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/bridge_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/bridge_HR} \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/coastguard_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/coastguard_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/coastguard_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/coastguard_HR} \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/comic_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/comic_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/comic_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/comic_HR} \\
+\end{tabular}
+\label{fig:app_Set14a}
+\caption{Results for \textbf{Set14} using bicubic interpolation, SRResNet and SRGAN. [$4\times$ upscaling]}
+\end{figure*}
+
+\begin{figure*}[h!]
+\begin{tabular}{cccc}
+bicubic & SRResNet & SRGAN & original \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/face_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/face_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/face_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/face_HR} \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/flowers_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/flowers_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/flowers_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/flowers_HR} \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/foreman_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/foreman_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/foreman_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/foreman_HR} \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/lenna_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/lenna_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/lenna_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/lenna_HR} \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/man_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/man_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/man_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/man_HR} \\
+\end{tabular}
+\label{fig:app_Set14b}
+\caption{Results for \textbf{Set14} using bicubic interpolation , SRResNet and SRGAN. [$4\times$ upscaling]}
+\end{figure*}
+
+\begin{figure*}[h!]
+\begin{tabular}{cccc}
+bicubic & SRResNet & SRGAN & original \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/monarch_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/monarch_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/monarch_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/monarch_HR} \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/pepper_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/pepper_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/pepper_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/pepper_HR} \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/ppt3_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/ppt3_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/ppt3_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/ppt3_HR} \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/zebra_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/zebra_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/zebra_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/Set14/zebra_HR} \\
+\end{tabular}
+\label{fig:app_Set14c}
+\caption{Results for \textbf{Set14} using bicubic interpolation, SRResNet and SRGAN. [$4\times$ upscaling]}
+\end{figure*}
+\clearpage
+\subsection{BSD100 (five random samples) - Visual Results}
+\label{app:BSD100}
+\begin{figure*}[h!]
+\begin{tabular}{cccc}
+bicubic & SRResNet & SRGAN & original \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/219090_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/219090_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/219090_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/219090_HR} \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/45096_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/45096_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/45096_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/45096_HR} \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/196073_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/196073_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/196073_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/196073_HR} \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/54082_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/54082_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/54082_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/54082_HR} \\
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/220075_bicubic}&
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/220075_SRResNet-MSE} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/220075_SRGAN-VGG54} &
+\includegraphics[width=1.5in]{images/used/appendix/jpg/BSD100/220075_HR} \\
+\end{tabular}
+\label{fig:app_BSD100}
+\caption{Results for five random samples of \textbf{BSD100} using bicubic interpolation, SRResNet and SRGAN. [$4\times$ upscaling]}
+\end{figure*}
+
+\end{document}
+
+

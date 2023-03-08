@@ -1,0 +1,22 @@
+name: Build papers
+on: [push, pull_request]
+jobs:
+  launch_test:
+    name: Build papers
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Get latest code
+        uses: actions/checkout@v3
+
+      - name: Build PDFs
+        run: sh build.sh
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: papers
+          path: |
+            out/SRGAN-Korean.pdf
+            out/SRGAN-Korean-Summary.pdf
+            out/SRGAN-EngKor.pdf
+            out/SRGAN-EngKor-Summary.pdf
